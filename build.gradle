@@ -4,6 +4,10 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2019.4.1"
 }
 
+dependencies {
+  simulation "edu.wpi.first.halsim:halsim_lowfi:${wpi.wpilibVersion}:${wpi.platforms.desktop}@zip"
+}
+
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
