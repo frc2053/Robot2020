@@ -5,51 +5,94 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-#include <units/units.h>
+#include "frc_new/geometry/Pose2d.h"
 
-namespace frc_new {
-/**
- * A change in distance along arc since the last pose update. We can use ideas
- * from differential calculus to create new Pose2ds from a Twist2d and vise
- * versa.
- *
- * A Twist can be used to represent a difference between two poses.
- */
-struct Twist2d {
-  /**
-   * Linear "dx" component
-   */
-  units::meter_t dx = 0_m;
+#include <cmath>
 
-  /**
-   * Linear "dy" component
-   */
-  units::meter_t dy = 0_m;
+using namespace frc_new;
 
-  /**
-   * Angular "dtheta" component (radians)
-   */
-  units::radian_t dtheta = 0_rad;
+Pose2d::Pose2d(Translation2d translation, Rotation2d rotation)
+    : m_translation(translation), m_rotation(rotation) {}
 
-  /**
-   * Checks equality between this Twist2d and another object.
-   *
-   * @param other The other object.
-   * @return Whether the two objects are equal.
-   */
-  bool operator==(const Twist2d& other) const {
-    return units::math::abs(dx - other.dx) < 1E-9_m &&
-           units::math::abs(dy - other.dy) < 1E-9_m &&
-           units::math::abs(dtheta - other.dtheta) < 1E-9_rad;
+Pose2d::Pose2d(units::meter_t x, units::meter_t y, Rotation2d rotation)
+    : m_translation(x, y), m_rotation(rotation) {}
+
+Pose2d Pose2d::operator+(const Transform2d& other) const {
+  return TransformBy(other);
+}
+
+Pose2d& Pose2d::operator+=(const Transform2d& other) {
+  m_translation += other.Translation().RotateBy(m_rotation);
+  m_rotation += other.Rotation();
+  return *this;
+}
+
+Transform2d Pose2d::operator-(const Pose2d& other) const {
+  const auto pose = this->RelativeTo(other);
+  return Transform2d(pose.Translation(), pose.Rotation());
+}
+
+bool Pose2d::operator==(const Pose2d& other) const {
+  return m_translation == other.m_translation && m_rotation == other.m_rotation;
+}
+
+bool Pose2d::operator!=(const Pose2d& other) const {
+  return !operator==(other);
+}
+
+Pose2d Pose2d::TransformBy(const Transform2d& other) const {
+  return {m_translation + (other.Translation().RotateBy(m_rotation)),
+          m_rotation + other.Rotation()};
+}
+
+Pose2d Pose2d::RelativeTo(const Pose2d& other) const {
+  const Transform2d transform{other, *this};
+  return {transform.Translation(), transform.Rotation()};
+}
+
+Pose2d Pose2d::Exp(const Twist2d& twist) const {
+  const auto dx = twist.dx;
+  const auto dy = twist.dy;
+  const auto dtheta = twist.dtheta.to<double>();
+
+  const auto sinTheta = std::sin(dtheta);
+  const auto cosTheta = std::cos(dtheta);
+
+  double s, c;
+  if (std::abs(dtheta) < 1E-9) {
+    s = 1.0 - 1.0 / 6.0 * dtheta * dtheta;
+    c = 0.5 * dtheta;
+  } else {
+    s = sinTheta / dtheta;
+    c = (1 - cosTheta) / dtheta;
   }
 
-  /**
-   * Checks inequality between this Twist2d and another object.
-   *
-   * @param other The other object.
-   * @return Whether the two objects are not equal.
-   */
-  bool operator!=(const Twist2d& other) const { return !operator==(other); }
-};
-}  // namespace frc
+  const Transform2d transform{Translation2d{dx * s - dy * c, dx * c + dy * s},
+                              Rotation2d{cosTheta, sinTheta}};
+
+  return *this + transform;
+}
+
+Twist2d Pose2d::Log(const Pose2d& end) const {
+  const auto transform = end.RelativeTo(*this);
+  const auto dtheta = transform.Rotation().Radians().to<double>();
+  const auto halfDtheta = dtheta / 2.0;
+
+  const auto cosMinusOne = transform.Rotation().Cos() - 1;
+
+  double halfThetaByTanOfHalfDtheta;
+
+  if (std::abs(cosMinusOne) < 1E-9) {
+    halfThetaByTanOfHalfDtheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta;
+  } else {
+    halfThetaByTanOfHalfDtheta =
+        -(halfDtheta * transform.Rotation().Sin()) / cosMinusOne;
+  }
+
+  const Translation2d translationPart =
+      transform.Translation().RotateBy(
+          {halfThetaByTanOfHalfDtheta, -halfDtheta}) *
+      std::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
+
+  return {translationPart.X(), translationPart.Y(), units::radian_t(dtheta)};
+}
