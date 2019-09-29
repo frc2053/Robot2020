@@ -10,11 +10,11 @@
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
-#include "geometry/Pose2d.h"
-#include "geometry/Translation2d.h"
-#include "geometry/Rotation2d.h"
-#include "trajectory/TrajectoryGenerator.h"
-#include "trajectory/Trajectory.h"
+#include "frc_new/geometry/Pose2d.h"
+#include "frc_new/geometry/Translation2d.h"
+#include "frc_new/geometry/Rotation2d.h"
+#include "frc_new/trajectory/TrajectoryGenerator.h"
+#include "frc_new/trajectory/Trajectory.h"
 
 ExampleSubsystem Robot::m_subsystem;
 OI Robot::m_oi;
