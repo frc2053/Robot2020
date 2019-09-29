@@ -10,6 +10,12 @@
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include "geometry/Pose2d.h"
+#include "geometry/Translation2d.h"
+#include "geometry/Rotation2d.h"
+#include "trajectory/TrajectoryGenerator.h"
+#include "trajectory/Trajectory.h"
+
 ExampleSubsystem Robot::m_subsystem;
 OI Robot::m_oi;
 
@@ -17,6 +23,24 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
   m_chooser.AddOption("My Auto", &m_myAuto);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  std::vector<frc_new::Pose2d> waypoints;
+  waypoints.push_back(frc_new::Pose2d(frc_new::Translation2d(0_m, 0_m), frc_new::Rotation2d(0_rad)));
+  waypoints.push_back(frc_new::Pose2d(frc_new::Translation2d(10_m, 0_m), frc_new::Rotation2d(0_rad)));
+
+  std::vector<std::unique_ptr<frc_new::TrajectoryConstraint>> constraints;
+
+  frc_new::Trajectory traj = frc_new::TrajectoryGenerator::GenerateTrajectory(waypoints, std::move(constraints), 0_mps, 0_mps, 10_mps, 100_mps_sq, false);
+
+  units::second_t time = 0_s;
+  units::second_t dt = 20_ms;
+  units::second_t duration = traj.TotalTime();
+
+  while(time < duration) {
+    const frc_new::Trajectory::State point = traj.Sample(time);
+    time = time + dt;
+    std::cout << "Pose at time " << time << " : (" << point.pose.Translation().X() << ", " << point.pose.Translation().Y() << ", " << point.pose.Rotation().Degrees() << ")\n";
+  }
 }
 
 /**
