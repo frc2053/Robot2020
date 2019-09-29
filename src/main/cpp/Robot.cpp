@@ -41,6 +41,8 @@ void Robot::RobotInit() {
     time = time + dt;
     std::cout << "Pose at time " << time << " : (" << point.pose.Translation().X() << ", " << point.pose.Translation().Y() << ", " << point.pose.Rotation().Degrees() << ")\n";
   }
+
+  std::cout << "Testing!" << std::endl;
 }
 
 /**
