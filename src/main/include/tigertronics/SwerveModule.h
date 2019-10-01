@@ -16,13 +16,19 @@
 class SwerveModule {
 public:
     SwerveModule(int driveMotorChannel, int turningMotorChannel);
-    frc::SwerveModuleState GetState() const;
-    void SetDesiredState(const frc::SwerveModuleState& state);
+    frc_new::SwerveModuleState GetState();
+    void SetDesiredState(const frc_new::SwerveModuleState& state);
 
 private:
+    void SetupDriveMotor();
+    void SetupTurningMotor();
+    units::meters_per_second_t ConvertAngularToLinearVelocity(units::revolutions_per_minute_t rpm, units::meter_t radius);
+    units::radian_t ConvertEncoderUnitsToRadians(int encoderTicks);
     static constexpr units::meter_t kWheelRadius = tigertronics::constants::driveWheelRadius;
     static constexpr int kEncoderResolution = tigertronics::constants::ctreEncoderTicksPerRev;
 
-    rev::SparkMax m_driveMotor;
+    rev::CANSparkMax m_driveMotor;
+    rev::CANPIDController m_drivePIDController;
+    rev::CANEncoder m_driveEncoder;
     ctre::phoenix::motorcontrol::can::TalonSRX m_turningMotor;
 };
