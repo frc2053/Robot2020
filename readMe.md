@@ -41,7 +41,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 * **Cathy Deskur** - *Command and Subsystem Programming* - [chdeskur](https://github.com/chdeskur)
 * **Drew Williams** - *Backend Programming* - [jreneew2](https://github.com/jreneew2)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/team2053tigertronics/Robot2020/contributors) who participated in this project.
 
 ## License
 
