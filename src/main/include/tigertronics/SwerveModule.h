@@ -22,8 +22,10 @@ public:
 private:
     void SetupDriveMotor();
     void SetupTurningMotor();
-    units::meters_per_second_t ConvertAngularToLinearVelocity(units::revolutions_per_minute_t rpm, units::meter_t radius);
+    units::meters_per_second_t ConvertAngularToLinearVelocity(units::radians_per_second_t rpm, units::meter_t radius);
+    units::radians_per_second_t ConvertLinearToAngularVelocity(units::meters_per_second_t velocity, units::meter_t radius);
     units::radian_t ConvertEncoderUnitsToRadians(int encoderTicks);
+    int ConvertRadiansToEncoderTicks(units::radian_t rads);
     static constexpr units::meter_t kWheelRadius = tigertronics::constants::driveWheelRadius;
     static constexpr int kEncoderResolution = tigertronics::constants::ctreEncoderTicksPerRev;
 
