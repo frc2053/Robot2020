@@ -1,18 +1,12 @@
 #include "tigertronics/SwerveModule.h"
 
 #include <frc_new/geometry/Rotation2d.h>
+#include <frc/smartdashboard/SendableBuilder.h>
 
 #define M_PI 3.14159265358979323846
 
 constexpr units::meter_t SwerveModule::kWheelRadius;
 constexpr int SwerveModule::kEncoderResolution;
-constexpr double SwerveModule::kTurnP;
-constexpr double SwerveModule::kTurnI;
-constexpr double SwerveModule::kTurnD;
-constexpr double SwerveModule::kDriveF;
-constexpr double SwerveModule::kDriveP;
-constexpr double SwerveModule::kDriveI;
-constexpr double SwerveModule::kDriveD;
 constexpr int SwerveModule::kTurnErrorAllowance;
 constexpr units::radians_per_second_t SwerveModule::kMaxTurnVel;
 constexpr double SwerveModule::kMaxTurnAccel;
@@ -81,7 +75,7 @@ int SwerveModule::ConvertRadiansToEncoderTicks(units::radian_t rads) {
 }
 
 int SwerveModule::ConvertRadiansPerSecondToTalonVelocity(units::radians_per_second_t radPerSec) {
-    return ConvertRadiansToEncoderTicks(radPerSec) / 10;
+    return ConvertRadiansToEncoderTicks(units::radian_t(radPerSec.value())) / 10;
 }
 
 units::radians_per_second_t SwerveModule::ConvertTalonVelocityToRadiansPerSecond(int ticksPer100ms) {
@@ -98,4 +92,9 @@ units::meters_per_second_t SwerveModule::ConvertAngularToLinearVelocity(units::r
 
 units::radians_per_second_t SwerveModule::ConvertLinearToAngularVelocity(units::meters_per_second_t velocity, units::meter_t radius) {
     return units::radians_per_second_t(velocity.value() / radius.value());
+}
+
+void SwerveModule::InitSendable(frc::SendableBuilder& builder) {
+    builder.SetSmartDashboardType("SwerveModule");
+    builder.AddDoubleProperty("turnP", [=]() { return kTurnP; }, [=](double value) { kTurnP = value; });
 }
