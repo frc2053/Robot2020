@@ -20,6 +20,13 @@ SwerveModule::SwerveModule(const int driveMotorPort, const int turingMotorPort, 
     SetupTurningMotor();
 }
 
+void SwerveModule::SetDesiredState(units::meters_per_second_t speed, const frc_new::Rotation2d& angle) {
+    frc_new::SwerveModuleState state;
+    state.speed = speed;
+    state.angle = angle;
+    SetDesiredState(state);
+}
+
 void SwerveModule::SetDesiredState(const frc_new::SwerveModuleState& state) {
     units::revolutions_per_minute_t setrpm = ConvertLinearToAngularVelocity(state.speed, kWheelRadius);
     m_drivePIDController.SetReference(setrpm.value(), rev::ControlType::kVelocity);
@@ -97,4 +104,14 @@ units::radians_per_second_t SwerveModule::ConvertLinearToAngularVelocity(units::
 void SwerveModule::InitSendable(frc::SendableBuilder& builder) {
     builder.SetSmartDashboardType("SwerveModule");
     builder.AddDoubleProperty("turnP", [=]() { return kTurnP; }, [=](double value) { kTurnP = value; });
+    builder.AddDoubleProperty("turnI", [=]() { return kTurnI; }, [=](double value) { kTurnI = value; });
+    builder.AddDoubleProperty("turnD", [=]() { return kTurnD; }, [=](double value) { kTurnD = value; });
+    builder.AddDoubleProperty("driveF", [=]() { return kDriveF; }, [=](double value) { kDriveF = value; });
+    builder.AddDoubleProperty("driveP", [=]() { return kDriveP; }, [=](double value) { kDriveP = value; });
+    builder.AddDoubleProperty("driveI", [=]() { return kDriveI; }, [=](double value) { kDriveI = value; });
+    builder.AddDoubleProperty("driveD", [=]() { return kDriveD; }, [=](double value) { kDriveD = value; });
+    builder.AddDoubleProperty("driveSetpoint", [=]() { return GetState().speed.value(); }, 
+    [=](double value) { SetDesiredState(units::meters_per_second_t(value), GetState().angle); });
+    builder.AddDoubleProperty("angleSetpoint", [=]() { return GetState().angle.Degrees().value(); }, 
+    [=](double value) { SetDesiredState(GetState().speed, frc_new::Rotation2d(units::degree_t(value))); });
 }

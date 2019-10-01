@@ -13,12 +13,14 @@
 #include "Constants.h"
 #include <units/units.h>
 #include <frc/smartdashboard/SendableBase.h>
+#include <frc_new/geometry/Rotation2d.h>
 
 class SwerveModule : public frc::SendableBase {
 public:
     SwerveModule(int driveMotorChannel, int turningMotorChannel, int calibrationValue);
     frc_new::SwerveModuleState GetState();
     void SetDesiredState(const frc_new::SwerveModuleState& state);
+    void SetDesiredState(units::meters_per_second_t speed, const frc_new::Rotation2d& angle);
     void InitSendable(frc::SendableBuilder& builder) override;
 private:
     void SetupDriveMotor();
