@@ -33,6 +33,10 @@ private:
     static constexpr double kTurnP = tigertronics::constants::swerveTurningkP;
     static constexpr double kTurnI = tigertronics::constants::swerveTurningkI;
     static constexpr double kTurnD = tigertronics::constants::swerveTurningkD;
+    static constexpr double kDriveF = tigertronics::constants::swerveDrivekF;
+    static constexpr double kDriveP = tigertronics::constants::swerveDrivekP;
+    static constexpr double kDriveI = tigertronics::constants::swerveDrivekI;
+    static constexpr double kDriveD = tigertronics::constants::swerveDrivekD;
     static constexpr units::radians_per_second_t kMaxTurnVel = tigertronics::constants::swerveTurningMaxVel;
     static constexpr double kMaxTurnAccel = tigertronics::constants::swerveTurningMaxAccel;
     static constexpr int kTurnErrorAllowance = tigertronics::constants::swerveTurningErrorAllowance;
