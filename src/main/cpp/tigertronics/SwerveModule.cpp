@@ -9,6 +9,10 @@ constexpr int SwerveModule::kEncoderResolution;
 constexpr double SwerveModule::kTurnP;
 constexpr double SwerveModule::kTurnI;
 constexpr double SwerveModule::kTurnD;
+constexpr double SwerveModule::kDriveF;
+constexpr double SwerveModule::kDriveP;
+constexpr double SwerveModule::kDriveI;
+constexpr double SwerveModule::kDriveD;
 constexpr int SwerveModule::kTurnErrorAllowance;
 constexpr units::radians_per_second_t SwerveModule::kMaxTurnVel;
 constexpr double SwerveModule::kMaxTurnAccel;
@@ -37,7 +41,14 @@ frc_new::SwerveModuleState SwerveModule::GetState() {
 }
 
 void SwerveModule::SetupDriveMotor() {
-
+    m_driveMotor.RestoreFactoryDefaults();
+    m_drivePIDController.SetFF(kDriveF);
+    m_drivePIDController.SetP(kDriveP);
+    m_drivePIDController.SetI(kDriveI);
+    m_drivePIDController.SetD(kDriveD);
+    m_drivePIDController.SetOutputRange(-1, 1, 0);
+    m_driveMotor.SetInverted(false);
+    m_driveEncoder.SetPosition(0);
 }
 
 void SwerveModule::SetupTurningMotor() {
