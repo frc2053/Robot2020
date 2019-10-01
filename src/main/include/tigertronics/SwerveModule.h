@@ -12,13 +12,14 @@
 #include <frc_new/kinematics/SwerveModuleState.h>
 #include "Constants.h"
 #include <units/units.h>
+#include <frc/smartdashboard/SendableBase.h>
 
-class SwerveModule {
+class SwerveModule : public frc::SendableBase {
 public:
     SwerveModule(int driveMotorChannel, int turningMotorChannel, int calibrationValue);
     frc_new::SwerveModuleState GetState();
     void SetDesiredState(const frc_new::SwerveModuleState& state);
-
+    void InitSendable(frc::SendableBuilder& builder) override;
 private:
     void SetupDriveMotor();
     void SetupTurningMotor();
@@ -30,13 +31,13 @@ private:
     int ConvertRadiansToEncoderTicks(units::radian_t rads);
     static constexpr units::meter_t kWheelRadius = tigertronics::constants::driveWheelRadius;
     static constexpr int kEncoderResolution = tigertronics::constants::ctreEncoderTicksPerRev;
-    static constexpr double kTurnP = tigertronics::constants::swerveTurningkP;
-    static constexpr double kTurnI = tigertronics::constants::swerveTurningkI;
-    static constexpr double kTurnD = tigertronics::constants::swerveTurningkD;
-    static constexpr double kDriveF = tigertronics::constants::swerveDrivekF;
-    static constexpr double kDriveP = tigertronics::constants::swerveDrivekP;
-    static constexpr double kDriveI = tigertronics::constants::swerveDrivekI;
-    static constexpr double kDriveD = tigertronics::constants::swerveDrivekD;
+    double kTurnP = tigertronics::constants::swerveTurningkP;
+    double kTurnI = tigertronics::constants::swerveTurningkI;
+    double kTurnD = tigertronics::constants::swerveTurningkD;
+    double kDriveF = tigertronics::constants::swerveDrivekF;
+    double kDriveP = tigertronics::constants::swerveDrivekP;
+    double kDriveI = tigertronics::constants::swerveDrivekI;
+    double kDriveD = tigertronics::constants::swerveDrivekD;
     static constexpr units::radians_per_second_t kMaxTurnVel = tigertronics::constants::swerveTurningMaxVel;
     static constexpr double kMaxTurnAccel = tigertronics::constants::swerveTurningMaxAccel;
     static constexpr int kTurnErrorAllowance = tigertronics::constants::swerveTurningErrorAllowance;
