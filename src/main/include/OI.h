@@ -7,7 +7,12 @@
 
 #pragma once
 
+#include <frc/XboxController.h>
+
 class OI {
- public:
-  OI();
+public:
+    OI();
+    const frc::XboxController& GetDriverJoystick();
+private:
+    frc::XboxController driverJoystick{0};
 };

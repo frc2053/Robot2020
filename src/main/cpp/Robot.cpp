@@ -16,33 +16,33 @@
 #include "frc_new/trajectory/TrajectoryGenerator.h"
 #include "frc_new/trajectory/Trajectory.h"
 
-ExampleSubsystem Robot::m_subsystem;
-OI Robot::m_oi;
+std::unique_ptr<OI> Robot::oi;
+std::unique_ptr<SwerveSubsystem> Robot::swerveSubsystem;
 
 void Robot::RobotInit() {
-  m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
-  m_chooser.AddOption("My Auto", &m_myAuto);
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-  std::vector<frc_new::Pose2d> waypoints;
-  waypoints.push_back(frc_new::Pose2d(frc_new::Translation2d(0_m, 0_m), frc_new::Rotation2d(0_rad)));
-  waypoints.push_back(frc_new::Pose2d(frc_new::Translation2d(10_m, 0_m), frc_new::Rotation2d(0_rad)));
+    swerveSubsystem = std::make_unique<SwerveSubsystem>();
+    oi = std::make_unique<OI>();
+    
+    std::vector<frc_new::Pose2d> waypoints;
+    waypoints.push_back(frc_new::Pose2d(frc_new::Translation2d(0_m, 0_m), frc_new::Rotation2d(0_rad)));
+    waypoints.push_back(frc_new::Pose2d(frc_new::Translation2d(10_m, 0_m), frc_new::Rotation2d(0_rad)));
 
-  std::vector<std::unique_ptr<frc_new::TrajectoryConstraint>> constraints;
+    std::vector<std::unique_ptr<frc_new::TrajectoryConstraint>> constraints;
 
-  frc_new::Trajectory traj = frc_new::TrajectoryGenerator::GenerateTrajectory(waypoints, std::move(constraints), 0_mps, 0_mps, 10_mps, 100_mps_sq, false);
+    frc_new::Trajectory traj = frc_new::TrajectoryGenerator::GenerateTrajectory(waypoints, std::move(constraints), 0_mps, 0_mps, 10_mps, 100_mps_sq, false);
 
-  units::second_t time = 0_s;
-  units::second_t dt = 20_ms;
-  units::second_t duration = traj.TotalTime();
+    units::second_t time = 0_s;
+    units::second_t dt = 20_ms;
+    units::second_t duration = traj.TotalTime();
 
-  while(time < duration) {
+    while(time < duration) {
     const frc_new::Trajectory::State point = traj.Sample(time);
     time = time + dt;
     std::cout << "Pose at time " << time << " : (" << point.pose.Translation().X() << ", " << point.pose.Translation().Y() << ", " << point.pose.Rotation().Degrees() << ")\n";
-  }
+    }
 
-  std::cout << "Testing!" << std::endl;
+    std::cout << "Testing!" << std::endl;
 }
 
 /**
@@ -76,32 +76,13 @@ void Robot::DisabledPeriodic() { frc::Scheduler::GetInstance()->Run(); }
  * the if-else structure below with additional strings & commands.
  */
 void Robot::AutonomousInit() {
-  // std::string autoSelected = frc::SmartDashboard::GetString(
-  //     "Auto Selector", "Default");
-  // if (autoSelected == "My Auto") {
-  //   m_autonomousCommand = &m_myAuto;
-  // } else {
-  //   m_autonomousCommand = &m_defaultAuto;
-  // }
 
-  m_autonomousCommand = m_chooser.GetSelected();
-
-  if (m_autonomousCommand != nullptr) {
-    m_autonomousCommand->Start();
-  }
 }
 
 void Robot::AutonomousPeriodic() { frc::Scheduler::GetInstance()->Run(); }
 
 void Robot::TeleopInit() {
-  // This makes sure that the autonomous stops running when
-  // teleop starts running. If you want the autonomous to
-  // continue until interrupted by another command, remove
-  // this line or comment it out.
-  if (m_autonomousCommand != nullptr) {
-    m_autonomousCommand->Cancel();
-    m_autonomousCommand = nullptr;
-  }
+
 }
 
 void Robot::TeleopPeriodic() { frc::Scheduler::GetInstance()->Run(); }

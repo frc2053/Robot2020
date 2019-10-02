@@ -5,16 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "subsystems/SwerveSubsystem.h"
+#include "commands/DriveCommand.h"
 
-#include <frc/commands/Command.h>
+#include "RobotMap.h"
 
-class ExampleCommand : public frc::Command {
- public:
-  ExampleCommand();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
-};
+SwerveSubsystem::SwerveSubsystem() : frc::Subsystem("SwerveSubsystem") {}
+
+void SwerveSubsystem::InitDefaultCommand() {
+  SetDefaultCommand(new DriveCommand());
+}

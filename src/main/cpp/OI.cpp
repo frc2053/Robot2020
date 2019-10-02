@@ -10,5 +10,9 @@
 #include <frc/WPILib.h>
 
 OI::OI() {
-  // Process operator interface input here.
+
+}
+
+const frc::XboxController& OI::GetDriverJoystick() {
+    return driverJoystick;
 }

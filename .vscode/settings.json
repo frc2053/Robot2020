@@ -77,6 +77,18 @@
     "xutility": "cpp",
     "*.tcc": "cpp",
     "clocale": "cpp",
-    "cwctype": "cpp"
+    "cwctype": "cpp",
+    "bitset": "cpp",
+    "cstdarg": "cpp",
+    "deque": "cpp",
+    "fstream": "cpp",
+    "hash_map": "cpp",
+    "hash_set": "cpp",
+    "iomanip": "cpp",
+    "numeric": "cpp",
+    "queue": "cpp",
+    "random": "cpp",
+    "stack": "cpp",
+    "unordered_set": "cpp"
   }
 }
