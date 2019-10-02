@@ -5,6 +5,8 @@
 namespace tigertronics {
     namespace constants {
         //PHYSICAL DIMENSIONS
+        static constexpr units::meter_t drivebaseLength = 28_in;
+        static constexpr units::meter_t drivebaseWidth = 23_in;
         static constexpr units::meter_t driveWheelRadius = 2.5_in / 2;
 
 
@@ -25,5 +27,17 @@ namespace tigertronics {
         static constexpr double swerveDrivekP = .1;
         static constexpr double swerveDrivekI = 0;
         static constexpr double swerveDrivekD = 0;        
+    }
+
+    namespace ports {
+        //SWERVE PORTS
+        static constexpr int swerveFLTurn = 1;
+        static constexpr int swerveFRTurn = 2;
+        static constexpr int swerveBLTurn = 3;
+        static constexpr int swerveBRTurn = 4;
+        static constexpr int swerveFLDrive = 5;
+        static constexpr int swerveFRDrive = 6;
+        static constexpr int swerveBLDrive = 7;
+        static constexpr int swerveBRDrive = 8;
     }
 }
