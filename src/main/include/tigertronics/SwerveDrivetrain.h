@@ -20,31 +20,28 @@
  * Represents a swerve drive style drivetrain.
  */
 class SwerveDrivetrain {
- public:
-  SwerveDrivetrain();
+public:
+    SwerveDrivetrain();
+    /**
+     * Get the robot angle as a Rotation2d.
+     */
+    frc_new::Rotation2d GetAngle() {
+        // Negating the angle because WPILib Gyros are CW positive.
+        return frc_new::Rotation2d(units::degree_t(-m_imu.GetYaw()));
+    }
 
-  /**
-   * Get the robot angle as a Rotation2d.
-   */
-  frc_new::Rotation2d GetAngle() {
-    // Negating the angle because WPILib Gyros are CW positive.
-    return frc_new::Rotation2d(units::degree_t(-m_imu.GetYaw()));
-  }
+    void Drive(units::meters_per_second_t xSpeed,
+            units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
+            bool fieldRelative);
+    void UpdateOdometry();
 
-  void Drive(units::meters_per_second_t xSpeed,
-             units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
-             bool fieldRelative);
-  void UpdateOdometry();
-
-  static constexpr units::meters_per_second_t kMaxSpeed =
-      3.0_mps;  // 3 meters per second
-  static constexpr units::radians_per_second_t kMaxAngularSpeed{
-      M_PI};  // 1/2 rotation per second
+    units::meters_per_second_t kMaxSpeed =
+    3.0_mps;  // 3 meters per second
+    units::radians_per_second_t kMaxAngularSpeed{
+    M_PI};  // 1/2 rotation per second
 
  private:
-    //not what the convension of the translation 2d is
-    //so I am sticking with the example where 
-    //postive x is left and positive y is 
+    //Apparently all of math is Right Hand Rule Coordinate system but I dont like it
     units::meter_t widthLoc = tigertronics::constants::drivebaseWidth / 2;
     units::meter_t lengthLoc = tigertronics::constants::drivebaseLength / 2;
     frc_new::Translation2d m_frontLeftLocation;
