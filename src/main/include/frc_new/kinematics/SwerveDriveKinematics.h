@@ -42,7 +42,6 @@ namespace frc_new {
  * Forward kinematics is also used for odometry -- determining the position of
  * the robot on the field using encoders and a gyro.
  */
-template <size_t NumModules>
 class SwerveDriveKinematics {
  public:
   /**
@@ -56,13 +55,10 @@ class SwerveDriveKinematics {
    * @param wheels The locations of the wheels relative to the physical center
    * of the robot.
    */
-  template <typename... Wheels>
-  explicit SwerveDriveKinematics(Translation2d wheel, Wheels&&... wheels)
-      : m_modules{wheel, wheels...} {
-    static_assert(sizeof...(wheels) >= 1,
-                  "A swerve drive requires at least two modules");
+  explicit SwerveDriveKinematics(Translation2d flLoc, Translation2d frLoc, Translation2d blLoc, Translation2d brLoc)
+      : m_modules{flLoc, frLoc, blLoc, brLoc} {
 
-    for (size_t i = 0; i < NumModules; i++) {
+    for (size_t i = 0; i < 4; i++) {
       // clang-format off
       m_inverseKinematics.template block<2, 3>(i * 2, 0) <<
         1, 0, (-m_modules[i].Y()).template to<double>(),
@@ -102,7 +98,7 @@ class SwerveDriveKinematics {
    * auto [fl, fr, bl, br] = kinematics.ToSwerveModuleStates(chassisSpeeds);
    * @endcode
    */
-  std::array<SwerveModuleState, NumModules> ToSwerveModuleStates(
+  std::array<SwerveModuleState, 4> ToSwerveModuleStates(
       const ChassisSpeeds& chassisSpeeds,
       const Translation2d& centerOfRotation = Translation2d());
 
@@ -118,8 +114,7 @@ class SwerveDriveKinematics {
    *
    * @return The resulting chassis speed.
    */
-  template <typename... ModuleStates>
-  ChassisSpeeds ToChassisSpeeds(ModuleStates&&... wheelStates);
+  ChassisSpeeds ToChassisSpeeds(frc_new::SwerveModuleState flState, frc_new::SwerveModuleState frState, frc_new::SwerveModuleState blState, frc_new::SwerveModuleState brState);
 
   /**
    * Normalizes the wheel speeds using some max attainable speed. Sometimes,
@@ -134,14 +129,14 @@ class SwerveDriveKinematics {
    * @param attainableMaxSpeed The absolute max speed that a module can reach.
    */
   static void NormalizeWheelSpeeds(
-      std::array<SwerveModuleState, NumModules>* moduleStates,
+      std::array<SwerveModuleState, 4>* moduleStates,
       units::meters_per_second_t attainableMaxSpeed);
 
  private:
-  Eigen::Matrix<double, NumModules * 2, 3> m_inverseKinematics;
-  Eigen::HouseholderQR<Eigen::Matrix<double, NumModules * 2, 3>>
+  Eigen::Matrix<double, 4 * 2, 3> m_inverseKinematics;
+  Eigen::HouseholderQR<Eigen::Matrix<double, 4 * 2, 3>>
       m_forwardKinematics;
-  std::array<Translation2d, NumModules> m_modules;
+  std::array<Translation2d, 4> m_modules;
 
   Translation2d m_previousCoR;
 };

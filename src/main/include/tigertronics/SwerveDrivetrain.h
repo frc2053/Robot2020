@@ -45,12 +45,12 @@ class SwerveDrivetrain {
     //not what the convension of the translation 2d is
     //so I am sticking with the example where 
     //postive x is left and positive y is 
-    units::meter_t widthLoc = tigertronics::constants::drivebaseWidth / 2_m;
-    units::meter_t lengthLoc = tigertronics::constants::drivebaseLength / 2_m;
-    frc_new::Translation2d m_frontLeftLocation{widthLoc, lengthLoc};
-    frc_new::Translation2d m_frontRightLocation{widthLoc, -lengthLoc};
-    frc_new::Translation2d m_backLeftLocation{-widthLoc, lengthLoc};
-    frc_new::Translation2d m_backRightLocation{-widthLoc, -lengthLoc};
+    units::meter_t widthLoc = tigertronics::constants::drivebaseWidth / 2;
+    units::meter_t lengthLoc = tigertronics::constants::drivebaseLength / 2;
+    frc_new::Translation2d m_frontLeftLocation;
+    frc_new::Translation2d m_frontRightLocation;
+    frc_new::Translation2d m_backLeftLocation;
+    frc_new::Translation2d m_backRightLocation;
 
     SwerveModule m_frontLeft{tigertronics::ports::swerveFLDrive, tigertronics::ports::swerveFLTurn, 0};
     SwerveModule m_frontRight{tigertronics::ports::swerveFRDrive, tigertronics::ports::swerveFRTurn, 0};
@@ -59,9 +59,9 @@ class SwerveDrivetrain {
 
     AHRS m_imu{frc::SPI::Port::kMXP};
 
-    frc_new::SwerveDriveKinematics<4> m_kinematics{
+    frc_new::SwerveDriveKinematics m_kinematics{
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
         m_backRightLocation};
 
-    frc_new::SwerveDriveOdometry<4> m_odometry{m_kinematics};
+    frc_new::SwerveDriveOdometry m_odometry{m_kinematics};
 };

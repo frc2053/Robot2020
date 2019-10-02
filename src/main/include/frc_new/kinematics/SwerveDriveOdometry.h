@@ -28,7 +28,6 @@ namespace frc_new {
  * path following. Furthermore, odometry can be used for latency compensation
  * when using computer-vision systems.
  */
-template <size_t NumModules>
 class SwerveDriveOdometry {
  public:
   /**
@@ -37,7 +36,7 @@ class SwerveDriveOdometry {
    * @param kinematics The swerve drive kinematics for your drivetrain.
    * @param initialPose The starting position of the robot on the field.
    */
-  SwerveDriveOdometry(SwerveDriveKinematics<NumModules> kinematics,
+  SwerveDriveOdometry(SwerveDriveKinematics kinematics,
                       const Pose2d& initialPose = Pose2d());
 
   /**
@@ -66,10 +65,9 @@ class SwerveDriveOdometry {
    *
    * @return The new pose of the robot.
    */
-  template <typename... ModuleStates>
   const Pose2d& UpdateWithTime(units::second_t currentTime,
                                const Rotation2d& angle,
-                               ModuleStates&&... moduleStates);
+                               SwerveModuleState flState, SwerveModuleState frState, SwerveModuleState blState, SwerveModuleState brState);
 
   /**
    * Updates the robot's position on the field using forward kinematics and
@@ -86,16 +84,15 @@ class SwerveDriveOdometry {
    *
    * @return The new pose of the robot.
    */
-  template <typename... ModuleStates>
   const Pose2d& Update(const Rotation2d& angle,
-                       ModuleStates&&... moduleStates) {
+                       SwerveModuleState flState, SwerveModuleState frState, SwerveModuleState blState, SwerveModuleState brState) {
     const auto now = std::chrono::system_clock::now().time_since_epoch();
     units::second_t time{now};
-    return UpdateWithTime(time, angle, moduleStates...);
+    return UpdateWithTime(time, angle, flState, frState, blState, brState);
   }
 
  private:
-  SwerveDriveKinematics<NumModules> m_kinematics;
+  SwerveDriveKinematics m_kinematics;
   Pose2d m_pose;
 
   units::second_t m_previousTime = -1_s;

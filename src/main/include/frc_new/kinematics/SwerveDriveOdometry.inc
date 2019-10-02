@@ -8,23 +8,23 @@
 #pragma once
 
 namespace frc_new {
-template <size_t NumModules>
-SwerveDriveOdometry<NumModules>::SwerveDriveOdometry(
-    SwerveDriveKinematics<NumModules> kinematics, const Pose2d& initialPose)
+frc_new::SwerveDriveOdometry::SwerveDriveOdometry(
+    SwerveDriveKinematics kinematics, const Pose2d& initialPose)
     : m_kinematics(kinematics), m_pose(initialPose) {
   m_previousAngle = m_pose.Rotation();
 }
 
-template <size_t NumModules>
-template <typename... ModuleStates>
-const Pose2d& frc_new::SwerveDriveOdometry<NumModules>::UpdateWithTime(
+const Pose2d& frc_new::SwerveDriveOdometry::UpdateWithTime(
     units::second_t currentTime, const Rotation2d& angle,
-    ModuleStates&&... moduleStates) {
+    SwerveModuleState flState, SwerveModuleState frState, SwerveModuleState blState, SwerveModuleState brState) {
   units::second_t deltaTime =
       (m_previousTime >= 0_s) ? currentTime - m_previousTime : 0_s;
   m_previousTime = currentTime;
 
-  auto [dx, dy, dtheta] = m_kinematics.ToChassisSpeeds(moduleStates...);
+  frc_new::ChassisSpeeds speeds = m_kinematics.ToChassisSpeeds(flState, frState, blState, brState);
+  units::meters_per_second_t dx = speeds.vx;
+  units::meters_per_second_t dy = speeds.vy;
+  units::radians_per_second_t dtheta = speeds.omega;
   static_cast<void>(dtheta);
 
   auto newPose = m_pose.Exp(

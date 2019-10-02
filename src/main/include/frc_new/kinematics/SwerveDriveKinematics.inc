@@ -11,17 +11,10 @@
 
 namespace frc_new {
 
-template <class... Wheels>
-SwerveDriveKinematics(Translation2d, Wheels...)
-    ->SwerveDriveKinematics<1 + sizeof...(Wheels)>;
-
-template <size_t NumModules>
-std::array<SwerveModuleState, NumModules>
-SwerveDriveKinematics<NumModules>::ToSwerveModuleStates(
-    const ChassisSpeeds& chassisSpeeds, const Translation2d& centerOfRotation) {
+std::array<frc_new::SwerveModuleState, 4> SwerveDriveKinematics::ToSwerveModuleStates(const ChassisSpeeds& chassisSpeeds, const Translation2d& centerOfRotation) {
   // We have a new center of rotation. We need to compute the matrix again.
   if (centerOfRotation != m_previousCoR) {
-    for (size_t i = 0; i < NumModules; i++) {
+    for (size_t i = 0; i < 4; i++) {
       // clang-format off
       m_inverseKinematics.template block<2, 3>(i * 2, 0) <<
         1, 0, (-m_modules[i].Y() + centerOfRotation.Y()).template to<double>(),
@@ -35,11 +28,11 @@ SwerveDriveKinematics<NumModules>::ToSwerveModuleStates(
   chassisSpeedsVector << chassisSpeeds.vx.to<double>(),
       chassisSpeeds.vy.to<double>(), chassisSpeeds.omega.to<double>();
 
-  Eigen::Matrix<double, NumModules * 2, 1> moduleStatesMatrix =
+  Eigen::Matrix<double, 4 * 2, 1> moduleStatesMatrix =
       m_inverseKinematics * chassisSpeedsVector;
-  std::array<SwerveModuleState, NumModules> moduleStates;
+  std::array<SwerveModuleState, 4> moduleStates;
 
-  for (size_t i = 0; i < NumModules; i++) {
+  for (size_t i = 0; i < 4; i++) {
     units::meters_per_second_t x =
         units::meters_per_second_t{moduleStatesMatrix(i * 2, 0)};
     units::meters_per_second_t y =
@@ -54,18 +47,11 @@ SwerveDriveKinematics<NumModules>::ToSwerveModuleStates(
   return moduleStates;
 }
 
-template <size_t NumModules>
-template <typename... ModuleStates>
-ChassisSpeeds SwerveDriveKinematics<NumModules>::ToChassisSpeeds(
-    ModuleStates&&... wheelStates) {
-  static_assert(sizeof...(wheelStates) == NumModules,
-                "Number of modules is not consistent with number of wheel "
-                "locations provided in constructor.");
+ChassisSpeeds SwerveDriveKinematics::ToChassisSpeeds(frc_new::SwerveModuleState flState, frc_new::SwerveModuleState frState, frc_new::SwerveModuleState blState, frc_new::SwerveModuleState brState) {
+  std::array<SwerveModuleState, 4> moduleStates{flState, frState, blState, brState};
+  Eigen::Matrix<double, 4 * 2, 1> moduleStatesMatrix;
 
-  std::array<SwerveModuleState, NumModules> moduleStates{wheelStates...};
-  Eigen::Matrix<double, NumModules * 2, 1> moduleStatesMatrix;
-
-  for (size_t i = 0; i < NumModules; i++) {
+  for (size_t i = 0; i < 4; i++) {
     SwerveModuleState module = moduleStates[i];
     moduleStatesMatrix.row(i * 2)
         << module.speed.to<double>() * module.angle.Cos();
@@ -81,9 +67,8 @@ ChassisSpeeds SwerveDriveKinematics<NumModules>::ToChassisSpeeds(
           units::radians_per_second_t{chassisSpeedsVector(2)}};
 }
 
-template <size_t NumModules>
-void SwerveDriveKinematics<NumModules>::NormalizeWheelSpeeds(
-    std::array<SwerveModuleState, NumModules>* moduleStates,
+void SwerveDriveKinematics::NormalizeWheelSpeeds(
+    std::array<SwerveModuleState, 4>* moduleStates,
     units::meters_per_second_t attainableMaxSpeed) {
   auto& states = *moduleStates;
   auto realMaxSpeed = std::max_element(states.begin(), states.end(),
