@@ -35,6 +35,7 @@ public:
             units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
             bool fieldRelative);
     const frc_new::Pose2d& UpdateOdometry();
+    void LogModulesToDashboard();
 
     units::meters_per_second_t kMaxSpeed =
     3.0_mps;  // 3 meters per second

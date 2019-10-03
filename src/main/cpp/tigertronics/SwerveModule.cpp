@@ -16,6 +16,8 @@ SwerveModule::SwerveModule(const int driveMotorPort, const int turingMotorPort, 
     , m_turningMotor(turingMotorPort), m_drivePIDController(m_driveMotor.GetPIDController())
     , m_driveEncoder(m_driveMotor.GetEncoder())
     , kCalibrationValue(calibrationValue) {
+    SetName("SwerveModule");
+    SetSubsystem("SwerveSubsystem");
     SetupDriveMotor();
     SetupTurningMotor();
 }

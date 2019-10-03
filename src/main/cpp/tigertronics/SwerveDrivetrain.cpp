@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "tigertronics/SwerveDrivetrain.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 SwerveDrivetrain::SwerveDrivetrain() {
     m_imu.ZeroYaw();
@@ -36,4 +37,11 @@ void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
 const frc_new::Pose2d& SwerveDrivetrain::UpdateOdometry() {
   return m_odometry.Update(GetAngle(), m_frontLeft.GetState(), m_frontRight.GetState(),
                     m_backLeft.GetState(), m_backRight.GetState());
+}
+
+void SwerveDrivetrain::LogModulesToDashboard() {
+    frc::SmartDashboard::PutData(&m_frontLeft);
+    frc::SmartDashboard::PutData(&m_frontRight);
+    frc::SmartDashboard::PutData(&m_backLeft);
+    frc::SmartDashboard::PutData(&m_backRight);
 }
