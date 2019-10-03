@@ -7,11 +7,21 @@
 
 #include "subsystems/SwerveSubsystem.h"
 #include "commands/DriveCommand.h"
-
-#include "RobotMap.h"
+#include "Robot.h"
 
 SwerveSubsystem::SwerveSubsystem() : frc::Subsystem("SwerveSubsystem") {}
 
 void SwerveSubsystem::InitDefaultCommand() {
-  SetDefaultCommand(new DriveCommand());
+    SetDefaultCommand(new DriveCommand());
+}
+
+void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
+    const auto xSpeed = -Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kLeftHand) * m_swerve.kMaxSpeed;
+    const auto ySpeed = -Robot::oi->GetDriverJoystick().GetY(frc::GenericHID::JoystickHand::kLeftHand) * m_swerve.kMaxSpeed;
+    const auto rotSpeed = -Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kRightHand) * m_swerve.kMaxAngularSpeed;
+    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, fieldRelative);
+}
+
+void SwerveSubsystem::Periodic() {
+    m_swerve.UpdateOdometry();
 }

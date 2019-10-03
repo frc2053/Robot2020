@@ -5,8 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
+#include <frc_new/kinematics/SwerveDriveKinematics.h>
 #include <algorithm>
 
 namespace frc_new {

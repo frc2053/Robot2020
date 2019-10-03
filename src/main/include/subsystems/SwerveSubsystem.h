@@ -8,13 +8,14 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include "tigertronics/SwerveDrivetrain.h"
 
 class SwerveSubsystem : public frc::Subsystem {
  public:
   SwerveSubsystem();
   void InitDefaultCommand() override;
-
+  void DriveWithJoystick(bool fieldRelative);
+  virtual void Periodic();
  private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
+  SwerveDrivetrain m_swerve;
 };

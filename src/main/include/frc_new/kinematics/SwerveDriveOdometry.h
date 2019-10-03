@@ -37,7 +37,7 @@ class SwerveDriveOdometry {
    * @param initialPose The starting position of the robot on the field.
    */
   SwerveDriveOdometry(SwerveDriveKinematics kinematics,
-                      const Pose2d& initialPose = Pose2d());
+                      const Pose2d& initialPose);
 
   /**
    * Resets the robot's position on the field.
@@ -100,5 +100,3 @@ class SwerveDriveOdometry {
 };
 
 }  // namespace frc
-
-#include "SwerveDriveOdometry.inc"

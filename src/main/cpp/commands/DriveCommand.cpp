@@ -17,7 +17,8 @@ DriveCommand::DriveCommand() {
 void DriveCommand::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void DriveCommand::Execute() {}
+void DriveCommand::Execute() {
+}
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveCommand::IsFinished() { return false; }

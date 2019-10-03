@@ -141,5 +141,3 @@ class SwerveDriveKinematics {
   Translation2d m_previousCoR;
 };
 }  // namespace frc
-
-#include "SwerveDriveKinematics.inc"

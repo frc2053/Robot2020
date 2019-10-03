@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include <frc_new/kinematics/SwerveDriveOdometry.h>
 
 namespace frc_new {
 frc_new::SwerveDriveOdometry::SwerveDriveOdometry(

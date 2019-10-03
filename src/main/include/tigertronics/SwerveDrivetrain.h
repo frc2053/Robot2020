@@ -60,5 +60,5 @@ public:
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
         m_backRightLocation};
 
-    frc_new::SwerveDriveOdometry m_odometry{m_kinematics};
+    frc_new::SwerveDriveOdometry m_odometry{m_kinematics, frc_new::Pose2d()};
 };
