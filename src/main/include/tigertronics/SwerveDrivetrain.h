@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc_new/geometry/Translation2d.h>
+#include <frc_new/geometry/Pose2d.h>
 #include <frc_new/kinematics/SwerveDriveKinematics.h>
 #include <frc_new/kinematics/SwerveDriveOdometry.h>
 #include <AHRS.h>
@@ -33,7 +34,7 @@ public:
     void Drive(units::meters_per_second_t xSpeed,
             units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
             bool fieldRelative);
-    void UpdateOdometry();
+    const frc_new::Pose2d& UpdateOdometry();
 
     units::meters_per_second_t kMaxSpeed =
     3.0_mps;  // 3 meters per second

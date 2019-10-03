@@ -33,7 +33,7 @@ void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
   m_backRight.SetDesiredState(br);
 }
 
-void SwerveDrivetrain::UpdateOdometry() {
-  m_odometry.Update(GetAngle(), m_frontLeft.GetState(), m_frontRight.GetState(),
+const frc_new::Pose2d& SwerveDrivetrain::UpdateOdometry() {
+  return m_odometry.Update(GetAngle(), m_frontLeft.GetState(), m_frontRight.GetState(),
                     m_backLeft.GetState(), m_backRight.GetState());
 }

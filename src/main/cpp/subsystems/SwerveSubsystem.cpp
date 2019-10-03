@@ -8,6 +8,7 @@
 #include "subsystems/SwerveSubsystem.h"
 #include "commands/DriveCommand.h"
 #include "Robot.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 
 SwerveSubsystem::SwerveSubsystem() : frc::Subsystem("SwerveSubsystem") {}
 
@@ -23,5 +24,8 @@ void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
 }
 
 void SwerveSubsystem::Periodic() {
-    m_swerve.UpdateOdometry();
+    frc_new::Pose2d pose = m_swerve.UpdateOdometry();
+    frc::SmartDashboard::PutNumber("X Pose: ", pose.Translation().X().value());
+    frc::SmartDashboard::PutNumber("Y Pose: ", pose.Translation().Y().value());
+    frc::SmartDashboard::PutNumber("Yaw Pose: ", pose.Rotation().Degrees().value());
 }
