@@ -17,10 +17,35 @@ void SwerveSubsystem::InitDefaultCommand() {
 }
 
 void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
-    const auto xSpeed = -Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kLeftHand) * m_swerve.kMaxSpeed;
-    const auto ySpeed = -Robot::oi->GetDriverJoystick().GetY(frc::GenericHID::JoystickHand::kLeftHand) * m_swerve.kMaxSpeed;
-    const auto rotSpeed = -Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kRightHand) * m_swerve.kMaxAngularSpeed;
-    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, fieldRelative);
+    double xAxis = Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kLeftHand);
+    double yAxis = Robot::oi->GetDriverJoystick().GetY(frc::GenericHID::JoystickHand::kLeftHand);
+    double rotAxis = Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kRightHand);
+
+    if(xAxis > -.2 && xAxis < .2) {
+        xAxis = 0;
+    }
+    else {
+        xAxis = xAxis * fabs(xAxis);
+    }
+    if(yAxis > -.2 && yAxis < .2) {
+        yAxis = 0;
+    }
+    else {
+        yAxis = yAxis * fabs(yAxis);
+    }
+    if(rotAxis > -.2 && rotAxis < .2) {
+        rotAxis = 0;
+    }
+    else {
+        rotAxis = rotAxis * fabs(rotAxis);
+    }
+    SmartDashboard::PutNumber("X Joystick", xAxis);
+    SmartDashboard::PutNumber("Y Joystick", yAxis);
+    SmartDashboard::PutNumber("Rot Joystick", rotAxis);
+    const auto xSpeed = -xAxis * m_swerve.kMaxSpeed;
+    const auto ySpeed = -yAxis * m_swerve.kMaxSpeed;
+    const auto rotSpeed = -rotAxis * m_swerve.kMaxAngularSpeed;
+    m_swerve.Drive(ySpeed, xSpeed, rotSpeed, fieldRelative);
 }
 
 void SwerveSubsystem::Periodic() {

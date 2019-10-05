@@ -17,7 +17,7 @@
 
 class SwerveModule : public frc::SendableBase {
 public:
-    SwerveModule(int driveMotorChannel, int turningMotorChannel, int calibrationValue);
+    SwerveModule(int driveMotorChannel, int turningMotorChannel, int calibrationValue, std::string name);
     frc_new::SwerveModuleState GetState();
     void SetDesiredState(const frc_new::SwerveModuleState& state);
     void SetDesiredState(units::meters_per_second_t speed, const frc_new::Rotation2d& angle);

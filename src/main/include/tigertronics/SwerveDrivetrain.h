@@ -40,21 +40,21 @@ public:
     units::meters_per_second_t kMaxSpeed =
     3.0_mps;  // 3 meters per second
     units::radians_per_second_t kMaxAngularSpeed{
-    M_PI};  // 1/2 rotation per second
+    10};  // 1/2 rotation per second
 
  private:
     //Apparently all of math is Right Hand Rule Coordinate system but I dont like it
     units::meter_t widthLoc = tigertronics::constants::drivebaseWidth / 2;
     units::meter_t lengthLoc = tigertronics::constants::drivebaseLength / 2;
-    frc_new::Translation2d m_frontLeftLocation;
-    frc_new::Translation2d m_frontRightLocation;
-    frc_new::Translation2d m_backLeftLocation;
-    frc_new::Translation2d m_backRightLocation;
+    frc_new::Translation2d m_frontLeftLocation{widthLoc, lengthLoc};
+    frc_new::Translation2d m_frontRightLocation{widthLoc, -lengthLoc};
+    frc_new::Translation2d m_backLeftLocation{-widthLoc, lengthLoc};
+    frc_new::Translation2d m_backRightLocation{-widthLoc, -lengthLoc};
 
-    SwerveModule m_frontLeft{tigertronics::ports::swerveFLDrive, tigertronics::ports::swerveFLTurn, 0};
-    SwerveModule m_frontRight{tigertronics::ports::swerveFRDrive, tigertronics::ports::swerveFRTurn, 0};
-    SwerveModule m_backLeft{tigertronics::ports::swerveBLDrive, tigertronics::ports::swerveBLTurn, 0};
-    SwerveModule m_backRight{tigertronics::ports::swerveBRDrive, tigertronics::ports::swerveBRTurn, 0};
+    SwerveModule m_frontLeft{tigertronics::ports::swerveFLDrive, tigertronics::ports::swerveFLTurn, 0, "FL"};
+    SwerveModule m_frontRight{tigertronics::ports::swerveFRDrive, tigertronics::ports::swerveFRTurn, 0, "FR"};
+    SwerveModule m_backLeft{tigertronics::ports::swerveBLDrive, tigertronics::ports::swerveBLTurn, 0, "BL"};
+    SwerveModule m_backRight{tigertronics::ports::swerveBRDrive, tigertronics::ports::swerveBRTurn, 0, "BR"};
 
     AHRS m_imu{frc::SPI::Port::kMXP};
 

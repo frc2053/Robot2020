@@ -19,6 +19,7 @@ namespace frc_new {
  */
 class CubicHermiteSpline : public Spline<3> {
  public:
+   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   /**
    * Constructs a cubic hermite spline with the specified control vectors. Each
    * control vector contains info about the location of the point and its first

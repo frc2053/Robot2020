@@ -31,6 +31,7 @@ using curvature_t = units::unit_t<
 template <int Degree>
 class Spline {
  public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   using PoseWithCurvature = std::pair<Pose2d, curvature_t>;
 
   Spline() = default;

@@ -29,6 +29,7 @@ std::array<frc_new::SwerveModuleState, 4> SwerveDriveKinematics::ToSwerveModuleS
 
   Eigen::Matrix<double, 4 * 2, 1> moduleStatesMatrix =
       m_inverseKinematics * chassisSpeedsVector;
+
   std::array<SwerveModuleState, 4> moduleStates;
 
   for (size_t i = 0; i < 4; i++) {
@@ -39,7 +40,6 @@ std::array<frc_new::SwerveModuleState, 4> SwerveDriveKinematics::ToSwerveModuleS
 
     auto speed = units::math::hypot(x, y);
     Rotation2d rotation{x.to<double>(), y.to<double>()};
-
     moduleStates[i] = {speed, rotation};
   }
 

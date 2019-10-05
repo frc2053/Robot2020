@@ -44,6 +44,8 @@ namespace frc_new {
  */
 class SwerveDriveKinematics {
  public:
+   //DO NOT REMOVE ME BEFORE 2020
+   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   /**
    * Constructs a swerve drive kinematics object. This takes in a variable
    * number of wheel locations as Translation2ds. The order in which you pass in
@@ -131,7 +133,6 @@ class SwerveDriveKinematics {
   static void NormalizeWheelSpeeds(
       std::array<SwerveModuleState, 4>* moduleStates,
       units::meters_per_second_t attainableMaxSpeed);
-
  private:
   Eigen::Matrix<double, 4 * 2, 3> m_inverseKinematics;
   Eigen::HouseholderQR<Eigen::Matrix<double, 4 * 2, 3>>

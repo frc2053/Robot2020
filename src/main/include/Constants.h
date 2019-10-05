@@ -5,7 +5,7 @@
 namespace tigertronics {
     namespace constants {
         //PHYSICAL DIMENSIONS
-        static constexpr units::meter_t drivebaseLength = 28_in;
+        static constexpr units::meter_t drivebaseLength = 24_in;
         static constexpr units::meter_t drivebaseWidth = 23_in;
         static constexpr units::meter_t driveWheelRadius = 2.5_in / 2;
 
@@ -20,7 +20,7 @@ namespace tigertronics {
         static constexpr units::radians_per_second_t swerveTurningMaxVel = 3600_rad_per_s;
         //im too lazy to define radial acceleration right now so this is in ticks/100ms/s
         static constexpr double swerveTurningMaxAccel = 1500;
-        static constexpr int swerveTurningErrorAllowance = 0;
+        static constexpr int swerveTurningErrorAllowance = 5;
 
         //SWERVE DRIVE MOTOR CONFIG
         static constexpr double swerveDrivekF = 0.000015;
@@ -31,13 +31,13 @@ namespace tigertronics {
 
     namespace ports {
         //SWERVE PORTS
-        static constexpr int swerveFLTurn = 1;
-        static constexpr int swerveFRTurn = 2;
-        static constexpr int swerveBLTurn = 3;
-        static constexpr int swerveBRTurn = 4;
-        static constexpr int swerveFLDrive = 5;
-        static constexpr int swerveFRDrive = 6;
-        static constexpr int swerveBLDrive = 7;
-        static constexpr int swerveBRDrive = 8;
+        static constexpr int swerveFLTurn = 6;
+        static constexpr int swerveFRTurn = 7;
+        static constexpr int swerveBLTurn = 8;
+        static constexpr int swerveBRTurn = 9;
+        static constexpr int swerveFLDrive = 2;
+        static constexpr int swerveFRDrive = 3;
+        static constexpr int swerveBLDrive = 4;
+        static constexpr int swerveBRDrive = 5;
     }
 }

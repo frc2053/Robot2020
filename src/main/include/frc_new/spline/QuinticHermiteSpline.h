@@ -19,6 +19,7 @@ namespace frc_new {
  */
 class QuinticHermiteSpline : public Spline<5> {
  public:
+   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   /**
    * Constructs a quintic hermite spline with the specified control vectors.
    * Each control vector contains into about the location of the point, its
