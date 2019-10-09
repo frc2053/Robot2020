@@ -91,6 +91,8 @@ void SwerveModule::SetupTurningMotor() {
     m_turningMotor.ConfigMotionCruiseVelocity(ConvertRadiansPerSecondToTalonVelocity(kMaxTurnVel), 10);
     m_turningMotor.ConfigMotionAcceleration(kMaxTurnAccel, 10);
     m_turningMotor.SetSelectedSensorPosition(0);
+    m_turningMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+    m_turningMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
 }
 
 int SwerveModule::ConvertRadiansToEncoderTicks(units::radian_t rads) {
@@ -135,3 +137,4 @@ void SwerveModule::InitSendable(frc::SendableBuilder& builder) {
 void SwerveModule::InvertDrive(bool inverted) {
     m_driveMotor.SetInverted(inverted);
 }
+
