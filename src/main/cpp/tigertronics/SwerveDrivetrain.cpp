@@ -10,6 +10,10 @@
 
 SwerveDrivetrain::SwerveDrivetrain() {
     m_imu.ZeroYaw();
+    m_frontLeft.InvertDrive(true);
+    m_frontRight.InvertDrive(true);
+    m_backLeft.InvertDrive(true);
+    m_backRight.InvertDrive(true);
 }
 
 void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,

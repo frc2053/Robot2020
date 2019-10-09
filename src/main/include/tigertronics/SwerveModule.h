@@ -22,6 +22,7 @@ public:
     void SetDesiredState(const frc_new::SwerveModuleState& state);
     void SetDesiredState(units::meters_per_second_t speed, const frc_new::Rotation2d& angle);
     void InitSendable(frc::SendableBuilder& builder) override;
+    void InvertDrive(bool inverted);
 private:
     void SetupDriveMotor();
     void SetupTurningMotor();

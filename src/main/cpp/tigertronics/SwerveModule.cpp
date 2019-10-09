@@ -131,3 +131,7 @@ void SwerveModule::InitSendable(frc::SendableBuilder& builder) {
     builder.AddDoubleProperty("angleSetpoint", [=]() { return GetState().angle.Degrees().value(); }, 
     [=](double value) { SetDesiredState(GetState().speed, frc_new::Rotation2d(units::degree_t(value))); });
 }
+
+void SwerveModule::InvertDrive(bool inverted) {
+    m_driveMotor.SetInverted(inverted);
+}
