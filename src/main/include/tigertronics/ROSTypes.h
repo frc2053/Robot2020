@@ -1,3 +1,5 @@
+#pragma once
+
 namespace rostypes {
     typedef struct {
         double x = 0;

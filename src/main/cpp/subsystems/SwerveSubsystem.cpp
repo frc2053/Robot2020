@@ -9,6 +9,8 @@
 #include "commands/DriveCommand.h"
 #include "Robot.h"
 #include "frc/smartdashboard/SmartDashboard.h"
+#include <tigertronics/ROSReceiver.h>
+#include <tigertronics/ROSTypes.h>
 
 SwerveSubsystem::SwerveSubsystem() : frc::Subsystem("SwerveSubsystem") {}
 
@@ -53,6 +55,10 @@ void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
     const auto ySpeed = strafeAxis * m_swerve.kMaxSpeed;
     const auto rotSpeed = rotAxis * m_swerve.kMaxAngularSpeed;
     m_swerve.Drive(xSpeed, ySpeed, rotSpeed, fieldRelative);
+
+    rostypes::Twist cmd_vel = ROSReceiver::GetTwist("cmd_vel");
+    std::cout << "cmd_vel linear [" << cmd_vel.linear.x << "," << cmd_vel.linear.y << "," << cmd_vel.linear.z << "]\n";
+    std::cout << "cmd_vel angular [" << cmd_vel.angular.x << "," << cmd_vel.angular.y << "," << cmd_vel.angular.z << "]\n";
 }
 
 void SwerveSubsystem::Periodic() {

@@ -34,3 +34,18 @@ Singleton& Singleton::GetInstance() {
 void ROSReceiver::init() {
     Singleton::GetInstance();
 }
+
+rostypes::Twist ROSReceiver::GetTwist(wpi::StringRef key) {
+    rostypes::Twist retVal;
+    rostypes::Vector3 angular;
+    angular.x = 0;
+    angular.y = 0;
+    angular.z = 0;
+    rostypes::Vector3 linear;
+    linear.x = 0;
+    linear.y = 0;
+    linear.z = 0;
+    retVal.angular = angular;
+    retVal.linear = linear;
+    return retVal;
+}
