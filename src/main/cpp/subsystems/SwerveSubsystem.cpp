@@ -42,7 +42,7 @@ void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
     SmartDashboard::PutNumber("X Joystick", xAxis);
     SmartDashboard::PutNumber("Y Joystick", yAxis);
     SmartDashboard::PutNumber("Rot Joystick", rotAxis);
-    const auto xSpeed = -xAxis * m_swerve.kMaxSpeed;
+    const auto xSpeed = xAxis * m_swerve.kMaxSpeed;
     const auto ySpeed = -yAxis * m_swerve.kMaxSpeed;
     const auto rotSpeed = -rotAxis * m_swerve.kMaxAngularSpeed;
     m_swerve.Drive(ySpeed, xSpeed, rotSpeed, fieldRelative);
