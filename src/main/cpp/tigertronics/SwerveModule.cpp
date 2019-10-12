@@ -38,7 +38,7 @@ void SwerveModule::SetDesiredState(const frc_new::SwerveModuleState& state) {
     frc_new::Rotation2d deltaAngle = GetState().angle.RotateBy(inverseInput);
     frc_new::Rotation2d setAngle = state.angle;
     units::meters_per_second_t setSpeed = state.speed;
-    if(deltaAngle.Radians().value() > 2 * M_PI && deltaAngle.Radians().value() <= 3 * M_PI * 2) {
+    if(deltaAngle.Radians().value() > (M_PI/2) && deltaAngle.Radians().value() < ((3 * M_PI) / 2)) {
         setAngle.RotateBy(frc_new::Rotation2d(units::radian_t(M_PI)));
         setSpeed = setSpeed * -1;
     }

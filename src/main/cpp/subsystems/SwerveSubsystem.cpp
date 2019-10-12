@@ -17,21 +17,25 @@ void SwerveSubsystem::InitDefaultCommand() {
 }
 
 void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
-    double xAxis = Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kLeftHand);
-    double yAxis = Robot::oi->GetDriverJoystick().GetY(frc::GenericHID::JoystickHand::kLeftHand);
-    double rotAxis = Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kRightHand);
+    //need to negative strafe because if you push right on the joystick it returns a + value
+    //however, the kinematics expects that left is positive for the y axis
+    //similar for rot axis because if you push right on the stick, it returns a positive value
+    //however, the kinematics expects a "positive" rotation to be CCW
+    double strafeAxis = -Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kLeftHand);
+    double fowAxis = Robot::oi->GetDriverJoystick().GetY(frc::GenericHID::JoystickHand::kLeftHand);
+    double rotAxis = -Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kRightHand);
 
-    if(xAxis > -.2 && xAxis < .2) {
-        xAxis = 0;
+    if(strafeAxis > -.2 && strafeAxis < .2) {
+        strafeAxis = 0;
     }
     else {
-        xAxis = xAxis * fabs(xAxis);
+        strafeAxis = strafeAxis * fabs(strafeAxis);
     }
-    if(yAxis > -.2 && yAxis < .2) {
-        yAxis = 0;
+    if(fowAxis > -.2 && fowAxis < .2) {
+        fowAxis = 0;
     }
     else {
-        yAxis = yAxis * fabs(yAxis);
+        fowAxis = fowAxis * fabs(fowAxis);
     }
     if(rotAxis > -.2 && rotAxis < .2) {
         rotAxis = 0;
@@ -39,13 +43,16 @@ void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
     else {
         rotAxis = rotAxis * fabs(rotAxis);
     }
-    SmartDashboard::PutNumber("X Joystick", xAxis);
-    SmartDashboard::PutNumber("Y Joystick", yAxis);
+    SmartDashboard::PutNumber("X Joystick", strafeAxis);
+    SmartDashboard::PutNumber("Y Joystick", fowAxis);
     SmartDashboard::PutNumber("Rot Joystick", rotAxis);
-    const auto xSpeed = xAxis * m_swerve.kMaxSpeed;
-    const auto ySpeed = -yAxis * m_swerve.kMaxSpeed;
-    const auto rotSpeed = -rotAxis * m_swerve.kMaxAngularSpeed;
-    m_swerve.Drive(ySpeed, xSpeed, rotSpeed, fieldRelative);
+    //x + is forward
+    //y + is left
+    //rot + is CCW
+    const auto xSpeed = fowAxis * m_swerve.kMaxSpeed;
+    const auto ySpeed = strafeAxis * m_swerve.kMaxSpeed;
+    const auto rotSpeed = rotAxis * m_swerve.kMaxAngularSpeed;
+    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, fieldRelative);
 }
 
 void SwerveSubsystem::Periodic() {

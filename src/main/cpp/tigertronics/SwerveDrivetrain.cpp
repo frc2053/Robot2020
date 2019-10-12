@@ -16,10 +16,12 @@ SwerveDrivetrain::SwerveDrivetrain() {
     m_backRight.InvertDrive(false);
 }
 
+//+x is forward
+//+y is left
+//+rot is CCW
 void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
                        units::meters_per_second_t ySpeed,
                        units::radians_per_second_t rot, bool fieldRelative) {   
-  SmartDashboard::PutNumber("rotSpeed", rot.value());
   std::array<frc_new::SwerveModuleState, 4> states = m_kinematics.ToSwerveModuleStates(
       fieldRelative ? frc_new::ChassisSpeeds::FromFieldRelativeSpeeds(
                           xSpeed, ySpeed, rot, GetAngle())
