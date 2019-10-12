@@ -22,7 +22,7 @@ void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
     //similar for rot axis because if you push right on the stick, it returns a positive value
     //however, the kinematics expects a "positive" rotation to be CCW
     double strafeAxis = -Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kLeftHand);
-    double fowAxis = Robot::oi->GetDriverJoystick().GetY(frc::GenericHID::JoystickHand::kLeftHand);
+    double fowAxis = -Robot::oi->GetDriverJoystick().GetY(frc::GenericHID::JoystickHand::kLeftHand);
     double rotAxis = -Robot::oi->GetDriverJoystick().GetX(frc::GenericHID::JoystickHand::kRightHand);
 
     if(strafeAxis > -.2 && strafeAxis < .2) {

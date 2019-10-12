@@ -138,3 +138,7 @@ void SwerveModule::InvertDrive(bool inverted) {
     m_driveMotor.SetInverted(inverted);
 }
 
+void SwerveModule::InvertRot(bool inverted) {
+    m_turningMotor.SetInverted(inverted);
+}
+
