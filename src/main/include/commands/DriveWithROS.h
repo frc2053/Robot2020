@@ -7,16 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include "tigertronics/SwerveDrivetrain.h"
+#include <frc/commands/Command.h>
 
-class SwerveSubsystem : public frc::Subsystem {
+class DriveWithROS : public frc::Command {
  public:
-  SwerveSubsystem();
-  void InitDefaultCommand() override;
-  void DriveWithJoystick(bool fieldRelative);
-  void DriveWithROS(xSpeed, ySpeed, rotSpeed);
-  virtual void Periodic();
- private:
-  SwerveDrivetrain m_swerve;
+  DriveWithROS();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };

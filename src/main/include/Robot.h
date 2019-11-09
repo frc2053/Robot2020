@@ -13,10 +13,12 @@
 
 #include "OI.h"
 #include "subsystems/SwerveSubsystem.h"
+#include "subsystems/RosBridge.h"
 
 class Robot : public frc::TimedRobot {
  public:
   static std::unique_ptr<SwerveSubsystem> swerveSubsystem;
+  static std::unique_ptr<RosBridge> rosBridgeSubsystem;
   static std::unique_ptr<OI> oi;
 
   void RobotInit() override;

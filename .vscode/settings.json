@@ -89,6 +89,8 @@
     "queue": "cpp",
     "random": "cpp",
     "stack": "cpp",
-    "unordered_set": "cpp"
+    "unordered_set": "cpp",
+    "future": "cpp",
+    "regex": "cpp"
   }
 }

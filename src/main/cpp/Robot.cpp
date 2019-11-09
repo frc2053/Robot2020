@@ -18,10 +18,12 @@
 
 std::unique_ptr<OI> Robot::oi;
 std::unique_ptr<SwerveSubsystem> Robot::swerveSubsystem;
+std::unique_ptr<RosBridge> Robot::rosBridgeSubsystem;
 
 void Robot::RobotInit() {
 
     swerveSubsystem = std::make_unique<SwerveSubsystem>();
+    rosBridgeSubsystem = std::make_unique<RosBridge>();
     oi = std::make_unique<OI>();
     
     /*std::vector<frc_new::Pose2d> waypoints;

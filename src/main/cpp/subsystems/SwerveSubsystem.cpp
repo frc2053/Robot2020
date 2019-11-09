@@ -16,6 +16,10 @@ void SwerveSubsystem::InitDefaultCommand() {
     SetDefaultCommand(new DriveCommand());
 }
 
+void SwerveSubsystem::DriveWithROS(xSpeed, ySpeed, rotSpeed) {
+    m_swerve.Drive(xSpeed, ySpeed, rotSpeed);
+}
+
 void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
     //need to negative strafe because if you push right on the joystick it returns a + value
     //however, the kinematics expects that left is positive for the y axis

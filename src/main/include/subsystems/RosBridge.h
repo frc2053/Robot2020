@@ -8,15 +8,17 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
-#include "tigertronics/SwerveDrivetrain.h"
+#include <tigertronics/RosBridge/RosBridgeWsClient.h>
+#include <tigertronics/RosBridge/RosTypes.h>
+#include <memory>
 
-class SwerveSubsystem : public frc::Subsystem {
- public:
-  SwerveSubsystem();
-  void InitDefaultCommand() override;
-  void DriveWithJoystick(bool fieldRelative);
-  void DriveWithROS(xSpeed, ySpeed, rotSpeed);
-  virtual void Periodic();
+class RosBridge : public frc::Subsystem {
  private:
-  SwerveDrivetrain m_swerve;
+  RosbridgeWsClient rbc;
+  std::shared_ptr<RosTypes::Twist> twist;
+ public:
+  RosBridge();
+  ~RosBridge();
+  void InitDefaultCommand() override;
+  std::shared_ptr<RosTypes::Twist> GetTwist();
 };
