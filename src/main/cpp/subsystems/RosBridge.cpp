@@ -9,7 +9,6 @@
 #include "tigertronics/RosBridge/RosBridgeWsClient.h"
 #include <memory>
 
-RosbridgeWsClient rbc();
 
 void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::message_ptr msg)
 {

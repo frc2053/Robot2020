@@ -15,10 +15,10 @@
 static std::shared_ptr<RosTypes::Twist> twist = std::make_shared<RosTypes::Twist>();
 
 class RosBridge : public frc::Subsystem {
- private:
- public:
+private:
+  RosBridgeWsClient rbc{};
+public:
   RosBridge();
-  ~RosBridge();
   void InitDefaultCommand() override;
   std::shared_ptr<RosTypes::Twist> GetTwist();
 };

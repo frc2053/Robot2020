@@ -4,11 +4,10 @@
 
 #include <wpi/json.h>
 
-class RosbridgeWsClient
+class RosBridgeWsClient
 {
 public:
-	RosbridgeWsClient() {
-	}
+	RosBridgeWsClient();
 
 	void Advertise(const std::string& client_name, const std::string& topic, const std::string& type, const std::string& id = "") {
 		std::string message = "\"op\":\"advertise\", \"topic\":\"" + topic + "\", \"type\":\"" + type + "\"";
@@ -122,7 +121,6 @@ public:
 		connection_uri = uri;
 	}
 private:
-
 	std::string connection_uri;
 	websocket_endpoint endpoint;
 };
