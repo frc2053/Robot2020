@@ -15,7 +15,7 @@ class SwerveSubsystem : public frc::Subsystem {
   SwerveSubsystem();
   void InitDefaultCommand() override;
   void DriveWithJoystick(bool fieldRelative);
-  void DriveWithROS(xSpeed, ySpeed, rotSpeed);
+  void DriveWithROS(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed);
   virtual void Periodic();
  private:
   SwerveDrivetrain m_swerve;

@@ -16,8 +16,8 @@ void SwerveSubsystem::InitDefaultCommand() {
     SetDefaultCommand(new DriveCommand());
 }
 
-void SwerveSubsystem::DriveWithROS(xSpeed, ySpeed, rotSpeed) {
-    m_swerve.Drive(xSpeed, ySpeed, rotSpeed);
+void SwerveSubsystem::DriveWithROS(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed) {
+    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, false);
 }
 
 void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {

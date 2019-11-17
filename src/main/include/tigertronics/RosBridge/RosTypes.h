@@ -40,7 +40,7 @@ struct Pose {
     Quaternion orientation = Quaternion();
 };
 
-EulerAngles QuaternionToEuler(Quaternion quaternion) {
+static EulerAngles QuaternionToEuler(Quaternion quaternion) {
     EulerAngles retVal = EulerAngles();
     double sqw = quaternion.w*quaternion.w;
     double sqx = quaternion.x*quaternion.x;
@@ -66,7 +66,7 @@ EulerAngles QuaternionToEuler(Quaternion quaternion) {
     return retVal;
 }
 
-Quaternion EulerToQuaternion(EulerAngles angles)
+static Quaternion EulerToQuaternion(EulerAngles angles)
 {
     // Abbreviations for the various angular functions
     double cy = cos(angles.yaw * 0.5);

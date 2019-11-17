@@ -9,6 +9,7 @@
 #include "Robot.h"
 #include <memory>
 #include <tigertronics/RosBridge/RosTypes.h>
+#include <units/units.h>
 
 DriveWithROS::DriveWithROS() {
   Requires(Robot::swerveSubsystem.get());
@@ -21,7 +22,7 @@ void DriveWithROS::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void DriveWithROS::Execute() {
   std::shared_ptr<RosTypes::Twist> twist = Robot::rosBridgeSubsystem->GetTwist();
-  Robot::swerveSubsystem->DriveWithROS(twist->linear.x, twist->linear.y, twist->angular.z);
+  Robot::swerveSubsystem->DriveWithROS(units::meters_per_second_t(twist->linear.x), units::meters_per_second_t(twist->linear.y), units::radians_per_second_t(twist->angular.z));
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -91,6 +91,8 @@
     "stack": "cpp",
     "unordered_set": "cpp",
     "future": "cpp",
-    "regex": "cpp"
+    "regex": "cpp",
+    "concepts": "cpp",
+    "string_view": "cpp"
   }
 }

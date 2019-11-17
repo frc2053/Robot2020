@@ -12,10 +12,10 @@
 #include <tigertronics/RosBridge/RosTypes.h>
 #include <memory>
 
+static std::shared_ptr<RosTypes::Twist> twist = std::make_shared<RosTypes::Twist>();
+
 class RosBridge : public frc::Subsystem {
  private:
-  RosbridgeWsClient rbc;
-  std::shared_ptr<RosTypes::Twist> twist;
  public:
   RosBridge();
   ~RosBridge();

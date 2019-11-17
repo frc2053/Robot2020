@@ -6,33 +6,25 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/RosBridge.h"
+#include "tigertronics/RosBridge/RosBridgeWsClient.h"
+#include <memory>
 
-void velocity_callback(std::shared_ptr<WsClient::Connection> /*connection*/, std::shared_ptr<WsClient::InMessage> in_message)
+RosbridgeWsClient rbc();
+
+void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::message_ptr msg)
 {
-  //std::cout << "subscriberCallback(): Message Received: " << in_message->string() << std::endl;
-  Document doc;
-  if(doc.Parse<0>(in_message->string().c_str()).HasParseError()) {
-    std::cout << "Parse Error!\n";
-  }
-  else {
-    twist->linear.x = doc["msg"]["linear"]["x"].GetDouble();
-    twist->linear.y = doc["msg"]["linear"]["y"].GetDouble();
-    twist->linear.z = doc["msg"]["linear"]["z"].GetDouble();
-    twist->angular.x = doc["msg"]["angular"]["x"].GetDouble();
-    twist->angular.y = doc["msg"]["angular"]["y"].GetDouble();
-    twist->angular.z = doc["msg"]["angular"]["z"].GetDouble();
-  }
+    wpi::json j = wpi::json::parse(msg->get_payload());
+    twist->linear.x = j["msg"]["linear"]["x"].get<double>();
+    twist->linear.y = j["msg"]["linear"]["y"].get<double>();
+    twist->linear.z = j["msg"]["linear"]["z"].get<double>();
+    twist->angular.x = j["msg"]["angular"]["x"].get<double>();
+    twist->angular.y = j["msg"]["angular"]["y"].get<double>();
+    twist->angular.z = j["msg"]["angular"]["z"].get<double>();
 }
 
-RosBridge::RosBridge() : Subsystem("RosBridgeSubsystem") {
-    twist = make_shared<RosTypes::Twist>();
-    rbc = RosbridgeWsClient("localhost:5800");
-    rbc.addClient("topic_subscriber");
-    rbc.subscribe("topic_subscriber", "/cmd_vel", velocity_callback);
-}
-
-RosBridge::~RosBridge() {
-    rbc.removeClient("topic_subscriber");
+RosBridge::RosBridge() : frc::Subsystem("RosBridgeSubsystem") {
+    rbc.SetConnectionUri("ws://localhost:9090");
+    rbc.Subscribe("topic_subscriber", "/frc_diff_drive_controller/cmd_vel", velocity_callback);
 }
 
 std::shared_ptr<RosTypes::Twist> RosBridge::GetTwist() {
