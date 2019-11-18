@@ -1,9 +1,22 @@
 #pragma once
 
 #include <cmath>
+#include <cstdint>
+#include <string>
 #define PI 3.14159265358979323846
 
 namespace RosTypes {
+
+struct Time {
+    int sec = 0;
+    int nsec = 0;
+};
+
+struct Header {
+    uint32_t seq;
+    Time stamp = Time();
+    std::string frame_id;
+};
 
 struct Point {
     double x = 0;
@@ -38,6 +51,23 @@ struct Twist {
 struct Pose {
     Point position = Point();
     Quaternion orientation = Quaternion();
+};
+
+struct PoseWithCovariance {
+    Pose pose = Pose();
+    double covariance[36] = {};
+};
+
+struct TwistWithCovariance {
+    Twist twist = Twist();
+    double covariance[36] = {};
+};
+
+struct Odometry {
+    Header header = Header();
+    std::string child_frame_id;
+    PoseWithCovariance pose = PoseWithCovariance();
+    TwistWithCovariance twist = TwistWithCovariance();
 };
 
 static EulerAngles QuaternionToEuler(Quaternion quaternion) {
