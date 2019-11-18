@@ -8,8 +8,8 @@
 namespace RosTypes {
 
 struct Time {
-    int sec = 0;
-    int nsec = 0;
+    uint32_t sec = 0;
+    uint32_t nsec = 0;
 };
 
 struct Header {
