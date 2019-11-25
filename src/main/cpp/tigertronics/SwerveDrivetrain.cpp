@@ -14,9 +14,9 @@ SwerveDrivetrain::SwerveDrivetrain() {
     m_frontRight.InvertDrive(false);
     m_backLeft.InvertDrive(true);
     m_backRight.InvertDrive(false);
-    m_frontLeft.InvertRot(true);
+    m_frontLeft.InvertRot(false);
     m_frontRight.InvertRot(false);
-    m_backLeft.InvertRot(true);
+    m_backLeft.InvertRot(false);
     m_backRight.InvertRot(false);
 }
 

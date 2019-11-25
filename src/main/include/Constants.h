@@ -24,9 +24,9 @@ namespace tigertronics {
 
         //SWERVE DRIVE MOTOR CONFIG
         static constexpr double swerveDrivekF = 0.000015;
-        static constexpr double swerveDrivekP = .1;
-        static constexpr double swerveDrivekI = 0;
-        static constexpr double swerveDrivekD = 0;        
+        static constexpr double swerveDrivekP = 0.1;
+        static constexpr double swerveDrivekI = 0.0;
+        static constexpr double swerveDrivekD = 0.0;        
     }
 
     namespace ports {

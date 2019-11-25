@@ -17,6 +17,7 @@ void SwerveSubsystem::InitDefaultCommand() {
 }
 
 void SwerveSubsystem::DriveWithROS(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed) {
+    SmartDashboard::PutString("Drive Mode", "ROS");
     m_swerve.Drive(xSpeed, ySpeed, rotSpeed, false);
 }
 
@@ -50,6 +51,7 @@ void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
     SmartDashboard::PutNumber("X Joystick", strafeAxis);
     SmartDashboard::PutNumber("Y Joystick", fowAxis);
     SmartDashboard::PutNumber("Rot Joystick", rotAxis);
+    SmartDashboard::PutString("Drive Mode", "Joystick");
     //x + is forward
     //y + is left
     //rot + is CCW

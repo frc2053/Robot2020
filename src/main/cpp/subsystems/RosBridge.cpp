@@ -8,6 +8,7 @@
 #include "subsystems/RosBridge.h"
 #include "tigertronics/RosBridge/RosBridgeWsClient.h"
 #include <memory>
+#include "frc/smartdashboard/SmartDashboard.h"
 
 
 void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::message_ptr msg)
@@ -22,7 +23,10 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 }
 
 RosBridge::RosBridge() : frc::Subsystem("RosBridgeSubsystem") {
-    rbc.SetConnectionUri("ws://localhost:9090");
+    rbc.SetConnectionUri("ws://tegra-ubuntu:5800");
+    frc::SmartDashboard::PutNumber("X Cmd: ", twist->linear.x);
+    frc::SmartDashboard::PutNumber("Y Cmd: ", twist->linear.y);
+    frc::SmartDashboard::PutNumber("Yaw Cmd: ", twist->angular.z);
     rbc.Subscribe("topic_subscriber", "/frc_diff_drive_controller/cmd_vel", velocity_callback);
 }
 

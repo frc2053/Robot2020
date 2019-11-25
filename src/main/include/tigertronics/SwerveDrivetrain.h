@@ -46,10 +46,10 @@ public:
     //Apparently all of math is Right Hand Rule Coordinate system but I dont like it
     units::meter_t widthLoc = tigertronics::constants::drivebaseWidth / 2;
     units::meter_t lengthLoc = tigertronics::constants::drivebaseLength / 2;
-    frc_new::Translation2d m_frontLeftLocation{widthLoc, lengthLoc};
-    frc_new::Translation2d m_frontRightLocation{widthLoc, -lengthLoc};
-    frc_new::Translation2d m_backLeftLocation{-widthLoc, lengthLoc};
-    frc_new::Translation2d m_backRightLocation{-widthLoc, -lengthLoc};
+    frc_new::Translation2d m_frontLeftLocation{lengthLoc, widthLoc};
+    frc_new::Translation2d m_frontRightLocation{lengthLoc, -widthLoc};
+    frc_new::Translation2d m_backLeftLocation{-lengthLoc, widthLoc};
+    frc_new::Translation2d m_backRightLocation{-lengthLoc, -widthLoc};
 
     SwerveModule m_frontLeft{tigertronics::ports::swerveFLDrive, tigertronics::ports::swerveFLTurn, 0, "FL"};
     SwerveModule m_frontRight{tigertronics::ports::swerveFRDrive, tigertronics::ports::swerveFRTurn, 0, "FR"};
