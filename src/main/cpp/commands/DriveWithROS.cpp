@@ -22,7 +22,14 @@ void DriveWithROS::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void DriveWithROS::Execute() {
   std::shared_ptr<RosTypes::Twist> twist = Robot::rosBridgeSubsystem->GetTwist();
-  Robot::swerveSubsystem->DriveWithROS(units::meters_per_second_t(twist->linear.x), units::meters_per_second_t(twist->linear.y), units::radians_per_second_t(twist->angular.z));
+  bool DWR = Robot::oi->GetDriverJoystick().GetBumper(frc::GenericHID::JoystickHand::kLeftHand);
+  
+  if (DWR) {
+    Robot::swerveSubsystem->DriveWithROS(units::meters_per_second_t(twist->linear.x), units::meters_per_second_t(twist->linear.y), units::radians_per_second_t(twist->angular.z));
+  }
+  else {
+    Robot::swerveSubsystem->DriveWithJoystick(false);
+  }
 }
 
 // Make this return true when this Command no longer needs to run execute()

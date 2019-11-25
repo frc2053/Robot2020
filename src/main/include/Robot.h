@@ -14,6 +14,8 @@
 #include "OI.h"
 #include "subsystems/SwerveSubsystem.h"
 #include "subsystems/RosBridge.h"
+#include "commands/DriveCommand.h"
+#include "commands/DriveWithROS.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -32,4 +34,6 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
  private:
+ std::unique_ptr<frc::Command> driveCommand;
+ frc::SendableChooser<frc::Command*> driveChooser;
 };
