@@ -21,9 +21,9 @@ std::unique_ptr<SwerveSubsystem> Robot::swerveSubsystem;
 std::unique_ptr<RosBridge> Robot::rosBridgeSubsystem;
 
 void Robot::RobotInit() {
-    driveChooser.SetDefaultOption("DriveJoystick", new DriveCommand());
-    driveChooser.AddOption("DriveROS", new DriveWithROS());
-	SmartDashboard::PutData("DriveMode", &driveChooser);
+    //driveChooser.SetDefaultOption("DriveJoystick", new DriveCommand());
+    //driveChooser.AddOption("DriveROS", new DriveWithROS());
+	//SmartDashboard::PutData("DriveMode", &driveChooser);
 
     swerveSubsystem = std::make_unique<SwerveSubsystem>();
     rosBridgeSubsystem = std::make_unique<RosBridge>();
@@ -87,13 +87,13 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() { frc::Scheduler::GetInstance()->Run(); }
 
 void Robot::TeleopInit() {
-    driveCommand.reset(driveChooser.GetSelected());
-    swerveSubsystem->SetCurrentCommand(driveCommand.get());
+    //driveCommand.reset(driveChooser.GetSelected());
+    //swerveSubsystem->SetCurrentCommand(driveCommand.get());
 }
 
 void Robot::TeleopPeriodic() {
-    driveCommand.reset(driveChooser.GetSelected());
-    swerveSubsystem->SetCurrentCommand(driveCommand.get());
+    //driveCommand.reset(driveChooser.GetSelected());
+    //swerveSubsystem->SetCurrentCommand(driveCommand.get());
     frc::Scheduler::GetInstance()->Run();
 }
 

@@ -34,6 +34,6 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
  private:
- std::unique_ptr<frc::Command> driveCommand;
- frc::SendableChooser<frc::Command*> driveChooser;
+ //std::unique_ptr<frc::Command> driveCommand;
+ //frc::SendableChooser<frc::Command*> driveChooser;
 };

@@ -7,16 +7,18 @@
 
 #include "subsystems/SwerveSubsystem.h"
 #include "commands/DriveCommand.h"
+#include "commands/DriveWithROS.h"
 #include "Robot.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 
 SwerveSubsystem::SwerveSubsystem() : frc::Subsystem("SwerveSubsystem") {}
 
 void SwerveSubsystem::InitDefaultCommand() {
-    SetDefaultCommand(new DriveCommand());
+    //SetDefaultCommand(new DriveCommand());
+    SetDefaultCommand(new DriveWithROS());
 }
 
-void SwerveSubsystem::DriveWithROS(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed) {
+void SwerveSubsystem::DriveWithRos(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed) {
     SmartDashboard::PutNumber("X Cmd", xSpeed.value());
     SmartDashboard::PutNumber("Y Cmd", ySpeed.value());
     SmartDashboard::PutNumber("Rot Cmd", rotSpeed.value());

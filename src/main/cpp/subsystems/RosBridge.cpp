@@ -13,6 +13,7 @@
 
 void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::message_ptr msg)
 {
+    printf("got message!\n");
     wpi::json j = wpi::json::parse(msg->get_payload());
     twist->linear.x = j["msg"]["linear"]["x"].get<double>();
     twist->linear.y = j["msg"]["linear"]["y"].get<double>();
@@ -23,10 +24,7 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 }
 
 RosBridge::RosBridge() : frc::Subsystem("RosBridgeSubsystem") {
-    rbc.SetConnectionUri("ws://tegra-ubuntu:5800");
-    frc::SmartDashboard::PutNumber("X Cmd: ", twist->linear.x);
-    frc::SmartDashboard::PutNumber("Y Cmd: ", twist->linear.y);
-    frc::SmartDashboard::PutNumber("Yaw Cmd: ", twist->angular.z);
+    rbc.SetConnectionUri("ws://10.20.53.42:5800");
     rbc.Subscribe("topic_subscriber", "/frc_diff_drive_controller/cmd_vel", velocity_callback);
 }
 
