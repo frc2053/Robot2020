@@ -26,6 +26,7 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 RosBridge::RosBridge() : frc::Subsystem("RosBridgeSubsystem") {
     rbc.SetConnectionUri("ws://192.168.1.110:5800");
     rbc.Subscribe("topic_subscriber", "/frc_diff_drive_controller/cmd_vel", velocity_callback);
+    rbc.Advertise("odom_sender", "/odom", "nav_msgs/Odometry");
 }
 
 std::shared_ptr<RosTypes::Twist> RosBridge::GetTwist() {
@@ -33,5 +34,15 @@ std::shared_ptr<RosTypes::Twist> RosBridge::GetTwist() {
 }
 
 void RosBridge::InitDefaultCommand() {
+}
+
+void RosBridge::Periodic() {
+    SendOdometry();
+}
+
+void RosBridge::SendOdometry() {
+    wpi::json odomJson;
+    odomJson["data"] = {"test"};
+    rbc.Publish("odom_sender", "/odom", odomJson);
 }
 

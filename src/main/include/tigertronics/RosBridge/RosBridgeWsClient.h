@@ -19,23 +19,17 @@ public:
 		endpoint.connect(connection_uri, client_name, nullptr, nullptr, nullptr, nullptr);
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		endpoint.send(client_name, message);
+		endpoint.connect(connection_uri, "publish_client" + client_name, nullptr, nullptr, nullptr, nullptr);
 	}
 
-	void Publish(const std::string& topic, const wpi::json& msg, const std::string& id = "") {
+	void Publish(const std::string& client_name, const std::string& topic, const wpi::json& msg, const std::string& id = "") {
 		std::string message = "\"op\":\"publish\", \"topic\":\"" + topic + "\", \"msg\":" + msg.dump();
 		if (id.compare("") != 0)
 		{
 			message += ", \"id\":\"" + id + "\"";
 		}
 		message = "{" + message + "}";
-
-		std::function<void(client * c, websocketpp::connection_hdl hdl)> openFunc = [topic, message, this](client* c, websocketpp::connection_hdl hdl) {
-			std::cout << message << "\n";
-			endpoint.send("publish_client", message);
-			endpoint.close("publish_client", websocketpp::close::status::normal, "Publish Over");
-		};
-
-		endpoint.connect(connection_uri, "publish_client", openFunc, nullptr, nullptr, nullptr);
+		endpoint.send("publish_client" + client_name, message);
 	}
 
 	void Subscribe(const std::string& client_name, const std::string& topic, const std::function<void(client * c, websocketpp::connection_hdl hdl, client::message_ptr msg)>& callback, const std::string& id = "", const std::string& type = "", int throttle_rate = -1, int queue_length = -1, int fragment_size = -1, const std::string& compression = "") {

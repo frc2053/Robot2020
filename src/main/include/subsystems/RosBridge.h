@@ -19,6 +19,8 @@ private:
   RosBridgeWsClient rbc{};
 public:
   RosBridge();
+  void SendOdometry();
   void InitDefaultCommand() override;
+  void Periodic() override;
   std::shared_ptr<RosTypes::Twist> GetTwist();
 };

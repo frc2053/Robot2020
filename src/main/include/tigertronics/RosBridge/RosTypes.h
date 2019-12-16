@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstdint>
 #include <string>
+#include <wpi/json.h>
 #define PI 3.14159265358979323846
 
 namespace RosTypes {
@@ -114,4 +115,56 @@ static Quaternion EulerToQuaternion(EulerAngles angles)
 
     return q;
 }
+
+static wpi::json OdomToJson(const Odometry& odom) {
+    wpi::json retVal;
+
+    retVal["header"] = {
+        {"seq", odom.header.seq},
+        {"stamp", {
+            {"secs", odom.header.stamp.sec},
+            {"nsecs", odom.header.stamp.nsec}
+        }},
+        {"frame_id", odom.header.frame_id}
+    };
+
+    retVal["child_frame_id"] = odom.child_frame_id;
+
+    retVal["pose"] = {
+        {"pose", {
+            {"position", {
+                {"x", odom.pose.pose.position.x},
+                {"y", odom.pose.pose.position.y},
+                {"z", odom.pose.pose.position.z}
+            }},
+            {"orientation", {
+                {"x", odom.pose.pose.orientation.x},
+                {"y", odom.pose.pose.orientation.y},
+                {"z", odom.pose.pose.orientation.z},
+                {"w", odom.pose.pose.orientation.w}
+            }}
+        }},
+        {"covariance", odom.pose.covariance}
+    };
+
+    retVal["twist"] = {
+        {"twist", {
+            {"linear", {
+                {"x", odom.twist.twist.linear.x},
+                {"y", odom.twist.twist.linear.y},
+                {"z", odom.twist.twist.linear.z}
+            }},
+            {"angular", {
+                {"x", odom.twist.twist.angular.x},
+                {"y", odom.twist.twist.angular.y},
+                {"z", odom.twist.twist.angular.z}
+            }}
+        }},
+        {"covariance", odom.twist.covariance}
+    };
+
+    return retVal;
+}
+
+//namespace RosTypes
 }
