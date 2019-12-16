@@ -41,8 +41,7 @@ void RosBridge::Periodic() {
 }
 
 void RosBridge::SendOdometry() {
-    wpi::json odomJson;
-    odomJson["data"] = {"test"};
-    rbc.Publish("odom_sender", "/odom", odomJson);
+    RosTypes::Odometry odom;
+    rbc.Publish("odom_sender", "/odom", RosTypes::OdomToJson(odom));
 }
 
