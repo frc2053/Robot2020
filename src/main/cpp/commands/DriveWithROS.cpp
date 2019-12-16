@@ -13,7 +13,6 @@
 
 DriveWithROS::DriveWithROS() {
   Requires(Robot::swerveSubsystem.get());
-  Requires(Robot::rosBridgeSubsystem.get());
 }
 
 // Called just before this Command runs the first time

@@ -24,7 +24,7 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 }
 
 RosBridge::RosBridge() : frc::Subsystem("RosBridgeSubsystem") {
-    rbc.SetConnectionUri("ws://10.20.53.42:5800");
+    rbc.SetConnectionUri("ws://192.168.1.110:5800");
     rbc.Subscribe("topic_subscriber", "/frc_diff_drive_controller/cmd_vel", velocity_callback);
 }
 

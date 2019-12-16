@@ -9,7 +9,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 SwerveDrivetrain::SwerveDrivetrain() {
-    m_imu.ZeroYaw();
+    //m_imu.ZeroYaw();
     m_frontLeft.InvertDrive(true);
     m_frontRight.InvertDrive(false);
     m_backLeft.InvertDrive(true);

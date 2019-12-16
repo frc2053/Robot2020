@@ -28,7 +28,7 @@ public:
      */
     frc_new::Rotation2d GetAngle() {
         // Negating the angle because WPILib Gyros are CW positive.
-        return frc_new::Rotation2d(units::degree_t(-m_imu.GetYaw()));
+        return frc_new::Rotation2d(units::degree_t(0));
     }
 
     void Drive(units::meters_per_second_t xSpeed,
@@ -56,7 +56,7 @@ public:
     SwerveModule m_backLeft{tigertronics::ports::swerveBLDrive, tigertronics::ports::swerveBLTurn, 0, "BL"};
     SwerveModule m_backRight{tigertronics::ports::swerveBRDrive, tigertronics::ports::swerveBRTurn, 0, "BR"};
 
-    AHRS m_imu{frc::SPI::Port::kMXP};
+    //AHRS m_imu{frc::SPI::Port::kMXP};
 
     frc_new::SwerveDriveKinematics m_kinematics{
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
