@@ -83,6 +83,6 @@ const frc_new::Twist2d& SwerveSubsystem::GetCurrentTwist() {
     return currentTwist;
 }
 
-const std::vector<double>& SwerveSubsystem::GetIMUData() {
+std::vector<double> SwerveSubsystem::GetIMUData() {
     return currentIMUData;
 }

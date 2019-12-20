@@ -46,8 +46,8 @@ private:
     static constexpr double kMaxTurnAccel = tigertronics::constants::swerveTurningMaxAccel;
     static constexpr int kTurnErrorAllowance = tigertronics::constants::swerveTurningErrorAllowance;
     int kCalibrationValue;
-    //rev::CANSparkMax m_driveMotor;
-    //rev::CANPIDController m_drivePIDController;
-    //rev::CANEncoder m_driveEncoder;
-    //ctre::phoenix::motorcontrol::can::TalonSRX m_turningMotor;
+    rev::CANSparkMax m_driveMotor;
+    rev::CANPIDController m_drivePIDController;
+    rev::CANEncoder m_driveEncoder;
+    ctre::phoenix::motorcontrol::can::TalonSRX m_turningMotor;
 };

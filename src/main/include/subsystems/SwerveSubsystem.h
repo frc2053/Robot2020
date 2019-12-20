@@ -19,7 +19,7 @@ class SwerveSubsystem : public frc::Subsystem {
   virtual void Periodic();
   const frc_new::Pose2d& GetCurrentPose();
   const frc_new::Twist2d& GetCurrentTwist();
-  const std::vector<double>& GetIMUData();
+  std::vector<double> GetIMUData();
  private:
   int seq = 0;
   frc_new::Pose2d currentPose;

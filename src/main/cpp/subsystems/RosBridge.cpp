@@ -25,7 +25,7 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 }
 
 RosBridge::RosBridge() : frc::Subsystem("RosBridgeSubsystem") {
-    rbc.SetConnectionUri("ws://192.168.1.250:5800");
+    rbc.SetConnectionUri("ws://10.20.53.42:5800");
     rbc.Subscribe("topic_subscriber", "/frc_diff_drive_controller/cmd_vel", velocity_callback);
     rbc.Advertise("odom_sender", "/odom", "nav_msgs/Odometry");
     rbc.Advertise("imu_sender", "/imu", "sensor_msgs/Imu");
@@ -100,7 +100,7 @@ void RosBridge::SendOdometry() {
 
 void RosBridge::SendIMU() {
     std::vector<double> data = Robot::swerveSubsystem->GetIMUData();
-    RosTypes::IMU imu = ConstructIMU(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8]);
+    RosTypes::IMU imu = ConstructIMU(0, 0, 0, 0, 0, 0, 0, 0, 0);
     rbc.Publish("imu_sender", "/imu", RosTypes::IMUToJson(imu));
 }
 

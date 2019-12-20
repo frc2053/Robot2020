@@ -20,6 +20,7 @@ void DriveWithROS::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithROS::Execute() {
+  printf("Drive with ROS Execute!\n");
   std::shared_ptr<RosTypes::Twist> twist = Robot::rosBridgeSubsystem->GetTwist();
   Robot::swerveSubsystem->DriveWithRos(units::meters_per_second_t(twist->linear.x), units::meters_per_second_t(twist->linear.y), units::radians_per_second_t(twist->angular.z));
 }
