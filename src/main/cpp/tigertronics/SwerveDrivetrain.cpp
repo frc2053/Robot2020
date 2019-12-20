@@ -38,6 +38,13 @@ void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
   frc_new::SwerveModuleState bl = states.at(2);
   frc_new::SwerveModuleState br = states.at(3);
 
+  frc_new::ChassisSpeeds speeds = m_kinematics.ToChassisSpeeds(fl, fr, bl, br);
+
+
+  m_chassisSpeeds.dx = units::meter_t(speeds.vx.value());
+  m_chassisSpeeds.dy = units::meter_t(speeds.vy.value());
+  m_chassisSpeeds.dtheta = units::radian_t(speeds.omega.value());
+
   m_frontLeft.SetDesiredState(fl);
   m_frontRight.SetDesiredState(fr);
   m_backLeft.SetDesiredState(bl);
@@ -47,6 +54,10 @@ void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
 const frc_new::Pose2d& SwerveDrivetrain::UpdateOdometry() {
   return m_odometry.Update(GetAngle(), m_frontLeft.GetState(), m_frontRight.GetState(),
                     m_backLeft.GetState(), m_backRight.GetState());
+}
+
+const frc_new::Twist2d& SwerveDrivetrain::GetDrivetrainSpeedsWorld() {
+    return m_chassisSpeeds;
 }
 
 void SwerveDrivetrain::LogModulesToDashboard() {

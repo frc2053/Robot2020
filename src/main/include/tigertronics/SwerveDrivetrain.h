@@ -11,6 +11,7 @@
 #include <frc_new/geometry/Pose2d.h>
 #include <frc_new/kinematics/SwerveDriveKinematics.h>
 #include <frc_new/kinematics/SwerveDriveOdometry.h>
+#include <frc_new/kinematics/ChassisSpeeds.h>
 #include <AHRS.h>
 #include <tigertronics/SwerveModule.h>
 #include <Constants.h>
@@ -36,6 +37,7 @@ public:
             bool fieldRelative);
     const frc_new::Pose2d& UpdateOdometry();
     void LogModulesToDashboard();
+    const frc_new::Twist2d& GetDrivetrainSpeedsWorld();
 
     units::meters_per_second_t kMaxSpeed =
     3.0_mps;  // 3 meters per second
@@ -63,4 +65,6 @@ public:
         m_backRightLocation};
 
     frc_new::SwerveDriveOdometry m_odometry{m_kinematics, frc_new::Pose2d()};
+
+    frc_new::Twist2d m_chassisSpeeds;
 };

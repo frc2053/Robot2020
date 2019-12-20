@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <string>
 #include <wpi/json.h>
-#define PI 3.14159265358979323846
+#include <units/units.h>
 
 namespace RosTypes {
 
@@ -81,13 +81,13 @@ static EulerAngles QuaternionToEuler(Quaternion quaternion) {
 	double test = quaternion.x*quaternion.y + quaternion.z*quaternion.w;
 	if (test > 0.499*unit) { // singularity at north pole
 		retVal.yaw = 2 * atan2(quaternion.x,quaternion.w);
-		retVal.pitch = PI/2;
+		retVal.pitch = units::constants::pi/2;
 		retVal.roll = 0;
 		return retVal;
 	}
 	if (test < -0.499*unit) { // singularity at south pole
 		retVal.yaw = -2 * atan2(quaternion.x,quaternion.w);
-		retVal.pitch = -PI/2;
+		retVal.pitch = -units::constants::pi/2;
 		retVal.roll = 0;
 		return retVal;
 	}

@@ -17,6 +17,11 @@ class SwerveSubsystem : public frc::Subsystem {
   void DriveWithJoystick(bool fieldRelative);
   void DriveWithRos(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed);
   virtual void Periodic();
+  const frc_new::Pose2d& GetCurrentPose();
+  const frc_new::Twist2d& GetCurrentTwist();  
  private:
+  int seq = 0;
+  frc_new::Pose2d currentPose;
+  frc_new::Twist2d currentTwist;
   SwerveDrivetrain m_swerve;
 };

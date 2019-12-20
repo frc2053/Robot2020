@@ -93,6 +93,10 @@
     "future": "cpp",
     "regex": "cpp",
     "concepts": "cpp",
-    "string_view": "cpp"
+    "string_view": "cpp",
+    "codecvt": "cpp",
+    "csignal": "cpp",
+    "resumable": "cpp",
+    "xmemory0": "cpp"
   }
 }

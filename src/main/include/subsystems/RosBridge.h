@@ -11,11 +11,15 @@
 #include <tigertronics/RosBridge/RosBridgeWsClient.h>
 #include <tigertronics/RosBridge/RosTypes.h>
 #include <memory>
+#include <frc_new/geometry/Pose2d.h>
+#include <frc_new/geometry/Twist2d.h>
+
 
 static std::shared_ptr<RosTypes::Twist> twist = std::make_shared<RosTypes::Twist>();
 
 class RosBridge : public frc::Subsystem {
 private:
+  int seq = 0;
   RosBridgeWsClient rbc{};
 public:
   RosBridge();
@@ -23,4 +27,5 @@ public:
   void InitDefaultCommand() override;
   void Periodic() override;
   std::shared_ptr<RosTypes::Twist> GetTwist();
+  RosTypes::Odometry ConstructOdom(const frc_new::Pose2d& currentPose, const frc_new::Twist2d& currentTwist);
 };
