@@ -19,13 +19,16 @@ static std::shared_ptr<RosTypes::Twist> twist = std::make_shared<RosTypes::Twist
 
 class RosBridge : public frc::Subsystem {
 private:
-  int seq = 0;
+  int seqOdom = 0;
+  int seqImu = 0;
   RosBridgeWsClient rbc{};
 public:
   RosBridge();
   void SendOdometry();
+  void SendIMU();
   void InitDefaultCommand() override;
   void Periodic() override;
   std::shared_ptr<RosTypes::Twist> GetTwist();
   RosTypes::Odometry ConstructOdom(const frc_new::Pose2d& currentPose, const frc_new::Twist2d& currentTwist);
+  RosTypes::IMU ConstructIMU(double roll, double pitch, double yaw, double velX, double velY, double velZ, double accelX, double accelY, double accelZ);
 };

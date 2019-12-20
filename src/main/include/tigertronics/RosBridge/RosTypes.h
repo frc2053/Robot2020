@@ -71,6 +71,16 @@ struct Odometry {
     TwistWithCovariance twist = TwistWithCovariance();
 };
 
+struct IMU {
+    Header header = Header();
+    Quaternion orientation;
+    double covariance_ori[9] = {};
+    Vector3 angular_velocity;
+    double covariance_angular_velocity[9] = {};
+    Vector3 linear_accel;
+    double covariance_linear_accel[9] = {};
+};
+
 static EulerAngles QuaternionToEuler(Quaternion quaternion) {
     EulerAngles retVal = EulerAngles();
     double sqw = quaternion.w*quaternion.w;
@@ -162,6 +172,46 @@ static wpi::json OdomToJson(const Odometry& odom) {
         }},
         {"covariance", odom.twist.covariance}
     };
+
+    return retVal;
+}
+
+static wpi::json IMUToJson(const IMU& imu) {
+    wpi::json retVal;
+
+    retVal["header"] = {
+        {"seq", imu.header.seq},
+        {"stamp", {
+            {"secs", imu.header.stamp.sec},
+            {"nsecs", imu.header.stamp.nsec}
+        }},
+        {"frame_id", imu.header.frame_id}
+    };
+
+    retVal["orientation"] = {
+        {"x", imu.orientation.x},
+        {"y", imu.orientation.y},
+        {"z", imu.orientation.z},
+        {"w", imu.orientation.w}
+    };
+
+    retVal["orientation_covariance"] = imu.covariance_ori;
+
+    retVal["angular_velocity"] = {
+        {"x", imu.angular_velocity.x},
+        {"y", imu.angular_velocity.y},
+        {"z", imu.angular_velocity.z}
+    };
+
+    retVal["angular_velocity_covariance"] = imu.covariance_angular_velocity;
+
+    retVal["linear_acceleration"] = {
+        {"x", imu.linear_accel.x},
+        {"y", imu.linear_accel.y},
+        {"z", imu.linear_accel.z}
+    };
+
+    retVal["linear_acceleration_covariance"] = imu.covariance_linear_accel;
 
     return retVal;
 }

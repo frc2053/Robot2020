@@ -69,6 +69,7 @@ void SwerveSubsystem::DriveWithJoystick(bool fieldRelative) {
 void SwerveSubsystem::Periodic() {
     currentPose = m_swerve.UpdateOdometry();
     currentTwist = m_swerve.GetDrivetrainSpeedsWorld();
+    currentIMUData = m_swerve.GetIMUData();
     frc::SmartDashboard::PutNumber("X Pose: ", currentPose.Translation().X().value());
     frc::SmartDashboard::PutNumber("Y Pose: ", currentPose.Translation().Y().value());
     frc::SmartDashboard::PutNumber("Yaw Pose: ", currentPose.Rotation().Degrees().value());
@@ -80,4 +81,8 @@ const frc_new::Pose2d& SwerveSubsystem::GetCurrentPose() {
 
 const frc_new::Twist2d& SwerveSubsystem::GetCurrentTwist() {
     return currentTwist;
-}  
+}
+
+const std::vector<double>& SwerveSubsystem::GetIMUData() {
+    return currentIMUData;
+}

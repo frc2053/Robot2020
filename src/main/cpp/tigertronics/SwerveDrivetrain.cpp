@@ -60,6 +60,30 @@ const frc_new::Twist2d& SwerveDrivetrain::GetDrivetrainSpeedsWorld() {
     return m_chassisSpeeds;
 }
 
+const std::vector<double>& SwerveDrivetrain::GetIMUData() {
+    m_imuData.clear();
+    /*m_imuData.push_back(m_imu.GetRoll());
+    m_imuData.push_back(m_imu.GetPitch());
+    m_imuData.push_back(m_imu.GetYaw());
+    m_imuData.push_back(m_imu.GetVelocityX());
+    m_imuData.push_back(m_imu.GetVelocityY());
+    m_imuData.push_back(m_imu.GetVelocityZ());
+    m_imuData.push_back(m_imu.GetWorldLinearAccelX());
+    m_imuData.push_back(m_imu.GetWorldLinearAccelY());
+    m_imuData.push_back(m_imu.GetWorldLinearAccelZ());*/
+    m_imuData.push_back(0);
+    m_imuData.push_back(1);
+    m_imuData.push_back(2);
+    m_imuData.push_back(3);
+    m_imuData.push_back(4);
+    m_imuData.push_back(5);
+    m_imuData.push_back(6);
+    m_imuData.push_back(7);
+    m_imuData.push_back(8);
+
+    return m_imuData;
+}
+
 void SwerveDrivetrain::LogModulesToDashboard() {
     frc::SmartDashboard::PutData(&m_frontLeft);
     frc::SmartDashboard::PutData(&m_frontRight);

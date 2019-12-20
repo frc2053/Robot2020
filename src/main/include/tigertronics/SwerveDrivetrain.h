@@ -32,6 +32,8 @@ public:
         return frc_new::Rotation2d(units::degree_t(0));
     }
 
+    const std::vector<double>& GetIMUData();
+
     void Drive(units::meters_per_second_t xSpeed,
             units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
             bool fieldRelative);
@@ -67,4 +69,5 @@ public:
     frc_new::SwerveDriveOdometry m_odometry{m_kinematics, frc_new::Pose2d()};
 
     frc_new::Twist2d m_chassisSpeeds;
+    std::vector<double> m_imuData;
 };
