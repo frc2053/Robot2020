@@ -110,11 +110,27 @@ public:
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		endpoint.send("call_service_client", message);
 	}
+	
+	void WaitForJetson() {
+		while(!connectionSuccess) {
+			endpoint.connect(connection_uri, "", open_handler, retry_handler, nullptr, nullptr);
+		}
+	}
 
 	void SetConnectionUri(std::string uri) {
 		connection_uri = uri;
 	}
 private:
+
+	void open_handler(client* c, websocketpp::connection_hdl hdl) {
+		connectionSuccess = true;
+	}
+
+	void retry_handler(client* c, websocketpp::connection_hdl hdl) {
+		connectionSuccess = false;
+	}
+
 	std::string connection_uri;
 	websocket_endpoint endpoint;
+	bool connectionSuccess = false;
 };

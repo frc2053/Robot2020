@@ -26,6 +26,8 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 
 RosBridge::RosBridge() : frc::Subsystem("RosBridgeSubsystem") {
     rbc.SetConnectionUri("ws://10.20.53.42:5800");
+    //might have to change so that we sub and pub in seperate thread so we dont block bot execution loop
+    rbc.WaitForJetson();
     rbc.Subscribe("topic_subscriber", "/frc_diff_drive_controller/cmd_vel", velocity_callback);
     rbc.Advertise("odom_sender", "/odom", "nav_msgs/Odometry");
     rbc.Advertise("imu_sender", "/imu", "sensor_msgs/Imu");
