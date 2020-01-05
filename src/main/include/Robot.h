@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2017-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -8,21 +8,12 @@
 #pragma once
 
 #include <frc/TimedRobot.h>
-#include <frc/commands/Command.h>
-#include <frc/smartdashboard/SendableChooser.h>
+#include <frc2/command/Command.h>
 
-#include "OI.h"
-#include "subsystems/SwerveSubsystem.h"
-#include "subsystems/RosBridge.h"
-#include "commands/DriveCommand.h"
-#include "commands/DriveWithROS.h"
+#include "RobotContainer.h"
 
 class Robot : public frc::TimedRobot {
  public:
-  static std::unique_ptr<SwerveSubsystem> swerveSubsystem;
-  static std::unique_ptr<RosBridge> rosBridgeSubsystem;
-  static std::unique_ptr<OI> oi;
-
   void RobotInit() override;
   void RobotPeriodic() override;
   void DisabledInit() override;
@@ -34,6 +25,10 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
  private:
- //std::unique_ptr<frc::Command> driveCommand;
- //frc::SendableChooser<frc::Command*> driveChooser;
+  // Have it null by default so that if testing teleop it
+  // doesn't have undefined behavior and potentially crash.
+  frc2::Command* m_calibrateWheelsCommand = nullptr;
+  frc2::Command* m_autonomousCommand = nullptr;
+
+  RobotContainer m_container;
 };

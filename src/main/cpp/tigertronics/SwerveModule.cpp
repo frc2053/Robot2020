@@ -1,7 +1,8 @@
 #include "tigertronics/SwerveModule.h"
 
-#include <frc_new/geometry/Rotation2d.h>
+#include <frc/geometry/Rotation2d.h>
 #include <frc/smartdashboard/SendableBuilder.h>
+#include <frc/smartdashboard/SendableRegistry.h>
 
 #define M_PI 3.14159265358979323846
 
@@ -16,43 +17,42 @@ SwerveModule::SwerveModule(const int driveMotorPort, const int turingMotorPort, 
     , m_turningMotor(turingMotorPort), m_drivePIDController(m_driveMotor.GetPIDController())
     , m_driveEncoder(m_driveMotor.GetEncoder())
     , kCalibrationValue(calibrationValue) {
-    SetName(name + " SwerveModule");
-    SetSubsystem("SwerveSubsystem");
+    frc::SendableRegistry::GetInstance().SetName(this, name + " SwerveModule");
+    frc::SendableRegistry::GetInstance().SetSubsystem(this, "SwerveSubsystem");
     SetupDriveMotor();
     SetupTurningMotor();
 }
 
-void SwerveModule::SetDesiredState(units::meters_per_second_t speed, const frc_new::Rotation2d& angle) {
-    frc_new::SwerveModuleState state;
+void SwerveModule::SetDesiredState(units::meters_per_second_t speed, const frc::Rotation2d& angle) {
+    frc::SwerveModuleState state;
     state.speed = speed;
     state.angle = angle;
     SetDesiredState(state);
+}
+
+void SwerveModule::SetSetpointAbs(int setpoint) {
+    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, setpoint);
 }
 
 double map(double x, double in_min, double in_max, double out_min, double out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-void SwerveModule::SetDesiredState(const frc_new::SwerveModuleState& state) {
-    frc_new::Rotation2d inverseInput = frc_new::Rotation2d(state.angle.Cos(), -state.angle.Sin());
-    frc_new::Rotation2d deltaAngle = GetState().angle.RotateBy(inverseInput);
-    frc_new::Rotation2d setAngle = state.angle;
+void SwerveModule::SetDesiredState(const frc::SwerveModuleState& state) {
+    frc::Rotation2d inverseInput = frc::Rotation2d(state.angle.Cos(), -state.angle.Sin());
+    frc::Rotation2d deltaAngle = GetState().angle.RotateBy(inverseInput);
+    frc::Rotation2d setAngle = state.angle;
     units::meters_per_second_t setSpeed = state.speed;
-    if(deltaAngle.Radians().value() > (M_PI/2) && deltaAngle.Radians().value() < ((3 * M_PI) / 2)) {
-        setAngle.RotateBy(frc_new::Rotation2d(units::radian_t(M_PI)));
-        setSpeed = setSpeed * -1;
-    }
-
     units::revolutions_per_minute_t setrpm = ConvertLinearToAngularVelocity(state.speed, kWheelRadius);
     //m_drivePIDController.Set(setrpm.value(), rev::ControlType::kVelocity);
     m_driveMotor.Set(map(setSpeed.value(), -3, 3, -1, 1));
     m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, ConvertRadiansToEncoderTicks(setAngle.Radians()));
 }
 
-frc_new::SwerveModuleState SwerveModule::GetState() {
+frc::SwerveModuleState SwerveModule::GetState() {
     units::radians_per_second_t wheelSpeed = units::revolutions_per_minute_t(0);
-    frc_new::SwerveModuleState state;
-    state.angle = frc_new::Rotation2d(ConvertEncoderUnitsToRadians(0));
+    frc::SwerveModuleState state;
+    state.angle = frc::Rotation2d(ConvertEncoderUnitsToRadians(0));
     state.speed = ConvertAngularToLinearVelocity(wheelSpeed, kWheelRadius);
     return state;
 }
@@ -71,6 +71,33 @@ void SwerveModule::SetupDriveMotor() {
 void SwerveModule::SetupTurningMotor() {
     m_turningMotor.ConfigFactoryDefault();
     m_turningMotor.ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);
+    m_turningMotor.SetSensorPhase(false);
+    m_turningMotor.SetInverted(true);
+    m_turningMotor.SetStatusFramePeriod(ctre::phoenix::motorcontrol::StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
+    m_turningMotor.SetStatusFramePeriod(ctre::phoenix::motorcontrol::StatusFrameEnhanced::Status_10_MotionMagic, 10, 10);
+    m_turningMotor.ConfigNominalOutputForward(0, 10);
+    m_turningMotor.ConfigNominalOutputReverse(0, 10);
+    m_turningMotor.ConfigPeakOutputForward(1, 10);
+    m_turningMotor.ConfigPeakOutputReverse(-1, 10);
+    m_turningMotor.Config_kF(0, 0, 10);
+    m_turningMotor.Config_kP(0, kTurnP, 10);
+    m_turningMotor.Config_kI(0, kTurnI, 10);
+    m_turningMotor.Config_kD(0, kTurnD, 10);
+    m_turningMotor.ConfigAllowableClosedloopError(0, kTurnErrorAllowance, 10);
+    m_turningMotor.EnableCurrentLimit(true);
+    m_turningMotor.ConfigContinuousCurrentLimit(10, 10);
+    m_turningMotor.ConfigPeakCurrentLimit(0, 10);
+    m_turningMotor.GetSensorCollection().SyncQuadratureWithPulseWidth(0, 0, true, kCalibrationValue, 10);
+    m_turningMotor.ConfigMotionCruiseVelocity(ConvertRadiansPerSecondToTalonVelocity(kMaxTurnVel), 10);
+    m_turningMotor.ConfigMotionAcceleration(kMaxTurnAccel, 10);
+    m_turningMotor.SetSelectedSensorPosition(0);
+    m_turningMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+    m_turningMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+}
+
+void SwerveModule::SetupForCalibration() {
+    m_turningMotor.ConfigFactoryDefault();
+    m_turningMotor.ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Absolute, 0, 10);
     m_turningMotor.SetSensorPhase(false);
     m_turningMotor.SetInverted(true);
     m_turningMotor.SetStatusFramePeriod(ctre::phoenix::motorcontrol::StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
@@ -131,7 +158,7 @@ void SwerveModule::InitSendable(frc::SendableBuilder& builder) {
     builder.AddDoubleProperty("driveSetpoint", [=]() { return GetState().speed.value(); }, 
     [=](double value) { SetDesiredState(units::meters_per_second_t(value), GetState().angle); });
     builder.AddDoubleProperty("angleSetpoint", [=]() { return GetState().angle.Degrees().value(); }, 
-    [=](double value) { SetDesiredState(GetState().speed, frc_new::Rotation2d(units::degree_t(value))); });
+    [=](double value) { SetDesiredState(GetState().speed, frc::Rotation2d(units::degree_t(value))); });
 }
 
 void SwerveModule::InvertDrive(bool inverted) {

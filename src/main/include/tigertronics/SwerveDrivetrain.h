@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include <frc_new/geometry/Translation2d.h>
-#include <frc_new/geometry/Pose2d.h>
-#include <frc_new/kinematics/SwerveDriveKinematics.h>
-#include <frc_new/kinematics/SwerveDriveOdometry.h>
-#include <frc_new/kinematics/ChassisSpeeds.h>
+#include <frc/geometry/Translation2d.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/kinematics/SwerveDriveKinematics.h>
+#include <frc/kinematics/SwerveDriveOdometry.h>
+#include <frc/kinematics/ChassisSpeeds.h>
 #include <AHRS.h>
 #include <tigertronics/SwerveModule.h>
 #include <Constants.h>
@@ -27,9 +27,9 @@ public:
     /**
      * Get the robot angle as a Rotation2d.
      */
-    frc_new::Rotation2d GetAngle() {
+    frc::Rotation2d GetAngle() {
         // Negating the angle because WPILib Gyros are CW positive.
-        return frc_new::Rotation2d(units::degree_t(-m_imu.GetYaw()));
+        return frc::Rotation2d(units::degree_t(-m_imu.GetYaw()));
     }
 
     std::vector<double> GetIMUData();
@@ -37,36 +37,40 @@ public:
     void Drive(units::meters_per_second_t xSpeed,
             units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
             bool fieldRelative);
-    const frc_new::Pose2d& UpdateOdometry();
+    const frc::Pose2d& UpdateOdometry();
     void LogModulesToDashboard();
-    const frc_new::Twist2d& GetDrivetrainSpeedsWorld();
+    const frc::Twist2d& GetDrivetrainSpeedsWorld();
 
     units::meters_per_second_t kMaxSpeed =
     3.0_mps;  // 3 meters per second
     units::radians_per_second_t kMaxAngularSpeed{
     10};  // 1/2 rotation per second
 
+    void SetupForCalibration();
+    void SetupForDriving();
+    void ManualMoveWheel(std::string wheel, int setpoint);
+
  private:
     //Apparently all of math is Right Hand Rule Coordinate system but I dont like it
     units::meter_t widthLoc = tigertronics::constants::drivebaseWidth / 2;
     units::meter_t lengthLoc = tigertronics::constants::drivebaseLength / 2;
-    frc_new::Translation2d m_frontLeftLocation{lengthLoc, widthLoc};
-    frc_new::Translation2d m_frontRightLocation{lengthLoc, -widthLoc};
-    frc_new::Translation2d m_backLeftLocation{-lengthLoc, widthLoc};
-    frc_new::Translation2d m_backRightLocation{-lengthLoc, -widthLoc};
+    frc::Translation2d m_frontLeftLocation{lengthLoc, widthLoc};
+    frc::Translation2d m_frontRightLocation{lengthLoc, -widthLoc};
+    frc::Translation2d m_backLeftLocation{-lengthLoc, widthLoc};
+    frc::Translation2d m_backRightLocation{-lengthLoc, -widthLoc};
 
-    SwerveModule m_frontLeft{tigertronics::ports::swerveFLDrive, tigertronics::ports::swerveFLTurn, 0, "FL"};
-    SwerveModule m_frontRight{tigertronics::ports::swerveFRDrive, tigertronics::ports::swerveFRTurn, 0, "FR"};
-    SwerveModule m_backLeft{tigertronics::ports::swerveBLDrive, tigertronics::ports::swerveBLTurn, 0, "BL"};
-    SwerveModule m_backRight{tigertronics::ports::swerveBRDrive, tigertronics::ports::swerveBRTurn, 0, "BR"};
+    SwerveModule m_frontLeft{tigertronics::ports::swerveFLDrive, tigertronics::ports::swerveFLTurn, tigertronics::constants::swerveFLCal, "FL"};
+    SwerveModule m_frontRight{tigertronics::ports::swerveFRDrive, tigertronics::ports::swerveFRTurn, tigertronics::constants::swerveFRCal, "FR"};
+    SwerveModule m_backLeft{tigertronics::ports::swerveBLDrive, tigertronics::ports::swerveBLTurn, tigertronics::constants::swerveBLCal, "BL"};
+    SwerveModule m_backRight{tigertronics::ports::swerveBRDrive, tigertronics::ports::swerveBRTurn, tigertronics::constants::swerveBRCal, "BR"};
 
     AHRS m_imu{frc::SPI::Port::kMXP};
 
-    frc_new::SwerveDriveKinematics m_kinematics{
+    frc::SwerveDriveKinematics<4> m_kinematics{
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
         m_backRightLocation};
 
-    frc_new::SwerveDriveOdometry m_odometry{m_kinematics, frc_new::Pose2d()};
+    frc::SwerveDriveOdometry<4> m_odometry{m_kinematics, GetAngle(), frc::Pose2d()};
 
-    frc_new::Twist2d m_chassisSpeeds;
+    frc::Twist2d m_chassisSpeeds;
 };

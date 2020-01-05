@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
 #include "units/units.h"
@@ -26,7 +33,12 @@ namespace tigertronics {
         static constexpr double swerveDrivekF = 0.000015;
         static constexpr double swerveDrivekP = 0.1;
         static constexpr double swerveDrivekI = 0.0;
-        static constexpr double swerveDrivekD = 0.0;        
+        static constexpr double swerveDrivekD = 0.0;
+
+        static constexpr int swerveFLCal = 483;
+        static constexpr int swerveFRCal = 605;  
+        static constexpr int swerveBLCal = 2570;  
+        static constexpr int swerveBRCal = 1420;   
     }
 
     namespace ports {

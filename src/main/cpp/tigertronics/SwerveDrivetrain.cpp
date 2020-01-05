@@ -20,25 +20,54 @@ SwerveDrivetrain::SwerveDrivetrain() {
     m_backRight.InvertRot(false);
 }
 
+void SwerveDrivetrain::SetupForCalibration() {
+    m_frontLeft.SetupForCalibration();
+    m_frontRight.SetupForCalibration();
+    m_backLeft.SetupForCalibration();
+    m_backRight.SetupForCalibration();
+}
+
+void SwerveDrivetrain::SetupForDriving() {
+    m_frontLeft.SetupTurningMotor();
+    m_frontRight.SetupTurningMotor();
+    m_backLeft.SetupTurningMotor();
+    m_backRight.SetupTurningMotor();
+}
+
+void SwerveDrivetrain::ManualMoveWheel(std::string wheel, int setpoint) {
+    if(wheel == "FL") {
+        m_frontLeft.SetSetpointAbs(setpoint);
+    }
+    if(wheel == "FR") {
+        m_frontRight.SetSetpointAbs(setpoint);
+    }
+    if(wheel == "BL") {
+        m_backLeft.SetSetpointAbs(setpoint);
+    }
+    if(wheel == "BR") {
+        m_backRight.SetSetpointAbs(setpoint);
+    }
+}
+
 //+x is forward
 //+y is left
 //+rot is CCW
 void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
                        units::meters_per_second_t ySpeed,
                        units::radians_per_second_t rot, bool fieldRelative) {   
-  std::array<frc_new::SwerveModuleState, 4> states = m_kinematics.ToSwerveModuleStates(
-      fieldRelative ? frc_new::ChassisSpeeds::FromFieldRelativeSpeeds(
+  std::array<frc::SwerveModuleState, 4> states = m_kinematics.ToSwerveModuleStates(
+      fieldRelative ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
                           xSpeed, ySpeed, rot, GetAngle())
-                    : frc_new::ChassisSpeeds{xSpeed, ySpeed, rot});
+                    : frc::ChassisSpeeds{xSpeed, ySpeed, rot});
 
   m_kinematics.NormalizeWheelSpeeds(&states, kMaxSpeed);
 
-  frc_new::SwerveModuleState fl = states.at(0);
-  frc_new::SwerveModuleState fr = states.at(1);
-  frc_new::SwerveModuleState bl = states.at(2);
-  frc_new::SwerveModuleState br = states.at(3);
+  frc::SwerveModuleState fl = states.at(0);
+  frc::SwerveModuleState fr = states.at(1);
+  frc::SwerveModuleState bl = states.at(2);
+  frc::SwerveModuleState br = states.at(3);
 
-  frc_new::ChassisSpeeds speeds = m_kinematics.ToChassisSpeeds(fl, fr, bl, br);
+  frc::ChassisSpeeds speeds = m_kinematics.ToChassisSpeeds(fl, fr, bl, br);
 
 
   m_chassisSpeeds.dx = units::meter_t(speeds.vx.value());
@@ -51,12 +80,12 @@ void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
   m_backRight.SetDesiredState(br);
 }
 
-const frc_new::Pose2d& SwerveDrivetrain::UpdateOdometry() {
+const frc::Pose2d& SwerveDrivetrain::UpdateOdometry() {
   return m_odometry.Update(GetAngle(), m_frontLeft.GetState(), m_frontRight.GetState(),
                     m_backLeft.GetState(), m_backRight.GetState());
 }
 
-const frc_new::Twist2d& SwerveDrivetrain::GetDrivetrainSpeedsWorld() {
+const frc::Twist2d& SwerveDrivetrain::GetDrivetrainSpeedsWorld() {
     return m_chassisSpeeds;
 }
 

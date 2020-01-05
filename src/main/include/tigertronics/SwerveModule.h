@@ -9,24 +9,26 @@
 
 #include <ctre/phoenix/motorcontrol/can/TalonSRX.h>
 #include <rev/CANSparkMax.h>
-#include <frc_new/kinematics/SwerveModuleState.h>
+#include <frc/kinematics/SwerveModuleState.h>
 #include "Constants.h"
 #include <units/units.h>
 #include <frc/smartdashboard/SendableBase.h>
-#include <frc_new/geometry/Rotation2d.h>
+#include <frc/geometry/Rotation2d.h>
 
-class SwerveModule : public frc::SendableBase {
+class SwerveModule : public frc::Sendable {
 public:
     SwerveModule(int driveMotorChannel, int turningMotorChannel, int calibrationValue, std::string name);
-    frc_new::SwerveModuleState GetState();
-    void SetDesiredState(const frc_new::SwerveModuleState& state);
-    void SetDesiredState(units::meters_per_second_t speed, const frc_new::Rotation2d& angle);
+    frc::SwerveModuleState GetState();
+    void SetDesiredState(const frc::SwerveModuleState& state);
+    void SetDesiredState(units::meters_per_second_t speed, const frc::Rotation2d& angle);
     void InitSendable(frc::SendableBuilder& builder) override;
     void InvertDrive(bool inverted);
     void InvertRot(bool inverted);
+    void SetupForCalibration();
+    void SetupTurningMotor();
+    void SetSetpointAbs(int setpoint);
 private:
     void SetupDriveMotor();
-    void SetupTurningMotor();
     units::meters_per_second_t ConvertAngularToLinearVelocity(units::radians_per_second_t rpm, units::meter_t radius);
     units::radians_per_second_t ConvertLinearToAngularVelocity(units::meters_per_second_t velocity, units::meter_t radius);
     units::radians_per_second_t ConvertTalonVelocityToRadiansPerSecond(int ticksPer100ms);
@@ -45,9 +47,9 @@ private:
     static constexpr units::radians_per_second_t kMaxTurnVel = tigertronics::constants::swerveTurningMaxVel;
     static constexpr double kMaxTurnAccel = tigertronics::constants::swerveTurningMaxAccel;
     static constexpr int kTurnErrorAllowance = tigertronics::constants::swerveTurningErrorAllowance;
-    int kCalibrationValue;
     rev::CANSparkMax m_driveMotor;
+    ctre::phoenix::motorcontrol::can::TalonSRX m_turningMotor;
     rev::CANPIDController m_drivePIDController;
     rev::CANEncoder m_driveEncoder;
-    ctre::phoenix::motorcontrol::can::TalonSRX m_turningMotor;
+    int kCalibrationValue;
 };
