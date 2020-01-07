@@ -9,6 +9,7 @@
 #include "frc2/command/button/JoystickButton.h"
 #include "frc/Joystick.h"
 #include "commands/ROSDrive.h"
+#include "commands/CalibrateWheels.h"
 
 RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsCommand(&m_drivetrain) {
   // Initialize all of your commands and subsystems here
@@ -18,16 +19,19 @@ RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsComma
     [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
     [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kRightHand); },
     &m_drivetrain
-  ));
+  ));*/
 
   // Configure the button bindings
   ConfigureButtonBindings();
-  */
+  
 }
 
 void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton rosButton(&driverController, (int) XboxController::Button::kBumperLeft);
   rosButton.WhileHeld(ROSDrive(&m_drivetrain));
+
+  frc2::JoystickButton calButton(&driverController, (int) XboxController::Button::kA);
+  calButton.WhenPressed(CalibrateWheels(&m_drivetrain));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

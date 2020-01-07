@@ -11,8 +11,47 @@
 #include <frc2/command/CommandScheduler.h>
 #include <frc2/command/WaitCommand.h>
 #include <frc2/command/SequentialCommandGroup.h>
+#include <frc/shuffleboard/Shuffleboard.h>
 
-void Robot::RobotInit() {}
+void Robot::RobotInit() {
+
+    frc2::CommandScheduler::GetInstance().OnCommandInitialize(
+    [](const frc2::Command& command) {
+      frc::Shuffleboard::AddEventMarker(
+        "Command Init", command.GetName(),
+        frc::ShuffleboardEventImportance::kNormal
+      );
+    }
+  );
+
+  frc2::CommandScheduler::GetInstance().OnCommandExecute(
+    [](const frc2::Command& command) {
+      frc::Shuffleboard::AddEventMarker(
+        "Command Execute", command.GetName(),
+        frc::ShuffleboardEventImportance::kNormal
+      );
+    }
+  );
+
+  frc2::CommandScheduler::GetInstance().OnCommandFinish(
+    [](const frc2::Command& command) {
+      frc::Shuffleboard::AddEventMarker(
+        "Command Finish", command.GetName(),
+        frc::ShuffleboardEventImportance::kNormal
+      );
+    }
+  );
+
+  frc2::CommandScheduler::GetInstance().OnCommandInterrupt(
+    [](const frc2::Command& command) {
+      frc::Shuffleboard::AddEventMarker(
+        "Command Interrupted", command.GetName(),
+        frc::ShuffleboardEventImportance::kNormal
+      );
+    }
+  );
+
+}
 
 /**
  * This function is called every robot packet, no matter the mode. Use
@@ -22,7 +61,10 @@ void Robot::RobotInit() {}
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
+void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run();
+  std::cout << "Scheduling " << m_container.GetCalibrateWheelsCommand()->IsScheduled() << "\n";
+  std::cout << "Finished " << m_container.GetCalibrateWheelsCommand()->IsFinished() << "\n";
+}
 
 /**
  * This function is called once each time the robot enters Disabled mode. You
@@ -41,16 +83,14 @@ void Robot::AutonomousInit() {
   m_calibrateWheelsCommand = m_container.GetCalibrateWheelsCommand();
   m_autonomousCommand = m_container.GetAutonomousCommand();
 
-  frc2::WaitCommand waitForWheelCal = frc2::WaitCommand(.25_s);
-
-  frc2::SequentialCommandGroup{CalibrateWheels(&m_container.m_drivetrain), frc2::WaitCommand(1_s)}.Schedule();
-
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();
   }
 }
 
-void Robot::AutonomousPeriodic() {}
+void Robot::AutonomousPeriodic() {
+
+}
 
 void Robot::TeleopInit() {
   // This makes sure that the autonomous stops running when

@@ -24,7 +24,7 @@ void CalibrateWheels::Execute() {
   m_subsystem->ManualWheelMove("FR", tigertronics::constants::swerveFRCal);
   m_subsystem->ManualWheelMove("BL", tigertronics::constants::swerveBLCal);
   m_subsystem->ManualWheelMove("BR", tigertronics::constants::swerveBRCal);
-  isDone = false;
+  isDone = true;
 }
 
 // Called once the command ends or is interrupted.
