@@ -29,7 +29,7 @@ void CalibrateWheels::Execute() {
 
 // Called once the command ends or is interrupted.
 void CalibrateWheels::End(bool interrupted) {
-  m_subsystem->ChangeToDrivingMode();
+ // m_subsystem->ChangeToDrivingMode();
 }
 
 // Returns true when the command should end.

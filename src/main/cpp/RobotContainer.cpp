@@ -13,7 +13,7 @@
 RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsCommand(&m_drivetrain) {
   // Initialize all of your commands and subsystems here
 
-  m_drivetrain.SetDefaultCommand(TeleopDrive(
+  /*m_drivetrain.SetDefaultCommand(TeleopDrive(
     [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
     [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
     [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kRightHand); },
@@ -22,6 +22,7 @@ RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsComma
 
   // Configure the button bindings
   ConfigureButtonBindings();
+  */
 }
 
 void RobotContainer::ConfigureButtonBindings() {
