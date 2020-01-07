@@ -8,7 +8,7 @@
 #include "commands/CalibrateWheels.h"
 
 CalibrateWheels::CalibrateWheels(SwerveSubsystem* subsystem) : m_subsystem{subsystem} {
-  SetName("TeleopDrive");
+  SetName("CalibrateWheels");
   AddRequirements({m_subsystem});
   isDone = false;
 }
@@ -24,7 +24,7 @@ void CalibrateWheels::Execute() {
   m_subsystem->ManualWheelMove("FR", tigertronics::constants::swerveFRCal);
   m_subsystem->ManualWheelMove("BL", tigertronics::constants::swerveBLCal);
   m_subsystem->ManualWheelMove("BR", tigertronics::constants::swerveBRCal);
-  isDone = true;
+  isDone = false;
 }
 
 // Called once the command ends or is interrupted.

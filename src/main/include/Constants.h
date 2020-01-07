@@ -35,10 +35,10 @@ namespace tigertronics {
         static constexpr double swerveDrivekI = 0.0;
         static constexpr double swerveDrivekD = 0.0;
 
-        static constexpr int swerveFLCal = 483;
-        static constexpr int swerveFRCal = 605;  
-        static constexpr int swerveBLCal = 2570;  
-        static constexpr int swerveBRCal = 1420;   
+        static constexpr int swerveFLCal = 483;  //539
+        static constexpr int swerveFRCal = 605;  //594  
+        static constexpr int swerveBLCal = 2570; //2441 
+        static constexpr int swerveBRCal = 1420; //1522  
     }
 
     namespace ports {

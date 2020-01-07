@@ -10,6 +10,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 #include <frc2/command/WaitCommand.h>
+#include <frc2/command/SequentialCommandGroup.h>
 
 void Robot::RobotInit() {}
 
@@ -42,8 +43,7 @@ void Robot::AutonomousInit() {
 
   frc2::WaitCommand waitForWheelCal = frc2::WaitCommand(.25_s);
 
-  m_calibrateWheelsCommand->Schedule();
-  waitForWheelCal.Schedule();
+  frc2::SequentialCommandGroup{CalibrateWheels(&m_container.m_drivetrain), frc2::WaitCommand(1_s)}.Schedule();
 
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();
