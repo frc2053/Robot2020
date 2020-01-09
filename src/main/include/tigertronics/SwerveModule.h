@@ -19,7 +19,7 @@ class SwerveModule : public frc::Sendable {
 public:
     SwerveModule(int driveMotorChannel, int turningMotorChannel, int calibrationValue, std::string name);
     frc::SwerveModuleState GetState();
-    void SetDesiredState(const frc::SwerveModuleState& state);
+    void SetDesiredState(frc::SwerveModuleState& state);
     void SetDesiredState(units::meters_per_second_t speed, const frc::Rotation2d& angle);
     void InitSendable(frc::SendableBuilder& builder) override;
     void InvertDrive(bool inverted);

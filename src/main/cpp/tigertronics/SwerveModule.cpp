@@ -38,21 +38,30 @@ double map(double x, double in_min, double in_max, double out_min, double out_ma
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-void SwerveModule::SetDesiredState(const frc::SwerveModuleState& state) {
-    frc::Rotation2d inverseInput = frc::Rotation2d(state.angle.Cos(), -state.angle.Sin());
-    frc::Rotation2d deltaAngle = GetState().angle.RotateBy(inverseInput);
-    frc::Rotation2d setAngle = state.angle;
-    units::meters_per_second_t setSpeed = state.speed;
+void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
     units::revolutions_per_minute_t setrpm = ConvertLinearToAngularVelocity(state.speed, kWheelRadius);
     //m_drivePIDController.Set(setrpm.value(), rev::ControlType::kVelocity);
-    m_driveMotor.Set(map(setSpeed.value(), -3, 3, -1, 1));
-    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, ConvertRadiansToEncoderTicks(setAngle.Radians()));
+
+    double desiredAngle = state.angle.Degrees().value();
+    double currentAngle = GetState().angle.Degrees().value();
+
+
+    std::cout << "Current Angle: " << currentAngle << "\n";
+    std::cout << "Desired Angle: " << desiredAngle << "\n";
+ 
+    if(fabs(desiredAngle - currentAngle) > 90 && fabs(desiredAngle - currentAngle) < 270) {
+        state.angle = frc::Rotation2d(units::degree_t(desiredAngle + 180 % 360));
+        state.speed = -state.speed;
+    }
+
+    m_driveMotor.Set(map(state.speed.value(), -3, 3, -1, 1));
+    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, ConvertRadiansToEncoderTicks(state.angle.Radians()));
 }
 
 frc::SwerveModuleState SwerveModule::GetState() {
-    units::radians_per_second_t wheelSpeed = units::revolutions_per_minute_t(0);
+    units::radians_per_second_t wheelSpeed = units::revolutions_per_minute_t(m_driveEncoder.GetVelocity());
     frc::SwerveModuleState state;
-    state.angle = frc::Rotation2d(ConvertEncoderUnitsToRadians(0));
+    state.angle = frc::Rotation2d(ConvertEncoderUnitsToRadians(m_turningMotor.GetSelectedSensorPosition()));
     state.speed = ConvertAngularToLinearVelocity(wheelSpeed, kWheelRadius);
     return state;
 }
