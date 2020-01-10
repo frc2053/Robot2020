@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/TeleopDrive.h"
+#include "commands/drive/TeleopDrive.h"
 
 TeleopDrive::TeleopDrive(std::function<double()> fow, 
                          std::function<double()> strafe,

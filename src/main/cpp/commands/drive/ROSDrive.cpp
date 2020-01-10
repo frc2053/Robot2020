@@ -5,20 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/EmptyCommand.h"
+#include "commands/drive/ROSDrive.h"
 
-EmptyCommand::EmptyCommand() {
-  // Use addRequirements() here to declare subsystem dependencies.
+ROSDrive::ROSDrive(SwerveSubsystem* subsystem) : m_subsystem{subsystem} {
+  AddRequirements({m_subsystem});
 }
 
 // Called when the command is initially scheduled.
-void EmptyCommand::Initialize() {}
+void ROSDrive::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void EmptyCommand::Execute() {}
+void ROSDrive::Execute() {
+  std::shared_ptr<RosTypes::Twist> twist = m_subsystem->GetTwist();
+  m_subsystem->DriveWithRos(units::meters_per_second_t(twist->linear.x), units::meters_per_second_t(twist->linear.y), units::radians_per_second_t(twist->angular.z));
+}
 
 // Called once the command ends or is interrupted.
-void EmptyCommand::End(bool interrupted) {}
+void ROSDrive::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool EmptyCommand::IsFinished() { return false; }
+bool ROSDrive::IsFinished() { return false; }

@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/CalibrateWheels.h"
+#include "commands/drive/CalibrateWheels.h"
 
 CalibrateWheels::CalibrateWheels(SwerveSubsystem* subsystem) : m_subsystem{subsystem} {
   SetName("TeleopDrive");

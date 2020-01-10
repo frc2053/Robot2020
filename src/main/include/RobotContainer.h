@@ -10,9 +10,9 @@
 #include <frc2/command/Command.h>
 
 #include <frc/XboxController.h>
-#include "commands/TeleopDrive.h"
-#include "commands/EmptyCommand.h"
-#include "commands/CalibrateWheels.h"
+#include "commands/drive/TeleopDrive.h"
+#include "commands/drive/EmptyCommand.h"
+#include "commands/drive/CalibrateWheels.h"
 #include "subsystems/SwerveSubsystem.h"
 
 /**
