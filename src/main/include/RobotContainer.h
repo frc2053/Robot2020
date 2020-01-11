@@ -14,6 +14,10 @@
 #include "commands/drive/EmptyCommand.h"
 #include "commands/drive/CalibrateWheels.h"
 #include "subsystems/SwerveSubsystem.h"
+#include "subsystems/ControlPanelSubsystem.h"
+#include "commands/controlpanel/ManualWheelRotation.h"
+#include "commands/controlpanel/RotationControl.h"
+#include "commands/controlpanel/PositionControl.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -30,6 +34,7 @@ class RobotContainer {
   frc2::Command* GetCalibrateWheelsCommand();
 
   SwerveSubsystem m_drivetrain;
+  ControlPanelSubsystem m_controlpanel;
 
   CalibrateWheels m_calibrateWheelsCommand;
   EmptyCommand m_autonomousCommand;

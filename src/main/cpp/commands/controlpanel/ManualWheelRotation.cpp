@@ -7,13 +7,8 @@ ManualWheelRotation::ManualWheelRotation(ControlPanelSubsystem* subsystem, std::
     isDone = false;
 }
 
-void ManualWheelRotation::Execute() {
-    controlPanelSubsystem->SetControlPanelWheelSpeed(runIt());
-    isDone = true;
-}
+void ManualWheelRotation::Execute() { controlPanelSubsystem->SetControlPanelWheelSpeed(runIt()); }
 
-void ManualWheelRotation::End(bool interrupted) {
-    controlPanelSubsystem->SetControlPanelWheelSpeed(0);
-}
+bool ManualWheelRotation::IsFinished() { return true; }
 
-bool ManualWheelRotation::IsFinished() { return isDone; }
+void ManualWheelRotation::End(bool) { controlPanelSubsystem->SetControlPanelWheelSpeed(0); }

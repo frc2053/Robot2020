@@ -27,6 +27,12 @@ RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsComma
 void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton rosButton(&driverController, (int) XboxController::Button::kBumperLeft);
   rosButton.WhileHeld(ROSDrive(&m_drivetrain));
+  frc2::JoystickButton manualCPWheel(&operatorController, (int) XboxController::Button::kBumperLeft);
+  manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
+  frc2::JoystickButton rotControl(&operatorController, (int) XboxController::Button::kA);
+  rotControl.WhileActiveOnce(RotationControl(&m_controlpanel));
+  frc2::JoystickButton posControl(&operatorController, (int) XboxController::Button::kB);
+  posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
