@@ -83,6 +83,14 @@ void Robot::AutonomousInit() {
   m_calibrateWheelsCommand = m_container.GetCalibrateWheelsCommand();
   m_autonomousCommand = m_container.GetAutonomousCommand();
 
+<<<<<<< HEAD
+=======
+  frc2::WaitCommand waitForWheelCal = frc2::WaitCommand(.25_s);
+
+  m_calibrateWheelsCommand->Schedule();
+  waitForWheelCal.Schedule();
+
+>>>>>>> optimization
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();
   }
