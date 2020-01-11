@@ -25,7 +25,7 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 
 SwerveSubsystem::SwerveSubsystem() {
     rbc.SetConnectionUri("ws://10.20.53.42:5800");
-    rbc.Subscribe("topic_subscriber", "/frc_diff_drive_controller/cmd_vel", velocity_callback);
+    rbc.Subscribe("topic_subscriber", "/drive_controller/cmd_vel", velocity_callback);
     rbc.Advertise("odom_sender", "/odom", "nav_msgs/Odometry");
     rbc.Advertise("imu_sender", "/imu", "sensor_msgs/Imu");
 }

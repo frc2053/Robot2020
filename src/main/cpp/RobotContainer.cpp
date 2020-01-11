@@ -14,12 +14,12 @@
 RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsCommand(&m_drivetrain) {
   // Initialize all of your commands and subsystems here
 
-  /*m_drivetrain.SetDefaultCommand(TeleopDrive(
+  m_drivetrain.SetDefaultCommand(TeleopDrive(
     [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
     [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
     [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kRightHand); },
     &m_drivetrain
-  ));*/
+  ));
 
   // Configure the button bindings
   ConfigureButtonBindings();
@@ -41,8 +41,4 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
 frc2::Command* RobotContainer::GetCalibrateWheelsCommand() {
   return &m_calibrateWheelsCommand;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> optimization

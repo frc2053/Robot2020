@@ -15,42 +15,6 @@
 
 void Robot::RobotInit() {
 
-    frc2::CommandScheduler::GetInstance().OnCommandInitialize(
-    [](const frc2::Command& command) {
-      frc::Shuffleboard::AddEventMarker(
-        "Command Init", command.GetName(),
-        frc::ShuffleboardEventImportance::kNormal
-      );
-    }
-  );
-
-  frc2::CommandScheduler::GetInstance().OnCommandExecute(
-    [](const frc2::Command& command) {
-      frc::Shuffleboard::AddEventMarker(
-        "Command Execute", command.GetName(),
-        frc::ShuffleboardEventImportance::kNormal
-      );
-    }
-  );
-
-  frc2::CommandScheduler::GetInstance().OnCommandFinish(
-    [](const frc2::Command& command) {
-      frc::Shuffleboard::AddEventMarker(
-        "Command Finish", command.GetName(),
-        frc::ShuffleboardEventImportance::kNormal
-      );
-    }
-  );
-
-  frc2::CommandScheduler::GetInstance().OnCommandInterrupt(
-    [](const frc2::Command& command) {
-      frc::Shuffleboard::AddEventMarker(
-        "Command Interrupted", command.GetName(),
-        frc::ShuffleboardEventImportance::kNormal
-      );
-    }
-  );
-
 }
 
 /**
@@ -61,10 +25,7 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run();
-  std::cout << "Scheduling " << m_container.GetCalibrateWheelsCommand()->IsScheduled() << "\n";
-  std::cout << "Finished " << m_container.GetCalibrateWheelsCommand()->IsFinished() << "\n";
-}
+void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
 
 /**
  * This function is called once each time the robot enters Disabled mode. You
@@ -83,14 +44,8 @@ void Robot::AutonomousInit() {
   m_calibrateWheelsCommand = m_container.GetCalibrateWheelsCommand();
   m_autonomousCommand = m_container.GetAutonomousCommand();
 
-<<<<<<< HEAD
-=======
-  frc2::WaitCommand waitForWheelCal = frc2::WaitCommand(.25_s);
-
   m_calibrateWheelsCommand->Schedule();
-  waitForWheelCal.Schedule();
 
->>>>>>> optimization
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();
   }
