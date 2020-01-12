@@ -12,10 +12,11 @@
 #include <frc/kinematics/SwerveModuleState.h>
 #include "Constants.h"
 #include <units/units.h>
-#include <frc/smartdashboard/SendableBase.h>
+#include "frc/smartdashboard/Sendable.h"
+#include <frc/smartdashboard/SendableHelper.h>
 #include <frc/geometry/Rotation2d.h>
 
-class SwerveModule : public frc::Sendable {
+class SwerveModule : public frc::Sendable, public frc::SendableHelper<SwerveModule> {
 public:
     SwerveModule(int driveMotorChannel, int turningMotorChannel, int calibrationValue, std::string name);
     frc::SwerveModuleState GetState();

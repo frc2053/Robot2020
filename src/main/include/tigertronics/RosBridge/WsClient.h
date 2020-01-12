@@ -1,3 +1,5 @@
+#pragma once
+
 #define ASIO_STANDALONE
 #define _WEBSOCKETPP_CPP11_MEMORY_
 #define _WEBSOCKETPP_CPP11_TYPE_TRAITS_

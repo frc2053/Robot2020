@@ -17,8 +17,8 @@ SwerveModule::SwerveModule(const int driveMotorPort, const int turingMotorPort, 
     , m_turningMotor(turingMotorPort), m_drivePIDController(m_driveMotor.GetPIDController())
     , m_driveEncoder(m_driveMotor.GetEncoder())
     , kCalibrationValue(calibrationValue) {
-    frc::SendableRegistry::GetInstance().SetName(this, name + " SwerveModule");
-    frc::SendableRegistry::GetInstance().SetSubsystem(this, "SwerveSubsystem");
+    SetName(name + " SwerveModule");
+    SetSubsystem("SwerveSubsystem");
     SetupDriveMotor();
     SetupTurningMotor();
 }
