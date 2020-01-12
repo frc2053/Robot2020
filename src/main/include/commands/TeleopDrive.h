@@ -32,8 +32,8 @@ class TeleopDrive
   bool IsFinished() override;
   void End(bool interrupted) override;
  private:
-  SwerveSubsystem* m_subsystem;
   std::function<double()> m_fow;
   std::function<double()> m_strafe;
   std::function<double()> m_rot;
+  SwerveSubsystem* m_subsystem;
 };

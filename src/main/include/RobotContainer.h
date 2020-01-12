@@ -31,8 +31,8 @@ class RobotContainer {
 
   SwerveSubsystem m_drivetrain;
 
-  CalibrateWheels m_calibrateWheelsCommand;
   EmptyCommand m_autonomousCommand;
+  CalibrateWheels m_calibrateWheelsCommand;
 
  private:
 
