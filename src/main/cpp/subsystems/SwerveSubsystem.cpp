@@ -81,10 +81,10 @@ void SwerveSubsystem::DriveWithJoystick(double x, double y, double rot, bool fie
     else {
         rotAxis = rotAxis * fabs(rotAxis);
     }
-    SmartDashboard::PutNumber("X Joystick", strafeAxis);
-    SmartDashboard::PutNumber("Y Joystick", fowAxis);
-    SmartDashboard::PutNumber("Rot Joystick", rotAxis);
-    SmartDashboard::PutString("Drive Mode", "Joystick");
+    frc::SmartDashboard::PutNumber("X Joystick", strafeAxis);
+    frc::SmartDashboard::PutNumber("Y Joystick", fowAxis);
+    frc::SmartDashboard::PutNumber("Rot Joystick", rotAxis);
+    frc::SmartDashboard::PutString("Drive Mode", "Joystick");
     //x + is forward
     //y + is left
     //rot + is CCW

@@ -42,20 +42,10 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
     units::revolutions_per_minute_t setrpm = ConvertLinearToAngularVelocity(state.speed, kWheelRadius);
     //m_drivePIDController.Set(setrpm.value(), rev::ControlType::kVelocity);
 
-    double desiredAngle = state.angle.Degrees().value();
-    double currentAngle = GetState().angle.Degrees().value();
+    frc::SwerveModuleState optimizedState = OptimizeModuleAngle(state);
 
-
-    std::cout << "Current Angle: " << currentAngle << "\n";
-    std::cout << "Desired Angle: " << desiredAngle << "\n";
- 
-    if(fabs(desiredAngle - currentAngle) > 90 && fabs(desiredAngle - currentAngle) < 270) {
-        state.angle = frc::Rotation2d(units::degree_t(desiredAngle + 180 % 360));
-        state.speed = -state.speed;
-    }
-
-    m_driveMotor.Set(map(state.speed.value(), -3, 3, -1, 1));
-    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, ConvertRadiansToEncoderTicks(state.angle.Radians()));
+    m_driveMotor.Set(map(optimizedState.speed.value(), -3, 3, -1, 1));
+    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, ConvertRadiansToEncoderTicks(optimizedState.angle.Radians()));
 }
 
 frc::SwerveModuleState SwerveModule::GetState() {
@@ -178,3 +168,13 @@ void SwerveModule::InvertRot(bool inverted) {
     m_turningMotor.SetInverted(inverted);
 }
 
+frc::SwerveModuleState SwerveModule::OptimizeModuleAngle(const frc::SwerveModuleState& desiredState) {
+    frc::SwerveModuleState finalStateAfterOptimization = desiredState;
+    frc::Rotation2d deltaAngle{finalStateAfterOptimization.angle.Degrees() - GetState().angle.Degrees()};
+    if (units::math::abs(deltaAngle.Degrees()) > 90_deg && units::math::abs(deltaAngle.Degrees()) < 270_deg) {
+        units::degree_t finalAngle = units::math::fmod(finalStateAfterOptimization.angle.Degrees() + 180_deg, 360_deg);
+        finalStateAfterOptimization.angle = frc::Rotation2d(finalAngle);
+        finalStateAfterOptimization.speed = -finalStateAfterOptimization.speed;
+    }
+    return finalStateAfterOptimization;
+}
