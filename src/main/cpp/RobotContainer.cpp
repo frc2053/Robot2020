@@ -29,13 +29,17 @@ RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsComma
 }
 
 void RobotContainer::ConfigureButtonBindings() {
-  frc::SmartDashboard::PutData("Test Wheels Command", new WheelTest(&m_drivetrain));
+  frc2::Button rosButton([&] {return driverController.GetBumper(frc::GenericHID::JoystickHand::kLeftHand); });
+  rosButton.WhileHeld(ROSDrive(&m_drivetrain));
 
-  frc2::JoystickButton rosButton(&driverController, (int) frc::XboxController::Button::kBumperLeft);
-  rosButton.WhenHeld(ROSDrive(&m_drivetrain));
+  /*frc2::Button manualCPWheel([&] {return operatorController.GetBumper(frc::GenericHID::JoystickHand::kLeftHand); });
+  manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
 
-  frc2::JoystickButton calButton(&driverController, (int) frc::XboxController::Button::kA);
-  calButton.WhenPressed(CalibrateWheels(&m_drivetrain));
+  frc2::Button rotControl([&] { return driverController.GetAButton(); });
+  rotControl.WhileActiveOnce(RotationControl(&m_controlpanel));
+  
+  frc2::Button posControl([&] { return driverController.GetBButton(); });
+  posControl.WhileActiveOnce(PositionControl(&m_controlpanel));*/
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

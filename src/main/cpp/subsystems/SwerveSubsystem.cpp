@@ -26,7 +26,7 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 SwerveSubsystem::SwerveSubsystem() {
     rbc.SetConnectionUri("ws://10.20.53.42:5800");
     rbc.Subscribe("topic_subscriber", "/drive_controller/cmd_vel", velocity_callback);
-    rbc.Advertise("odom_sender", "/odom", "nav_msgs/Odometry");
+    rbc.Advertise("odom_sender", "/drive_controller/odom", "nav_msgs/Odometry");
     rbc.Advertise("imu_sender", "/imu", "sensor_msgs/Imu");
     m_swerve.LogModulesToDashboard();
 }
@@ -174,7 +174,7 @@ RosTypes::IMU SwerveSubsystem::ConstructIMU(double roll, double pitch, double ya
 
 void SwerveSubsystem::SendOdometry() {
     RosTypes::Odometry odom = ConstructOdom(GetCurrentPose(), GetCurrentTwist());
-    rbc.Publish("odom_sender", "/odom", RosTypes::OdomToJson(odom));
+    rbc.Publish("odom_sender", "/drive_controller/odom", RosTypes::OdomToJson(odom));
 }
 
 void SwerveSubsystem::SendIMU() {
