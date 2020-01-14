@@ -17,6 +17,7 @@ void PositionControl::Execute() {
     controlPanelSubsystem->SetControlPanelWheelSpeed(.5);
     if(currentColor == colorGoal)
     { isDone = true; }
+    currentColor = controlPanelSubsystem->ReturnColorSensed();
 }
 
 void PositionControl::End(bool) {
