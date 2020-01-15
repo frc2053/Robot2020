@@ -11,6 +11,7 @@
 #include "tigertronics/SwerveDrivetrain.h"
 #include "tigertronics/RosBridge/RosBridgeWsClient.h"
 #include "tigertronics/RosBridge/RosTypes.h"
+#include <units/units.h>
 
 static std::shared_ptr<RosTypes::Twist> twist = std::make_shared<RosTypes::Twist>();
 
@@ -28,6 +29,7 @@ class SwerveSubsystem : public frc2::SubsystemBase {
   void ChangeToCalibrationMode();
   void ChangeToDrivingMode();
   void ManualWheelMove(std::string wheel, int abs_setpoint);
+  void ManualWheelMove(std::string wheel, units::radian_t angle, units::meters_per_second_t speed);
   std::shared_ptr<RosTypes::Twist> GetTwist();
   RosTypes::Odometry ConstructOdom(const frc::Pose2d& currentPose, const frc::Twist2d& currentTwist);
   RosTypes::IMU ConstructIMU(double roll, double pitch, double yaw, double velX, double velY, double velZ, double accelX, double accelY, double accelZ);

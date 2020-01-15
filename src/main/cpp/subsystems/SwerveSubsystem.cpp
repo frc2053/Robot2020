@@ -54,6 +54,10 @@ void SwerveSubsystem::ManualWheelMove(std::string wheel, int abs_setpoint) {
     m_swerve.ManualMoveWheel(wheel, abs_setpoint);
 }
 
+void SwerveSubsystem::ManualWheelMove(std::string wheel, units::radian_t angle, units::meters_per_second_t speed) {
+    m_swerve.ManualMoveWheel(wheel, angle, speed);
+}
+
 void SwerveSubsystem::DriveWithJoystick(double x, double y, double rot, bool fieldRelative) {
     //need to negative strafe because if you push right on the joystick it returns a + value
     //however, the kinematics expects that left is positive for the y axis

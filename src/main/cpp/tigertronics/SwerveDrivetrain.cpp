@@ -49,6 +49,21 @@ void SwerveDrivetrain::ManualMoveWheel(std::string wheel, int setpoint) {
     }
 }
 
+void SwerveDrivetrain::ManualMoveWheel(std::string wheel, units::radian_t angle, units::meters_per_second_t speed) {
+    if(wheel == "FL") {
+        m_frontLeft.SetDesiredState(speed, angle);
+    }
+    if(wheel == "FR") {
+        m_frontRight.SetDesiredState(speed, angle);
+    }
+    if(wheel == "BL") {
+        m_backLeft.SetDesiredState(speed, angle);
+    }
+    if(wheel == "BR") {
+        m_backRight.SetDesiredState(speed, angle);
+    }  
+}
+
 //+x is forward
 //+y is left
 //+rot is CCW

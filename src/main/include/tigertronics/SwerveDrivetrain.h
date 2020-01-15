@@ -15,6 +15,7 @@
 #include <AHRS.h>
 #include <tigertronics/SwerveModule.h>
 #include <Constants.h>
+#include <units/units.h>
 
 #define M_PI 3.14159265358979323846
 
@@ -49,6 +50,7 @@ public:
     void SetupForCalibration();
     void SetupForDriving();
     void ManualMoveWheel(std::string wheel, int setpoint);
+    void ManualMoveWheel(std::string wheel, units::radian_t angle, units::meters_per_second_t speed);
 
  private:
     //Apparently all of math is Right Hand Rule Coordinate system but I dont like it
