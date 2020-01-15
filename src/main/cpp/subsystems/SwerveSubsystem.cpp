@@ -28,6 +28,7 @@ SwerveSubsystem::SwerveSubsystem() {
     rbc.Subscribe("topic_subscriber", "/drive_controller/cmd_vel", velocity_callback);
     rbc.Advertise("odom_sender", "/odom", "nav_msgs/Odometry");
     rbc.Advertise("imu_sender", "/imu", "sensor_msgs/Imu");
+    m_swerve.LogModulesToDashboard();
 }
 
 std::shared_ptr<RosTypes::Twist> SwerveSubsystem::GetTwist() {

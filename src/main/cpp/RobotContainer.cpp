@@ -11,7 +11,8 @@
 #include "commands/ROSDrive.h"
 #include "commands/CalibrateWheels.h"
 #include "frc/XboxController.h"
-
+#include "frc/smartdashboard/SmartDashboard.h"
+#include "commands/WheelTest.h"
 RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsCommand(&m_drivetrain) {
   // Initialize all of your commands and subsystems here
 
@@ -28,6 +29,8 @@ RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsComma
 }
 
 void RobotContainer::ConfigureButtonBindings() {
+  frc::SmartDashboard::PutData("Test Wheels Command", new WheelTest(&m_drivetrain));
+
   frc2::JoystickButton rosButton(&driverController, (int) frc::XboxController::Button::kBumperLeft);
   rosButton.WhenHeld(ROSDrive(&m_drivetrain));
 
