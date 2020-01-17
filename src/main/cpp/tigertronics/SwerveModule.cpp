@@ -170,11 +170,14 @@ void SwerveModule::InvertRot(bool inverted) {
 
 frc::SwerveModuleState SwerveModule::OptimizeModuleAngle(const frc::SwerveModuleState& desiredState) {
     frc::SwerveModuleState finalStateAfterOptimization = desiredState;
+    std::cout << "finalStateAfterOptimization at beginning of loop: " << finalStateAfterOptimization.angle.Degrees();
     frc::Rotation2d deltaAngle{finalStateAfterOptimization.angle.Degrees() - GetState().angle.Degrees()};
+    std::cout << "deltaAngle at beginning of loop: " << units::math::abs(deltaAngle.Degrees());
     if (units::math::abs(deltaAngle.Degrees()) > 90_deg && units::math::abs(deltaAngle.Degrees()) < 270_deg) {
         units::degree_t finalAngle = units::math::fmod(finalStateAfterOptimization.angle.Degrees() + 180_deg, 360_deg);
         finalStateAfterOptimization.angle = frc::Rotation2d(finalAngle);
         finalStateAfterOptimization.speed = -finalStateAfterOptimization.speed;
     }
+    std::cout <<"finalStateAfterOptimazation after loop: " << finalStateAfterOptimization.angle.Degrees();
     return finalStateAfterOptimization;
 }
