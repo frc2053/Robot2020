@@ -41,10 +41,7 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-  m_calibrateWheelsCommand = m_container.GetCalibrateWheelsCommand();
   m_autonomousCommand = m_container.GetAutonomousCommand();
-
-  m_calibrateWheelsCommand->Schedule();
 
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();

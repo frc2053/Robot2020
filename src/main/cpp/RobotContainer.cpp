@@ -9,11 +9,10 @@
 #include "frc2/command/button/JoystickButton.h"
 #include "frc/Joystick.h"
 #include "commands/ROSDrive.h"
-#include "commands/CalibrateWheels.h"
 #include "frc/XboxController.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "commands/WheelTest.h"
-RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsCommand(&m_drivetrain) {
+RobotContainer::RobotContainer() : m_autonomousCommand() {
   // Initialize all of your commands and subsystems here
 
   m_drivetrain.SetDefaultCommand(TeleopDrive(
@@ -47,8 +46,4 @@ void RobotContainer::ConfigureButtonBindings() {
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   return &m_autonomousCommand;
-}
-
-frc2::Command* RobotContainer::GetCalibrateWheelsCommand() {
-  return &m_calibrateWheelsCommand;
 }

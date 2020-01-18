@@ -12,7 +12,6 @@
 #include <frc/XboxController.h>
 #include "commands/TeleopDrive.h"
 #include "commands/EmptyCommand.h"
-#include "commands/CalibrateWheels.h"
 #include "subsystems/SwerveSubsystem.h"
 
 /**
@@ -27,12 +26,10 @@ class RobotContainer {
   RobotContainer();
 
   frc2::Command* GetAutonomousCommand();
-  frc2::Command* GetCalibrateWheelsCommand();
 
   SwerveSubsystem m_drivetrain;
 
   EmptyCommand m_autonomousCommand;
-  CalibrateWheels m_calibrateWheelsCommand;
 
  private:
 
