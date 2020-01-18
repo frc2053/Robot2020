@@ -28,6 +28,7 @@ public:
     void SetupForCalibration();
     void SetupTurningMotor();
     void SetSetpointAbs(int setpoint);
+    std::string GetModuleName();
 private:
     void SetupDriveMotor();
     frc::SwerveModuleState OptimizeModuleAngle(const frc::SwerveModuleState& desiredState);
@@ -54,4 +55,5 @@ private:
     rev::CANPIDController m_drivePIDController;
     rev::CANEncoder m_driveEncoder;
     int kCalibrationValue;
+    std::string moduleName;
 };

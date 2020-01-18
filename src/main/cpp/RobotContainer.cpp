@@ -29,6 +29,8 @@ RobotContainer::RobotContainer() : m_autonomousCommand(), m_calibrateWheelsComma
 }
 
 void RobotContainer::ConfigureButtonBindings() {
+  frc::SmartDashboard::PutData("Calibrate Wheels NEW", new WheelTest(&m_drivetrain));
+
   frc2::Button rosButton([&] {return driverController.GetBumper(frc::GenericHID::JoystickHand::kLeftHand); });
   rosButton.WhileHeld(ROSDrive(&m_drivetrain));
 
