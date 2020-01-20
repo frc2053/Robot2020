@@ -24,7 +24,8 @@ void velocity_callback(client* c, websocketpp::connection_hdl hdl, client::messa
 }
 
 SwerveSubsystem::SwerveSubsystem() {
-    rbc.SetConnectionUri("ws://10.20.53.42:5800");
+    frc::SmartDashboard::PutString("Jetson IP", jetson_ip);
+    rbc.SetConnectionUri("ws://" + jetson_ip + ":5800");
     rbc.Subscribe("topic_subscriber", "/drive_controller/cmd_vel", velocity_callback);
     rbc.Advertise("odom_sender", "/drive_controller/odom", "nav_msgs/Odometry");
     rbc.Advertise("imu_sender", "/imu", "sensor_msgs/Imu");
@@ -181,4 +182,14 @@ void SwerveSubsystem::SendIMU() {
     std::vector<double> data = GetIMUData();
     RosTypes::IMU imu = ConstructIMU(0, 0, 0, 0, 0, 0, 0, 0, 0);
     rbc.Publish("imu_sender", "/imu", RosTypes::IMUToJson(imu));
+}
+
+void SwerveSubsystem::ChangeRosConnection(std::string uri) {
+    rbc.Disconnect("topic_subscriber");
+    rbc.Disconnect("odom_sender");
+    rbc.Disconnect("imu_sender");
+    rbc.SetConnectionUri("ws://" + uri + ":5800");
+    rbc.Subscribe("topic_subscriber", "/drive_controller/cmd_vel", velocity_callback);
+    rbc.Advertise("odom_sender", "/drive_controller/odom", "nav_msgs/Odometry");
+    rbc.Advertise("imu_sender", "/imu", "sensor_msgs/Imu");
 }

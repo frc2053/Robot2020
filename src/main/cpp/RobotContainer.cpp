@@ -12,6 +12,8 @@
 #include "frc/XboxController.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "commands/WheelTest.h"
+#include "commands/ChangeJetsonIP.h"
+
 RobotContainer::RobotContainer() : m_autonomousCommand() {
   // Initialize all of your commands and subsystems here
 
@@ -28,6 +30,7 @@ RobotContainer::RobotContainer() : m_autonomousCommand() {
 }
 
 void RobotContainer::ConfigureButtonBindings() {
+  frc::SmartDashboard::PutData("Change Jetson IP", new ChangeJetsonIP([this] { return frc::SmartDashboard::GetString("Jetson IP", "10.20.53.42"); }, &m_drivetrain));
   frc::SmartDashboard::PutData("Wheel Test", new WheelTest(&m_drivetrain));
 
   frc2::Button rosButton([&] {return driverController.GetBumper(frc::GenericHID::JoystickHand::kLeftHand); });

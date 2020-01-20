@@ -33,6 +33,7 @@ class SwerveSubsystem : public frc2::SubsystemBase {
   std::shared_ptr<RosTypes::Twist> GetTwist();
   RosTypes::Odometry ConstructOdom(const frc::Pose2d& currentPose, const frc::Twist2d& currentTwist);
   RosTypes::IMU ConstructIMU(double roll, double pitch, double yaw, double velX, double velY, double velZ, double accelX, double accelY, double accelZ);
+  void ChangeRosConnection(std::string uri);
  private:
   int seqOdom = 0;
   int seqImu = 0;
@@ -40,6 +41,6 @@ class SwerveSubsystem : public frc2::SubsystemBase {
   frc::Pose2d currentPose;
   frc::Twist2d currentTwist;
   std::vector<double> currentIMUData;
-  
+  std::string jetson_ip = "192.168.1.115";
   SwerveDrivetrain m_swerve;
 };

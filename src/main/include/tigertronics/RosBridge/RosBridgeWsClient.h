@@ -114,6 +114,10 @@ public:
 	void SetConnectionUri(std::string uri) {
 		connection_uri = uri;
 	}
+
+	void Disconnect(std::string id) {
+		endpoint.close(id, websocketpp::close::status::normal, "Roborio Called Disconnect!");
+	}
 private:
 	std::string connection_uri;
 	websocket_endpoint endpoint;
