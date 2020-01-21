@@ -20,20 +20,6 @@ SwerveDrivetrain::SwerveDrivetrain() {
     m_backRight.InvertRot(false);
 }
 
-void SwerveDrivetrain::SetupForCalibration() {
-    m_frontLeft.SetupForCalibration();
-    m_frontRight.SetupForCalibration();
-    m_backLeft.SetupForCalibration();
-    m_backRight.SetupForCalibration();
-}
-
-void SwerveDrivetrain::SetupForDriving() {
-    m_frontLeft.SetupTurningMotor();
-    m_frontRight.SetupTurningMotor();
-    m_backLeft.SetupTurningMotor();
-    m_backRight.SetupTurningMotor();
-}
-
 void SwerveDrivetrain::ManualMoveWheel(std::string wheel, int setpoint) {
     if(wheel == "FL") {
         m_frontLeft.SetSetpointAbs(setpoint);

@@ -25,7 +25,6 @@ public:
     void InitSendable(frc::SendableBuilder& builder) override;
     void InvertDrive(bool inverted);
     void InvertRot(bool inverted);
-    void SetupForCalibration();
     void SetupTurningMotor();
     void SetSetpointAbs(int setpoint);
     std::string GetModuleName();

@@ -44,14 +44,6 @@ void SwerveSubsystem::DriveWithRos(units::meters_per_second_t xSpeed, units::met
     m_swerve.Drive(xSpeed, ySpeed, rotSpeed, false);
 }
 
-void SwerveSubsystem::ChangeToCalibrationMode() {
-    m_swerve.SetupForCalibration();
-}
-  
-void SwerveSubsystem::ChangeToDrivingMode() {
-    m_swerve.SetupForDriving();
-}
-
 void SwerveSubsystem::ManualWheelMove(std::string wheel, int abs_setpoint) {
     m_swerve.ManualMoveWheel(wheel, abs_setpoint);
 }

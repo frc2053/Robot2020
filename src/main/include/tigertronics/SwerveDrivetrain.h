@@ -47,8 +47,6 @@ public:
     units::radians_per_second_t kMaxAngularSpeed{
     10};  // 1/2 rotation per second
 
-    void SetupForCalibration();
-    void SetupForDriving();
     void ManualMoveWheel(std::string wheel, int setpoint);
     void ManualMoveWheel(std::string wheel, units::radian_t angle, units::meters_per_second_t speed);
 

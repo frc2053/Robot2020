@@ -108,33 +108,6 @@ void SwerveModule::SetupTurningMotor() {
     m_turningMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
 }
 
-void SwerveModule::SetupForCalibration() {
-    m_turningMotor.ConfigFactoryDefault();
-    m_turningMotor.ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Absolute, 0, 10);
-    m_turningMotor.SetSensorPhase(false);
-    m_turningMotor.SetInverted(true);
-    m_turningMotor.SetStatusFramePeriod(ctre::phoenix::motorcontrol::StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
-    m_turningMotor.SetStatusFramePeriod(ctre::phoenix::motorcontrol::StatusFrameEnhanced::Status_10_MotionMagic, 10, 10);
-    m_turningMotor.ConfigNominalOutputForward(0, 10);
-    m_turningMotor.ConfigNominalOutputReverse(0, 10);
-    m_turningMotor.ConfigPeakOutputForward(1, 10);
-    m_turningMotor.ConfigPeakOutputReverse(-1, 10);
-    m_turningMotor.Config_kF(0, 0, 10);
-    m_turningMotor.Config_kP(0, kTurnP, 10);
-    m_turningMotor.Config_kI(0, kTurnI, 10);
-    m_turningMotor.Config_kD(0, kTurnD, 10);
-    m_turningMotor.ConfigAllowableClosedloopError(0, kTurnErrorAllowance, 10);
-    m_turningMotor.EnableCurrentLimit(true);
-    m_turningMotor.ConfigContinuousCurrentLimit(10, 10);
-    m_turningMotor.ConfigPeakCurrentLimit(0, 10);
-    m_turningMotor.GetSensorCollection().SyncQuadratureWithPulseWidth(0, 0, true, kCalibrationValue, 10);
-    m_turningMotor.ConfigMotionCruiseVelocity(ConvertRadiansPerSecondToTalonVelocity(kMaxTurnVel), 10);
-    m_turningMotor.ConfigMotionAcceleration(kMaxTurnAccel, 10);
-    m_turningMotor.SetSelectedSensorPosition(0);
-    m_turningMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
-    m_turningMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
-}
-
 int SwerveModule::ConvertRadiansToEncoderTicks(units::radian_t rads) {
     return (rads.value() * kEncoderResolution) / (M_PI * 2);
 }
