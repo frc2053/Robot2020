@@ -38,7 +38,15 @@ namespace tigertronics {
         static constexpr int swerveFLCal = 483;  //539
         static constexpr int swerveFRCal = 605;  //594  
         static constexpr int swerveBLCal = 2570; //2441 
-        static constexpr int swerveBRCal = 1420; //1522  
+        static constexpr int swerveBRCal = 1420; //1522
+
+        //LED SUBSYSTEM
+        static constexpr int ledStripLength = 100;
+        static constexpr int drivetrainEndLed = 19;
+        static constexpr int intakeEndLed = 39;
+        static constexpr int shooterEndLed = 59;
+        static constexpr int climberEndLed = 79;
+        static constexpr int controlPanelEndLed = 99;
     }
 
     namespace ports {
@@ -51,5 +59,8 @@ namespace tigertronics {
         static constexpr int swerveFRDrive = 3;
         static constexpr int swerveBLDrive = 4;
         static constexpr int swerveBRDrive = 5;
+        
+        //ROBORIO PORTS
+        static constexpr int ledPWM = 1;
     }
 }
