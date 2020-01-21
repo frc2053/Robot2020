@@ -30,6 +30,7 @@ public:
     std::string GetModuleName();
 private:
     void SetupDriveMotor();
+    double ConstrainAngle(double inputAngleDegrees);
     frc::SwerveModuleState OptimizeModuleAngle(const frc::SwerveModuleState& desiredState);
     units::meters_per_second_t ConvertAngularToLinearVelocity(units::radians_per_second_t rpm, units::meter_t radius);
     units::radians_per_second_t ConvertLinearToAngularVelocity(units::meters_per_second_t velocity, units::meter_t radius);

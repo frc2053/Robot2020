@@ -44,22 +44,25 @@ double map(double x, double in_min, double in_max, double out_min, double out_ma
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+double SwerveModule::ConstrainAngle(double inputAngleDegrees) {
+    inputAngleDegrees = fmod(inputAngleDegrees,360);
+    if (inputAngleDegrees < 0)
+        inputAngleDegrees += 360;
+    return inputAngleDegrees;
+}
+
 void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
     units::revolutions_per_minute_t setrpm = ConvertLinearToAngularVelocity(state.speed, kWheelRadius);
     //m_drivePIDController.Set(setrpm.value(), rev::ControlType::kVelocity);
 
-    if(state.angle.Degrees() < 0_deg) {
-        state.angle = state.angle + frc::Rotation2d(180_deg);
-    }
-    std::cout << GetModuleName() << " desired state angle: " << state.angle.Degrees() << " desired state speed: " << state.speed << "\n";
-    //frc::SwerveModuleState optimizedState = OptimizeModuleAngle(state);
+    frc::SwerveModuleState optimizedState = OptimizeModuleAngle(state);
 
-    
+    optimizedState.angle = frc::Rotation2d(units::degree_t(ConstrainAngle(optimizedState.angle.Degrees().to<double>())));
 
-    m_driveMotor.Set(map(state.speed.value(), -3, 3, -1, 1));
-    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, ConvertRadiansToEncoderTicks(state.angle.Radians()));
+    m_driveMotor.Set(map(optimizedState.speed.value(), -3, 3, -1, 1));
+    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, ConvertRadiansToEncoderTicks(optimizedState.angle.Radians()));
     frc::SmartDashboard::PutNumber(GetModuleName(), m_turningMotor.GetSelectedSensorPosition());
-    frc::SmartDashboard::PutNumber(GetModuleName() + " setpoint", state.angle.Degrees().to<double>());
+    frc::SmartDashboard::PutNumber(GetModuleName() + " setpoint", optimizedState.angle.Degrees().to<double>());
 }
 
 frc::SwerveModuleState SwerveModule::GetState() {
