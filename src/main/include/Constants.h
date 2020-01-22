@@ -39,17 +39,33 @@ namespace tigertronics {
         static constexpr int swerveFRCal = 605;  //594  
         static constexpr int swerveBLCal = 2570; //2441 
         static constexpr int swerveBRCal = 1420; //1522  
+
+
+        //SHOOTER PHYSICALS
+        static constexpr int shooterGearRatio = 1/2;
+        static units::inch_t shooterWheelRadius = 2_in;
+
+        //SHOOTER CONFIG
+        static constexpr int shooterkF = 0.000015;
+        static constexpr int shooterkP = 0.00006;
+        static constexpr int shooterkI = 0.000001;
+        static constexpr int shooterkD = 0;
     }
 
     namespace ports {
         //SWERVE PORTS
-        static constexpr int swerveFLTurn = 6;
-        static constexpr int swerveFRTurn = 7;
-        static constexpr int swerveBLTurn = 8;
-        static constexpr int swerveBRTurn = 9;
         static constexpr int swerveFLDrive = 2;
         static constexpr int swerveFRDrive = 3;
         static constexpr int swerveBLDrive = 4;
         static constexpr int swerveBRDrive = 5;
+        static constexpr int swerveFLTurn = 6;
+        static constexpr int swerveFRTurn = 7;
+        static constexpr int swerveBLTurn = 8;
+        static constexpr int swerveBRTurn = 9;
+
+        static constexpr int shooterLeft = 10;
+        static constexpr int shooterRight = 11;
+        static constexpr int loaderWheel = 12;
+        static constexpr int hoodServo = 1;
     }
 }
