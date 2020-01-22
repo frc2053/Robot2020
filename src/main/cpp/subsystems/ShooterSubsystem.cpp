@@ -18,7 +18,6 @@ ShooterSubsystem::ShooterSubsystem() {
 
 void ShooterSubsystem::ConfigureDashboard() {
     frc::ShuffleboardTab& tab = frc::Shuffleboard::GetTab("Shooter Subsystem");
-    frc::ShuffleboardLayout& velocityGroup = tab.GetLayout("Velocities", frc::BuiltInLayouts::kList).WithSize(4,6).WithProperties("");
     leftShooterDash = tab.Add("Left Wheel Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
     rightShooterDash = tab.Add("Right Wheel Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
     avgShooterDash = tab.Add("Average Wheel Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();

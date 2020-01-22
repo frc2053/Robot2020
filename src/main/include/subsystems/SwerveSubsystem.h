@@ -39,6 +39,6 @@ class SwerveSubsystem : public frc2::SubsystemBase {
   frc::Pose2d currentPose;
   frc::Twist2d currentTwist;
   std::vector<double> currentIMUData;
-  std::string jetson_ip = "192.168.1.115";
+  std::string jetson_ip = "10.20.53.42";
   SwerveDrivetrain m_swerve;
 };
