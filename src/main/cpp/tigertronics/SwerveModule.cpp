@@ -41,7 +41,32 @@ void SwerveModule::SetSetpointAbs(int setpoint) {
 }
 
 double map(double x, double in_min, double in_max, double out_min, double out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+double SwerveModule::minDistance(double a, double b, double wrap) {
+    return fabs(minChange(a, b, wrap));
+}
+
+double SwerveModule::minChange(double a, double b, double wrap) {
+    return halfMod(a - b, wrap);
+}
+
+double SwerveModule::halfMod(double a, double wrap) {
+    double aa = mod(a, wrap);
+    double halfWrap = wrap / 2.0;
+    if(aa >= halfWrap) {
+        aa = aa - wrap;
+    }
+    return aa;
+}
+
+double SwerveModule::mod(double a, double b) {
+    double r = fmod(a, b);
+    if (r < 0) {
+        r = r + b;
+    }
+    return r;
 }
 
 double SwerveModule::ConstrainAngle(double inputAngleDegrees) {
@@ -49,6 +74,13 @@ double SwerveModule::ConstrainAngle(double inputAngleDegrees) {
     if (inputAngleDegrees < 0)
         inputAngleDegrees += 360;
     return inputAngleDegrees;
+}
+
+int SwerveModule::FindSetpointInTicks(units::radian_t rads) {
+    int currentTicks = m_turningMotor.GetSelectedSensorPosition();
+    int origTicks = ConvertRadiansToEncoderTicks(rads);
+    int newTicks = minChange(origTicks, currentTicks, kEncoderResolution / 2.0) + currentTicks;
+    return newTicks;
 }
 
 void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
@@ -60,7 +92,7 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
     //state.angle = frc::Rotation2d(units::degree_t(ConstrainAngle(state.angle.Degrees().to<double>())));
 
     m_driveMotor.Set(map(state.speed.value(), -3, 3, -1, 1));
-    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, ConvertRadiansToEncoderTicks(state.angle.Radians()));
+    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, FindSetpointInTicks(state.angle.Radians()));
     frc::SmartDashboard::PutNumber(GetModuleName(), m_turningMotor.GetSelectedSensorPosition());
     frc::SmartDashboard::PutNumber(GetModuleName() + " setpoint", state.angle.Degrees().to<double>());
 }

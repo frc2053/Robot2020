@@ -38,6 +38,11 @@ private:
     int ConvertRadiansPerSecondToTalonVelocity(units::radians_per_second_t radPerSec);
     units::radian_t ConvertEncoderUnitsToRadians(int encoderTicks);
     int ConvertRadiansToEncoderTicks(units::radian_t rads);
+    int FindSetpointInTicks(units::radian_t rads);
+    double mod(double a, double b);
+    double halfMod(double a, double wrap);
+    double minChange(double a, double b, double wrap);
+    double minDistance(double a, double b, double wrap);
     static constexpr units::meter_t kWheelRadius = tigertronics::constants::driveWheelRadius;
     static constexpr int kEncoderResolution = tigertronics::constants::ctreEncoderTicksPerRev;
     double kTurnP = tigertronics::constants::swerveTurningkP;
