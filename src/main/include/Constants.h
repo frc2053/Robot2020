@@ -42,7 +42,6 @@ namespace tigertronics {
 
 
         //SHOOTER PHYSICALS
-        static constexpr int shooterGearRatio = 1/2;
         static units::inch_t shooterWheelRadius = 2_in;
 
         //SHOOTER CONFIG

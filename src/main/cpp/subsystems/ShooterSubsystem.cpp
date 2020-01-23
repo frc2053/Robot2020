@@ -18,10 +18,9 @@ ShooterSubsystem::ShooterSubsystem() {
 
 void ShooterSubsystem::ConfigureDashboard() {
     frc::ShuffleboardTab& tab = frc::Shuffleboard::GetTab("Shooter Subsystem");
-    leftShooterDash = tab.Add("Left Wheel Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
-    rightShooterDash = tab.Add("Right Wheel Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
-    avgShooterDash = tab.Add("Average Wheel Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
-    wheelSpeedDash = tab.Add("Shooter Wheel Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
+    leftShooterDash = tab.Add("Left Motor Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
+    rightShooterDash = tab.Add("Right Motor Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
+    avgShooterDash = tab.Add("Average Motor Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
     shooterSpeedSetpointDash = tab.Add("Shooter Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2, 1).GetEntry();
     hoodAngleSetpointDash = tab.Add("Hood Angle Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2,1 ).GetEntry();
 }
@@ -73,16 +72,12 @@ units::revolutions_per_minute_t ShooterSubsystem::GetShooterAvgRPM() {
     return (GetShooterLeftRPM() + GetShooterRightRPM()) / 2;
 }
 
-units::feet_per_second_t ShooterSubsystem::GetShooterSurfaceSpeed() {
-    return units::feet_per_second_t(GetShooterAvgRPM().value() * tigertronics::constants::shooterWheelRadius.value());
-}
-
 units::revolutions_per_minute_t ShooterSubsystem::ConvertTickVelToRPM(int ticksPer100ms) {
-    return units::revolutions_per_minute_t((ticksPer100ms * 600) / (tigertronics::constants::ctreEncoderTicksPerRev / tigertronics::constants::shooterGearRatio));
+    return units::revolutions_per_minute_t((ticksPer100ms * 600) / (tigertronics::constants::ctreEncoderTicksPerRev));
 }
 
 int ShooterSubsystem::ConvertRPMToTickVel(units::revolutions_per_minute_t rpm) {
-    return (rpm.value()  / 600) * (tigertronics::constants::ctreEncoderTicksPerRev / tigertronics::constants::shooterGearRatio);
+    return (rpm.value()  / 600) * (tigertronics::constants::ctreEncoderTicksPerRev);
 }
 
 // This method will be called once per scheduler run
@@ -90,5 +85,4 @@ void ShooterSubsystem::Periodic() {
     leftShooterDash.SetDouble(GetShooterLeftRPM().value());
     rightShooterDash.SetDouble(GetShooterRightRPM().value());
     avgShooterDash.SetDouble(GetShooterAvgRPM().value());
-    wheelSpeedDash.SetDouble(GetShooterSurfaceSpeed().value());
 }

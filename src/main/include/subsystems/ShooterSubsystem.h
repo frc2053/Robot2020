@@ -24,7 +24,6 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   units::revolutions_per_minute_t GetShooterLeftRPM();
   units::revolutions_per_minute_t GetShooterRightRPM();
   units::revolutions_per_minute_t GetShooterAvgRPM();
-  units::feet_per_second_t GetShooterSurfaceSpeed();
  private:
   void ConfigureShooterMotors();
   void ConfigureLoaderMotor();
@@ -35,7 +34,6 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   nt::NetworkTableEntry rightShooterDash;
   nt::NetworkTableEntry avgShooterDash;
   nt::NetworkTableEntry hoodAngleDash;
-  nt::NetworkTableEntry wheelSpeedDash;
   nt::NetworkTableEntry hoodAngleSetpointDash;
   nt::NetworkTableEntry shooterSpeedSetpointDash;
   ctre::phoenix::motorcontrol::can::TalonFX shooterMotorLeft{tigertronics::ports::shooterLeft};
