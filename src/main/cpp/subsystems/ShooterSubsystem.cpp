@@ -73,11 +73,11 @@ units::revolutions_per_minute_t ShooterSubsystem::GetShooterAvgRPM() {
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::ConvertTickVelToRPM(int ticksPer100ms) {
-    return units::revolutions_per_minute_t((ticksPer100ms * 600) / (tigertronics::constants::ctreEncoderTicksPerRev));
+    return units::revolutions_per_minute_t((ticksPer100ms * 600) / (tigertronics::constants::talonFxEncoderTicksPerRev));
 }
 
 int ShooterSubsystem::ConvertRPMToTickVel(units::revolutions_per_minute_t rpm) {
-    return (rpm.value()  / 600) * (tigertronics::constants::ctreEncoderTicksPerRev);
+    return (rpm.value()  / 600) * (tigertronics::constants::talonFxEncoderTicksPerRev);
 }
 
 // This method will be called once per scheduler run
