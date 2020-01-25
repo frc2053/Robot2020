@@ -114,6 +114,7 @@ void SwerveModule::SetupDriveMotor() {
     m_drivePIDController.SetOutputRange(-1, 1, 0);
     m_driveMotor.SetInverted(false);
     m_driveEncoder.SetPosition(0);
+    m_driveMotor.SetOpenLoopRampRate(.25);
 }
 
 void SwerveModule::SetupTurningMotor() {
@@ -141,6 +142,7 @@ void SwerveModule::SetupTurningMotor() {
     m_turningMotor.SetSelectedSensorPosition(0);
     m_turningMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
     m_turningMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+    m_turningMotor.ConfigOpenloopRamp(.1);
 }
 
 int SwerveModule::ConvertRadiansToEncoderTicks(units::radian_t rads) {
