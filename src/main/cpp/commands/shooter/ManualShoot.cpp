@@ -1,6 +1,7 @@
 //runs the shooter and hood 
 
 #include "commands/shooter/ManualShoot.h"
+#include "Constants.h"
 
 ManualShoot::ManualShoot(ShooterSubsystem* subsystem, std::function<double()> run, std::function<double()> adjust)
 : shooterSubsystem{subsystem} , runIt(run), adjustIt(adjust){

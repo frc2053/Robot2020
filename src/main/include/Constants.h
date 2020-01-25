@@ -72,6 +72,9 @@ namespace tigertronics {
         static constexpr int hoodServo = 1;
 
         //INTAKE PORTS
+        static constexpr int intakeMotor = 13;
+        static constexpr int conveyorMotor = 14;
+        static constexpr int feederMotor = 15;
         static constexpr int controlPanel = 10;
     }
 }
