@@ -8,13 +8,13 @@
 #include "RobotContainer.h"
 #include "frc2/command/button/JoystickButton.h"
 #include "frc/Joystick.h"
-#include "commands/ROSDrive.h"
+#include "commands/drive/ROSDrive.h"
 #include "frc/XboxController.h"
 #include "frc/smartdashboard/SmartDashboard.h"
-#include "commands/WheelTest.h"
+#include "commands/drive/WheelTest.h"
 #include "commands/ChangeJetsonIP.h"
 
-RobotContainer::RobotContainer() : m_autonomousCommand() {
+RobotContainer::RobotContainer() : m_drivetrain(){
   // Initialize all of your commands and subsystems here
 
   m_drivetrain.SetDefaultCommand(TeleopDrive(
@@ -44,9 +44,4 @@ void RobotContainer::ConfigureButtonBindings() {
   
   frc2::Button posControl([&] { return driverController.GetBButton(); });
   posControl.WhileActiveOnce(PositionControl(&m_controlpanel));*/
-}
-
-frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return &m_autonomousCommand;
 }

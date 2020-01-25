@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ROSDrive.h"
+#include "commands/drive/ROSDrive.h"
 
 ROSDrive::ROSDrive(SwerveSubsystem* subsystem) : m_subsystem{subsystem} {
   AddRequirements({m_subsystem});

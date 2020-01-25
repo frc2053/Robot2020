@@ -87,10 +87,16 @@
     "xtree": "cpp",
     "xutility": "cpp",
     "*.inc": "cpp",
+<<<<<<< HEAD
+=======
+    "hash_map": "cpp",
+    "hash_set": "cpp",
+>>>>>>> ControlPanelSubsystem
     "*.tcc": "cpp",
     "bitset": "cpp",
     "complex": "cpp",
     "cwctype": "cpp",
+<<<<<<< HEAD
     "resumable": "cpp",
     "fstream": "cpp",
     "hash_map": "cpp",
@@ -99,5 +105,14 @@
     "set": "cpp",
     "stack": "cpp",
     "unordered_set": "cpp"
+=======
+    "unordered_set": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "set": "cpp",
+    "string_view": "cpp",
+    "fstream": "cpp",
+    "cinttypes": "cpp"
+>>>>>>> ControlPanelSubsystem
   }
 }

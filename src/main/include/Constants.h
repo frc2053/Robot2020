@@ -8,6 +8,7 @@
 #pragma once
 
 #include "units/units.h"
+#include <frc/util/color.h>
 
 namespace tigertronics {
     namespace constants {
@@ -16,6 +17,11 @@ namespace tigertronics {
         static constexpr units::meter_t drivebaseWidth = 23_in;
         static constexpr units::meter_t driveWheelRadius = 2.5_in / 2;
 
+        //COLOR INFO
+        static constexpr frc::Color kBlueTarget = frc::Color(0.143, 0.427, 0.429);
+        static constexpr frc::Color kGreenTarget = frc::Color(0.197, 0.561, 0.240);
+        static constexpr frc::Color kRedTarget = frc::Color(0.561, 0.232, 0.114);
+        static constexpr frc::Color kYellowTarget = frc::Color(0.361, 0.524, 0.113);
 
         //ENCODER INFO
         static constexpr int ctreEncoderTicksPerRev = 4096;
@@ -67,5 +73,8 @@ namespace tigertronics {
         static constexpr int shooterRight = 11;
         static constexpr int loaderWheel = 12;
         static constexpr int hoodServo = 1;
+
+        //INTAKE PORTS
+        static constexpr int controlPanel = 10;
     }
 }

@@ -10,9 +10,12 @@
 #include <frc2/command/Command.h>
 
 #include <frc/XboxController.h>
-#include "commands/TeleopDrive.h"
-#include "commands/EmptyCommand.h"
+#include "commands/drive/TeleopDrive.h"
 #include "subsystems/SwerveSubsystem.h"
+#include "subsystems/ControlPanelSubsystem.h"
+#include "commands/controlpanel/ManualWheelRotation.h"
+#include "commands/controlpanel/RotationControl.h"
+#include "commands/controlpanel/PositionControl.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -25,11 +28,8 @@ class RobotContainer {
  public:
   RobotContainer();
 
-  frc2::Command* GetAutonomousCommand();
-
   SwerveSubsystem m_drivetrain;
-
-  EmptyCommand m_autonomousCommand;
+  ControlPanelSubsystem m_controlpanel;
 
  private:
 

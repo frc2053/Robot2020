@@ -5,8 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/WheelTest.h"
-#include "commands/SetWheelsToAngle.h"
+#include "commands/drive/WheelTest.h"
+#include "commands/drive/SetWheelsToAngle.h"
 #include <frc2/command/WaitCommand.h>
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.
