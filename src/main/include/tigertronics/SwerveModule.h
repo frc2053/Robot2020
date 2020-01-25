@@ -38,7 +38,7 @@ private:
     int ConvertRadiansPerSecondToTalonVelocity(units::radians_per_second_t radPerSec);
     units::radian_t ConvertEncoderUnitsToRadians(int encoderTicks);
     int ConvertRadiansToEncoderTicks(units::radian_t rads);
-    int FindSetpointInTicks(units::radian_t rads);
+    std::pair<int, int> FindSetpointInTicks(units::radian_t rads);
     double mod(double a, double b);
     double halfMod(double a, double wrap);
     double minChange(double a, double b, double wrap);

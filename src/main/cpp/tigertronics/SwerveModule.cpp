@@ -76,11 +76,21 @@ double SwerveModule::ConstrainAngle(double inputAngleDegrees) {
     return inputAngleDegrees;
 }
 
-int SwerveModule::FindSetpointInTicks(units::radian_t rads) {
+std::pair<int, int> SwerveModule::FindSetpointInTicks(units::radian_t rads) {
+    std::pair<int, int> retVal;
+    int speedMulti = 1;
     int currentTicks = m_turningMotor.GetSelectedSensorPosition();
     int origTicks = ConvertRadiansToEncoderTicks(rads);
     int newTicks = minChange(origTicks, currentTicks, kEncoderResolution / 2.0) + currentTicks;
-    return newTicks;
+    if(minDistance(newTicks, origTicks, kEncoderResolution) < 0.001) {
+        speedMulti = 1;
+    }
+    else {
+        speedMulti = -1;
+    }
+    retVal.first = newTicks;
+    retVal.second = speedMulti;
+    return retVal;
 }
 
 void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
@@ -91,8 +101,9 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
 
     //state.angle = frc::Rotation2d(units::degree_t(ConstrainAngle(state.angle.Degrees().to<double>())));
 
-    m_driveMotor.Set(map(state.speed.value(), -3, 3, -1, 1));
-    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, FindSetpointInTicks(state.angle.Radians()));
+    std::pair<int, int> finalSet = FindSetpointInTicks(state.angle.Radians());
+    m_driveMotor.Set(map(state.speed.value() * finalSet.second, -3, 3, -1, 1));
+    m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, finalSet.first);
     frc::SmartDashboard::PutNumber(GetModuleName(), m_turningMotor.GetSelectedSensorPosition());
     frc::SmartDashboard::PutNumber(GetModuleName() + " setpoint", state.angle.Degrees().to<double>());
 }
