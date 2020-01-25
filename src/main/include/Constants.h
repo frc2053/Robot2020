@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 #pragma once
 
 #include "units/units.h"
@@ -51,6 +44,7 @@ namespace tigertronics {
         //SHOOTER PHYSICALS
         static constexpr double shooterGearRatio = 1/2;
         static units::inch_t shooterWheelRadius = 2_in;
+        //both hood constants are undefined at 0
         static constexpr double shooterHoodTicks = 0;
         static constexpr double shooterHoodAngle = 0;
 

@@ -1,3 +1,5 @@
+//runs the control panel manipulation motor 
+
 #include "commands/controlpanel/ManualWheelRotation.h"
 
 ManualWheelRotation::ManualWheelRotation(ControlPanelSubsystem* subsystem, std::function<double()> run) 

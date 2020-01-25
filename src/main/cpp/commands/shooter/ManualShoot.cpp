@@ -1,3 +1,5 @@
+//runs the shooter and hood 
+
 #include "commands/shooter/ManualShoot.h"
 
 ManualShoot::ManualShoot(ShooterSubsystem* subsystem, std::function<double()> run, std::function<double()> adjust)

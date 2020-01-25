@@ -1,3 +1,5 @@
+//rotates control panel to target color
+
 #include "commands/controlpanel/PositionControl.h"
 #include "subsystems/ControlPanelSubsystem.h"
 
@@ -13,6 +15,8 @@ void PositionControl::Initialize() {
     currentColor = controlPanelSubsystem->ReturnColorSensed();
 }
 
+//starts rotating the control panel and senses the color
+//stops rotating when target color is reached
 void PositionControl::Execute() {
     controlPanelSubsystem->SetControlPanelWheelSpeed(.5);
     if(currentColor == colorGoal)

@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 #include "commands/drive/SetWheelsToAngle.h"
 
 SetWheelsToAngle::SetWheelsToAngle(units::radian_t fl, units::radian_t fr, units::radian_t bl, units::radian_t br,
@@ -15,10 +8,8 @@ SetWheelsToAngle::SetWheelsToAngle(units::radian_t fl, units::radian_t fr, units
   AddRequirements({m_subsystem});
 }
 
-// Called when the command is initially scheduled.
 void SetWheelsToAngle::Initialize() {}
 
-// Called repeatedly when this Command is scheduled to run
 void SetWheelsToAngle::Execute() {
   m_subsystem->ManualWheelMove("FL", fl_angle, fl_speed);
   m_subsystem->ManualWheelMove("FR", fr_angle, fr_speed);
@@ -26,8 +17,6 @@ void SetWheelsToAngle::Execute() {
   m_subsystem->ManualWheelMove("BR", br_angle, br_speed);
 }
 
-// Called once the command ends or is interrupted.
 void SetWheelsToAngle::End(bool interrupted) {}
 
-// Returns true when the command should end.
 bool SetWheelsToAngle::IsFinished() { return true; }
