@@ -21,12 +21,14 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   void Periodic();
   void SetShooterToPercentOutput(double output);
   void SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed);
+  void SetHoodToAngle(double angle);
   units::revolutions_per_minute_t GetShooterLeftRPM();
   units::revolutions_per_minute_t GetShooterRightRPM();
   units::revolutions_per_minute_t GetShooterAvgRPM();
  private:
   void ConfigureShooterMotors();
   void ConfigureLoaderMotor();
+  void ConfigureHood();
   void ConfigureDashboard();
   units::revolutions_per_minute_t ConvertTickVelToRPM(int ticksPer100ms);
   int ConvertRPMToTickVel(units::revolutions_per_minute_t rpm);

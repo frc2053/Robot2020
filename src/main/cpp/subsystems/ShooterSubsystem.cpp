@@ -56,8 +56,22 @@ void ShooterSubsystem::ConfigureLoaderMotor() {
     loaderWheel.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
 }
 
+void ShooterSubsystem::ConfigureHood() {
+    hoodServo.Set(tigertronics::constants::shooterHoodAngle);
+}
+
 void ShooterSubsystem::SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed) {
     shooterMotorRight.Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, ConvertRPMToTickVel(shaftSpeed));
+}
+
+void ShooterSubsystem::SetShooterToPercentOutput(double percent){
+    shooterMotorRight.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, percent);
+}
+
+void ShooterSubsystem::SetHoodToAngle(double angle){
+    double newAngle;
+    newAngle = angle + hoodServo.GetAngle();
+    hoodServo.SetAngle(newAngle);
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::GetShooterLeftRPM() {

@@ -36,6 +36,11 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::Button rosButton([&] {return driverController.GetBumper(frc::GenericHID::JoystickHand::kLeftHand); });
   rosButton.WhileHeld(ROSDrive(&m_drivetrain));
 
+  frc2::Button manualShooter([&] {return operatorController.GetBumper(frc::GenericHID::JoystickHand::kRightHand); });
+  manualShooter.WhileActiveContinous(ManualShoot(&m_shooter, 
+    [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kLeftHand);} , 
+    [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
+
   /*frc2::Button manualCPWheel([&] {return operatorController.GetBumper(frc::GenericHID::JoystickHand::kLeftHand); });
   manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
 
@@ -43,5 +48,6 @@ void RobotContainer::ConfigureButtonBindings() {
   rotControl.WhileActiveOnce(RotationControl(&m_controlpanel));
   
   frc2::Button posControl([&] { return driverController.GetBButton(); });
-  posControl.WhileActiveOnce(PositionControl(&m_controlpanel));*/
+  posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
+  */
 }

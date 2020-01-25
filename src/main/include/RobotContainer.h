@@ -13,9 +13,11 @@
 #include "commands/drive/TeleopDrive.h"
 #include "subsystems/SwerveSubsystem.h"
 #include "subsystems/ControlPanelSubsystem.h"
+#include "subsystems/ShooterSubsystem.h"
 #include "commands/controlpanel/ManualWheelRotation.h"
 #include "commands/controlpanel/RotationControl.h"
 #include "commands/controlpanel/PositionControl.h"
+#include "commands/shooter/ManualShoot.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -30,6 +32,7 @@ class RobotContainer {
 
   SwerveSubsystem m_drivetrain;
   ControlPanelSubsystem m_controlpanel;
+  ShooterSubsystem m_shooter;
 
  private:
 
