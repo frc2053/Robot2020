@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 #include "subsystems/ShooterSubsystem.h"
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/shuffleboard/BuiltInWidgets.h>
@@ -56,8 +49,22 @@ void ShooterSubsystem::ConfigureLoaderMotor() {
     loaderWheel.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
 }
 
+void ShooterSubsystem::ConfigureHood() {
+    hoodServo.Set(tigertronics::constants::shooterHoodAngle);
+}
+
 void ShooterSubsystem::SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed) {
     shooterMotorRight.Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, ConvertRPMToTickVel(shaftSpeed));
+}
+
+void ShooterSubsystem::SetShooterToPercentOutput(double percent){
+    shooterMotorRight.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, percent);
+}
+
+void ShooterSubsystem::SetHoodToAngle(double angle){
+    double newAngle;
+    newAngle = angle + hoodServo.GetAngle();
+    hoodServo.SetAngle(newAngle);
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::GetShooterLeftRPM() {
@@ -80,7 +87,6 @@ int ShooterSubsystem::ConvertRPMToTickVel(units::revolutions_per_minute_t rpm) {
     return (rpm.value()  / 600) * (tigertronics::constants::talonFxEncoderTicksPerRev);
 }
 
-// This method will be called once per scheduler run
 void ShooterSubsystem::Periodic() {
     leftShooterDash.SetDouble(GetShooterLeftRPM().value());
     rightShooterDash.SetDouble(GetShooterRightRPM().value());

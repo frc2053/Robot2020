@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 #include "RobotContainer.h"
 #include "frc2/command/button/JoystickButton.h"
 #include "frc/Joystick.h"
@@ -15,7 +8,6 @@
 #include "commands/ChangeJetsonIP.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
-  // Initialize all of your commands and subsystems here
 
   m_drivetrain.SetDefaultCommand(TeleopDrive(
     [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
@@ -24,7 +16,6 @@ RobotContainer::RobotContainer() : m_drivetrain(){
     &m_drivetrain
   ));
 
-  // Configure the button bindings
   ConfigureButtonBindings();
   
 }
@@ -43,5 +34,17 @@ void RobotContainer::ConfigureButtonBindings() {
   rotControl.WhileActiveOnce(RotationControl(&m_controlpanel));
   
   frc2::Button posControl([&] { return driverController.GetBButton(); });
-  posControl.WhileActiveOnce(PositionControl(&m_controlpanel));*/
+  posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
+  
+  frc2::Button manualShooter([&] {return operatorController.GetBumper(frc::GenericHID::JoystickHand::kRightHand); });
+  manualShooter.WhileActiveContinous(ManualShoot(&m_shooter, 
+    [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kLeftHand);} , 
+    [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
+  
+  frc2::Button intakeButton([&] { return operatorController.GetAButton(); });
+  intakeButton.WhileHeld(AutoIntake(&m_intake));
+
+  frc2::Button feederButton([&] { return operatorController.GetBButton(); });
+  feederButton.whileHeld(AutoFeed(&m_intake));
+  */
 }

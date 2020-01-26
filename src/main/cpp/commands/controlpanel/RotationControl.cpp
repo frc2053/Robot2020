@@ -1,3 +1,5 @@
+//rotates the control panel 3 < x < 5 times
+
 #include "commands/controlpanel/RotationControl.h"
 #include "subsystems/ControlPanelSubsystem.h"
 
@@ -15,6 +17,9 @@ void RotationControl::Initialize() {
     controlPanelSubsystem->SetControlPanelWheelSpeed(1);
 }
 
+//senses the current color and constantly checks for change
+//after 24 changes of color have been detected, stops
+//8 colors on the wheel x 3 rotations = 24 changes
 void RotationControl::Execute() {
     colorSensed = controlPanelSubsystem->ReturnColorSensed();
     if(!(colorSensed == previousColor)){
