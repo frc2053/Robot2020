@@ -9,6 +9,7 @@
 #include <tigertronics/SwerveModule.h>
 #include <Constants.h>
 #include <units/units.h>
+#include <tigertronics/MockAHRS.h>
 
 #define M_PI 3.14159265358979323846
 
@@ -52,7 +53,11 @@ public:
     SwerveModule m_backLeft{tigertronics::ports::swerveBLDrive, tigertronics::ports::swerveBLTurn, tigertronics::constants::swerveBLCal, "BL"};
     SwerveModule m_backRight{tigertronics::ports::swerveBRDrive, tigertronics::ports::swerveBRTurn, tigertronics::constants::swerveBRCal, "BR"};
 
+    #if defined(__FRC_ROBORIO__)
     AHRS m_imu{frc::SPI::Port::kMXP};
+    #else
+    MockAHRS m_imu{};
+    #endif
 
     frc::SwerveDriveKinematics<4> m_kinematics{
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
