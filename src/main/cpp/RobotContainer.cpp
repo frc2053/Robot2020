@@ -37,7 +37,7 @@ void RobotContainer::ConfigureButtonBindings() {
   posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
   
   frc2::Button manualShooter([&] {return operatorController.GetBumper(frc::GenericHID::JoystickHand::kRightHand); });
-  manualShooter.WhileActiveContinous(ManualShoot(&m_shooter, 
+  manualShooter.WhileHeld(ManualShoot(&m_shooter, 
     [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kLeftHand);} , 
     [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
   
@@ -46,5 +46,8 @@ void RobotContainer::ConfigureButtonBindings() {
 
   frc2::Button feederButton([&] { return operatorController.GetBButton(); });
   feederButton.whileHeld(AutoFeed(&m_intake));
+
+  frc2::Button autoShooter([&] {return operatorController.GetXButton(); });
+  autoShooter.WhenHeld(AutoShoot.(&m_shooter));
   */
 }
