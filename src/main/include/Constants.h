@@ -35,6 +35,11 @@ namespace tigertronics {
         static constexpr double swerveDrivekI = 0.0;
         static constexpr double swerveDrivekD = 0.0;
 
+        static constexpr double swerveAnglekP = 1;
+        static constexpr double swerveAnglekI = 0;
+        static constexpr double swerveAnglekD = 0;
+        static constexpr double swerveAngleTolerance = 2;
+
         static constexpr int swerveFLCal = 483;  //539
         static constexpr int swerveFRCal = 605;  //594  
         static constexpr int swerveBLCal = 2570; //2441 
@@ -66,6 +71,7 @@ namespace tigertronics {
         static constexpr int swerveBLTurn = 8;
         static constexpr int swerveBRTurn = 9;
 
+        //SHOOTER PORTS
         static constexpr int shooterLeft = 10;
         static constexpr int shooterRight = 11;
         static constexpr int loaderWheel = 12;

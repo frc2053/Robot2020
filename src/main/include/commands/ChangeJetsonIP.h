@@ -11,6 +11,6 @@ class ChangeJetsonIP
 
   void Initialize() override;
  private:
-  SwerveSubsystem* m_subsystem;
   std::function<std::string()> m_newIp;
+  SwerveSubsystem* m_subsystem;
 };

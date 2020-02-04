@@ -6,6 +6,7 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "commands/drive/WheelTest.h"
 #include "commands/ChangeJetsonIP.h"
+#include "commands/drive/TurnToAngle.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -24,30 +25,38 @@ void RobotContainer::ConfigureButtonBindings() {
   frc::SmartDashboard::PutData("Change Jetson IP", new ChangeJetsonIP([this] { return frc::SmartDashboard::GetString("Jetson IP", "10.20.53.42"); }, &m_drivetrain));
   frc::SmartDashboard::PutData("Wheel Test", new WheelTest(&m_drivetrain));
 
-  frc2::Button rosButton([&] {return driverController.GetBumper(frc::GenericHID::JoystickHand::kLeftHand); });
+  frc2::JoystickButton rosButton(&driverController, (int)frc::XboxController::Button::kBumperLeft);
   rosButton.WhileHeld(ROSDrive(&m_drivetrain));
 
-  /*frc2::Button manualCPWheel([&] {return operatorController.GetBumper(frc::GenericHID::JoystickHand::kLeftHand); });
+  frc2::JoystickButton rotateToZeroButton(&driverController, (int)frc::XboxController::Button::kY);
+  rotateToZeroButton.WhenPressed(TurnToAngle(
+    [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+    [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+    0_deg,
+    &m_drivetrain
+  ));
+
+  frc2::JoystickButton manualCPWheel(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
   manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
 
-  frc2::Button rotControl([&] { return driverController.GetAButton(); });
+  frc2::JoystickButton rotControl(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
   rotControl.WhileActiveOnce(RotationControl(&m_controlpanel));
   
-  frc2::Button posControl([&] { return driverController.GetBButton(); });
+  frc2::JoystickButton posControl(&operatorController, (int)frc::XboxController::Button::kB);
   posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
   
-  frc2::Button manualShooter([&] {return operatorController.GetBumper(frc::GenericHID::JoystickHand::kRightHand); });
+  frc2::JoystickButton manualShooter(&operatorController, (int)frc::XboxController::Button::kBumperRight);
   manualShooter.WhileHeld(ManualShoot(&m_shooter, 
     [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kLeftHand);} , 
     [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
   
-  frc2::Button intakeButton([&] { return operatorController.GetAButton(); });
+  frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
   intakeButton.WhileHeld(AutoIntake(&m_intake));
 
-  frc2::Button feederButton([&] { return operatorController.GetBButton(); });
-  feederButton.whileHeld(AutoFeed(&m_intake));
+  frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kB);
+  feederButton.WhileHeld(AutoFeed(&m_intake));
 
-  frc2::Button autoShooter([&] {return operatorController.GetXButton(); });
-  autoShooter.WhenHeld(AutoShoot.(&m_shooter));
-  */
+  frc2::JoystickButton autoShooter(&operatorController, (int)frc::XboxController::Button::kX);
+  autoShooter.WhenHeld(AutoShoot(&m_shooter));
+  
 }

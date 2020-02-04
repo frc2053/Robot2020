@@ -37,6 +37,10 @@ void SwerveSubsystem::DriveWithRos(units::meters_per_second_t xSpeed, units::met
     m_swerve.Drive(xSpeed, ySpeed, rotSpeed, false);
 }
 
+units::degree_t SwerveSubsystem::GetImuYaw() {
+    return m_swerve.GetAngle().Degrees();
+}
+
 void SwerveSubsystem::ManualWheelMove(std::string wheel, int abs_setpoint) {
     m_swerve.ManualMoveWheel(wheel, abs_setpoint);
 }
