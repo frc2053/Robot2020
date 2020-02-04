@@ -36,6 +36,30 @@ void RobotContainer::ConfigureButtonBindings() {
     &m_drivetrain
   ));
 
+  frc2::JoystickButton rotateToGenerator112Button(&driverController, (int)frc::XboxController::Button::kX);
+  rotateToGenerator112Button.WhenPressed(TurnToAngle(
+    [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+    [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+    112.5_deg,
+    &m_drivetrain
+  ));
+
+  frc2::JoystickButton rotateToGenerator67Button(&driverController, (int)frc::XboxController::Button::kB);
+  rotateToGenerator67Button.WhenPressed(TurnToAngle(
+    [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+    [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+    -67.5_deg,
+    &m_drivetrain
+  ));
+
+  frc2::JoystickButton rotateTo180Button(&driverController, (int)frc::XboxController::Button::kA);
+  rotateTo180Button.WhenPressed(TurnToAngle(
+    [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+    [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+    180_deg,
+    &m_drivetrain
+  ));
+
   frc2::JoystickButton manualCPWheel(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
   manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
 
