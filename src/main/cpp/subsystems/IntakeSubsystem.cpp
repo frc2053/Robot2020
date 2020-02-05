@@ -43,4 +43,12 @@ void IntakeSubsystem::SetIntakeWheelsSpeed(double speed){
     intakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
 }
 
+void IntakeSubsystem::SetIntakeFow() {
+    intakeFlopper.Set(frc::DoubleSolenoid::Value::kForward);
+}
+
+void IntakeSubsystem::SetIntakeRev() {
+    intakeFlopper.Set(frc::DoubleSolenoid::Value::kReverse);
+}
+
 void IntakeSubsystem::Periodic(){}
