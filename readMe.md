@@ -31,6 +31,9 @@ Then, to deploy you can use the shortcute Ctrl+Shift+P, then type in WPILib: Dep
 * [CTRE Phoenix](https://github.com/CrossTheRoadElec/Phoenix-api) - Interface for CTRE Talon SRX's
 * [REV Robotics Spark Max API](http://www.revrobotics.com/) - Interface for Rev Robotics Spark Max
 * [NavX API](https://pdocs.kauailabs.com/navx-mxp/) - Interface for Kauai Labs IMU
+* [Websocketpp](https://github.com/zaphoyd/websocketpp) - Websocket Library for C++. Used for communicating with Jetson
+* [ASIO](https://think-async.com/) - Asyncronous Networking Library. Used with websocketpp
+* [rosbridgecpp](https://github.com/ppianpak/rosbridgecpp) - Modified version to used with above libs
 
 ## Contributing
 
@@ -53,4 +56,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * Tim Greer for helping with debugging and math
 * Mike Caruso for helping with debugging and networking
 * Jake Allison for working on ROS integration and design
+* FRC Discord (specifically @calcmogul) for help with advanced C++ concepts
+* FRC Team 900 for networking and ROS help
 
