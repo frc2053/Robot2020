@@ -1,12 +1,17 @@
 #include "subsystems/ShooterSubsystem.h"
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/shuffleboard/BuiltInWidgets.h>
+#include <algorithm>
+#include "tigertronics/Util.h"
 
-ShooterSubsystem::ShooterSubsystem() {
+ShooterSubsystem::ShooterSubsystem() :
+    frc2::PIDSubsystem(frc2::PIDController(tigertronics::constants::hoodkP, tigertronics::constants::hoodkI, tigertronics::constants::hoodkD)) {
     SetName("Shooter Subsystem");
     ConfigureLoaderMotor();
     ConfigureShooterMotors();
     ConfigureDashboard();
+    m_controller.SetTolerance(tigertronics::constants::hoodPIDTolerance);
+    hoodEncoder.SetDistancePerPulse(tigertronics::constants::ctreEncoderTicksPerRev);
 }
 
 void ShooterSubsystem::ConfigureDashboard() {
@@ -50,7 +55,7 @@ void ShooterSubsystem::ConfigureLoaderMotor() {
 }
 
 void ShooterSubsystem::ConfigureHood() {
-    hoodServo.Set(tigertronics::constants::shooterHoodAngle);
+    SetServoSpeed(0);
 }
 
 void ShooterSubsystem::SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed) {
@@ -61,10 +66,20 @@ void ShooterSubsystem::SetShooterToPercentOutput(double percent){
     shooterMotorRight.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, percent);
 }
 
+void ShooterSubsystem::SetServoSpeed(double percent) {
+    hoodServo.Set(std::clamp(percent, -1.0, 1.0));
+}
+
+void ShooterSubsystem::UseOutput(double output, double setpoint) {
+    SetServoSpeed(output);
+}
+
+double ShooterSubsystem::GetMeasurement() {
+    return hoodEncoder.Get();
+}
+
 void ShooterSubsystem::SetHoodToAngle(double angle){
-    double newAngle;
-    newAngle = angle + hoodServo.GetAngle();
-    hoodServo.SetAngle(newAngle);
+    m_controller.SetSetpoint(ConvertHoodAngleToTicks(angle));
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::GetShooterLeftRPM() {
@@ -85,6 +100,14 @@ units::revolutions_per_minute_t ShooterSubsystem::ConvertTickVelToRPM(int ticksP
 
 int ShooterSubsystem::ConvertRPMToTickVel(units::revolutions_per_minute_t rpm) {
     return (rpm.value()  / 600) * (tigertronics::constants::talonFxEncoderTicksPerRev);
+}
+
+int ShooterSubsystem::ConvertHoodAngleToTicks(double angle) {
+    return Util::map(0, tigertronics::constants::hoodMaxAngle, 0, tigertronics::constants::hoodMaxTicks, angle);
+}
+
+double ShooterSubsystem::ConvertHoodTicksToAngle(double ticks) {
+    return Util::map(0, tigertronics::constants::hoodMaxTicks, 0, tigertronics::constants::hoodMaxAngle, ticks);
 }
 
 void ShooterSubsystem::Periodic() {

@@ -49,15 +49,20 @@ namespace tigertronics {
         //SHOOTER PHYSICALS
         static constexpr double shooterGearRatio = 1/2;
         static units::inch_t shooterWheelRadius = 2_in;
-        //both hood constants are undefined at 0
-        static constexpr double shooterHoodTicks = 0;
-        static constexpr double shooterHoodAngle = 0;
+        static constexpr double hoodMaxTicks = 4096;
+        static constexpr double hoodMaxAngle = 90;
 
         //SHOOTER CONFIG
-        static constexpr int shooterkF = 0.000015;
-        static constexpr int shooterkP = 0.00006;
-        static constexpr int shooterkI = 0.000001;
-        static constexpr int shooterkD = 0;
+        static constexpr double shooterkF = 0.000015;
+        static constexpr double shooterkP = 0.00006;
+        static constexpr double shooterkI = 0.000001;
+        static constexpr double shooterkD = 0;
+
+        static constexpr double hoodkP = 0;
+        static constexpr double hoodkI = 0;
+        static constexpr double hoodkD = 0;
+
+        static constexpr int hoodPIDTolerance = 2;
     }
 
     namespace ports {
@@ -80,6 +85,7 @@ namespace tigertronics {
         static constexpr int shooterRight = 11;
         static constexpr int loaderWheel = 12;
         static constexpr int hoodServo = 1;
+        static constexpr int hoodEncoder[2] = {2, 3};
 
         //INTAKE PORTS
         static constexpr int intakeMotor = 13;

@@ -5,6 +5,8 @@
 #include <frc/smartdashboard/SendableRegistry.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include "tigertronics/Util.h"
+
 #define M_PI 3.14159265358979323846
 
 constexpr units::meter_t SwerveModule::kWheelRadius;
@@ -36,10 +38,6 @@ void SwerveModule::SetDesiredState(units::meters_per_second_t speed, const frc::
 
 void SwerveModule::SetSetpointAbs(int setpoint) {
     m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, setpoint);
-}
-
-double map(double x, double in_min, double in_max, double out_min, double out_max) {
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 double SwerveModule::minDistance(double a, double b, double wrap) {
@@ -100,7 +98,7 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
     //state.angle = frc::Rotation2d(units::degree_t(ConstrainAngle(state.angle.Degrees().to<double>())));
 
     std::pair<int, int> finalSet = FindSetpointInTicks(state.angle.Radians());
-    m_driveMotor.Set(map(state.speed.value() * finalSet.second, -3, 3, -1, 1));
+    m_driveMotor.Set(Util::map(state.speed.value() * finalSet.second, -3, 3, -1, 1));
     m_turningMotor.Set(ctre::phoenix::motorcontrol::ControlMode::Position, finalSet.first);
     frc::SmartDashboard::PutNumber(GetModuleName(), m_turningMotor.GetSelectedSensorPosition());
     frc::SmartDashboard::PutNumber(GetModuleName() + " setpoint", state.angle.Degrees().to<double>());

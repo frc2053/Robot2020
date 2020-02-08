@@ -19,6 +19,6 @@ bool ManualShoot::IsFinished() { return true; }
 
 void ManualShoot::End(bool) {
     shooterSubsystem->SetShooterToPercentOutput(0);
-    shooterSubsystem->SetHoodToAngle(tigertronics::constants::shooterHoodAngle);
+    shooterSubsystem->SetHoodToAngle(0);
 }
 
