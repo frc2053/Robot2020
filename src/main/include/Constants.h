@@ -19,6 +19,7 @@ namespace tigertronics {
         //ENCODER INFO
         static constexpr int ctreEncoderTicksPerRev = 4096;
         static constexpr int talonFxEncoderTicksPerRev = 2048;
+        static constexpr int genericEncoderRobobrio = 1024;
 
         //SWERVE TURNING MOTOR CONFIG
         static constexpr double swerveTurningkP = 12;

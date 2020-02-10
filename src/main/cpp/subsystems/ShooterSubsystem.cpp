@@ -11,7 +11,7 @@ ShooterSubsystem::ShooterSubsystem() :
     ConfigureShooterMotors();
     ConfigureDashboard();
     m_controller.SetTolerance(tigertronics::constants::hoodPIDTolerance);
-    hoodEncoder.SetDistancePerPulse(tigertronics::constants::ctreEncoderTicksPerRev);
+    hoodEncoder.SetDistancePerPulse(1);
 }
 
 void ShooterSubsystem::ConfigureDashboard() {
@@ -19,6 +19,7 @@ void ShooterSubsystem::ConfigureDashboard() {
     leftShooterDash = tab.Add("Left Motor Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
     rightShooterDash = tab.Add("Right Motor Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
     avgShooterDash = tab.Add("Average Motor Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
+    hoodAngleDash = tab.Add("Hood Angle", 0).WithWidget(frc::BuiltInWidgets::kDial).WithSize(2,2).GetEntry();
     shooterSpeedSetpointDash = tab.Add("Shooter Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2, 1).GetEntry();
     hoodAngleSetpointDash = tab.Add("Hood Angle Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2,1 ).GetEntry();
 }
@@ -75,11 +76,15 @@ void ShooterSubsystem::UseOutput(double output, double setpoint) {
 }
 
 double ShooterSubsystem::GetMeasurement() {
-    return hoodEncoder.Get();
+    return GetHoodAngle();
+}
+
+double ShooterSubsystem::GetHoodAngle() {
+    return ConvertHoodTicksToAngle(hoodEncoder.Get());
 }
 
 void ShooterSubsystem::SetHoodToAngle(double angle){
-    m_controller.SetSetpoint(ConvertHoodAngleToTicks(angle));
+    m_controller.SetSetpoint(angle);
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::GetShooterLeftRPM() {
@@ -103,15 +108,16 @@ int ShooterSubsystem::ConvertRPMToTickVel(units::revolutions_per_minute_t rpm) {
 }
 
 int ShooterSubsystem::ConvertHoodAngleToTicks(double angle) {
-    return Util::map(0, tigertronics::constants::hoodMaxAngle, 0, tigertronics::constants::hoodMaxTicks, angle);
+    return (angle * tigertronics::constants::genericEncoderRobobrio) / 360;
 }
 
 double ShooterSubsystem::ConvertHoodTicksToAngle(double ticks) {
-    return Util::map(0, tigertronics::constants::hoodMaxTicks, 0, tigertronics::constants::hoodMaxAngle, ticks);
+    return (ticks / tigertronics::constants::genericEncoderRobobrio) * 360;
 }
 
 void ShooterSubsystem::Periodic() {
     leftShooterDash.SetDouble(GetShooterLeftRPM().value());
     rightShooterDash.SetDouble(GetShooterRightRPM().value());
     avgShooterDash.SetDouble(GetShooterAvgRPM().value());
+    hoodAngleDash.SetDouble(GetHoodAngle());
 }
