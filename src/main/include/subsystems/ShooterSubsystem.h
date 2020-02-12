@@ -7,6 +7,7 @@
 #include <frc/shuffleboard/ShuffleboardTab.h>
 #include <ntcore.h>
 #include "tigertronics/ContinuousServo.h"
+#include "tigertronics/ShooterLookupTable.h"
 #include <frc/Encoder.h>
 
 class ShooterSubsystem : public frc2::PIDSubsystem {
@@ -27,11 +28,13 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   void ConfigureLoaderMotor();
   void ConfigureHood();
   void ConfigureDashboard();
+  void SetupLookupTable();
   double GetHoodAngle();
   units::revolutions_per_minute_t ConvertTickVelToRPM(int ticksPer100ms);
   int ConvertRPMToTickVel(units::revolutions_per_minute_t rpm);
   int ConvertHoodAngleToTicks(double angle);
   double ConvertHoodTicksToAngle(double ticks);
+  ShooterLookupTable table;
   nt::NetworkTableEntry leftShooterDash;
   nt::NetworkTableEntry rightShooterDash;
   nt::NetworkTableEntry avgShooterDash;

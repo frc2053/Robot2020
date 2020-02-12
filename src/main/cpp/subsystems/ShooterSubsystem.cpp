@@ -24,6 +24,12 @@ void ShooterSubsystem::ConfigureDashboard() {
     hoodAngleSetpointDash = tab.Add("Hood Angle Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2,1 ).GetEntry();
 }
 
+void ShooterSubsystem::SetupLookupTable() {
+    //ADD MORE AS NEEDED
+    table.AddLookupValue(1_m, ShooterLookupTable::LookupValue{ 3000_rpm, 45_deg });
+    table.AddLookupValue(5_m, ShooterLookupTable::LookupValue{ 6000_rpm, 20_deg });
+}
+
 void ShooterSubsystem::ConfigureShooterMotors() {
     shooterMotorLeft.ConfigFactoryDefault();
     shooterMotorRight.ConfigFactoryDefault();

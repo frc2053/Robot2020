@@ -1,20 +1,21 @@
 #pragma once
 
 #include <map>
+#include <units/units.h>
 
 class ShooterLookupTable
 {
 public:
 	struct LookupValue {
-		double rpm = 0;
-		double angle = 0;
+		units::revolutions_per_minute_t rpm = 0_rpm;
+		units::radian_t angle = 0_rad;
 	};
 	ShooterLookupTable();
-	void AddLookupValue(double distance, LookupValue val);
-	void RemoveLookupValue(double distance);
-	LookupValue Get(double distance);
+	void AddLookupValue(units::meter_t distance, LookupValue val);
+	void RemoveLookupValue(units::meter_t distance);
+	LookupValue Get(units::meter_t distance);
 private:
-	LookupValue Interpolate(double val);
-	std::map<double, LookupValue> table;
+	LookupValue Interpolate(units::meter_t val);
+	std::map<units::meter_t, LookupValue> table;
 };
 

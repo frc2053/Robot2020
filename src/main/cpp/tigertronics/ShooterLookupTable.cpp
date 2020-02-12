@@ -1,23 +1,23 @@
-#include "ShooterLookupTable.h"
+#include "tigertronics/ShooterLookupTable.h"
 
 ShooterLookupTable::ShooterLookupTable() {
 
 }
 
-void ShooterLookupTable::AddLookupValue(double distance, LookupValue val) {
+void ShooterLookupTable::AddLookupValue(units::meter_t distance, LookupValue val) {
     table.insert({ distance, val });
 }
 
-void ShooterLookupTable::RemoveLookupValue(double distance) {
+void ShooterLookupTable::RemoveLookupValue(units::meter_t distance) {
     auto it = table.find(distance);
     table.erase(it);
 }
 
-ShooterLookupTable::LookupValue ShooterLookupTable::Get(double distance) {
+ShooterLookupTable::LookupValue ShooterLookupTable::Get(units::meter_t distance) {
     return Interpolate(distance);
 }
 
-ShooterLookupTable::LookupValue ShooterLookupTable::Interpolate(double val)
+ShooterLookupTable::LookupValue ShooterLookupTable::Interpolate(units::meter_t val)
 {
     // if we have exactly this value in the map, just return it                                                                                                                                                                 
     if (table.find(val) != table.end()) return table.at(val);
@@ -30,7 +30,7 @@ ShooterLookupTable::LookupValue ShooterLookupTable::Interpolate(double val)
 
 
     LookupValue retVal;
-    retVal.angle = double(lower->second.angle + (upper->second.angle - lower->second.angle) * float(val - lower->first) / fabs(upper->first - lower->first));
-    retVal.rpm = double(lower->second.rpm + (upper->second.rpm - lower->second.rpm) * float(val - lower->first) / fabs(upper->first - lower->first));
+    retVal.angle = units::radian_t(lower->second.angle + (upper->second.angle - lower->second.angle) * units::meter_t(val - lower->first) / units::math::fabs(upper->first - lower->first));
+    retVal.rpm = units::revolutions_per_minute_t(lower->second.rpm + (upper->second.rpm - lower->second.rpm) * units::meter_t(val - lower->first) / units::math::fabs(upper->first - lower->first));
     return retVal;
 }
