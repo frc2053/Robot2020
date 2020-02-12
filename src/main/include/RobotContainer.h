@@ -10,7 +10,6 @@
 #include "commands/controlpanel/ManualWheelRotation.h"
 #include "commands/controlpanel/RotationControl.h"
 #include "commands/controlpanel/PositionControl.h"
-#include "commands/shooter/ManualShoot.h"
 #include "commands/shooter/AutoShoot.h"
 #include "commands/intake/AutoFeed.h"
 #include "commands/intake/AutoIntake.h"

@@ -18,7 +18,7 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   void Periodic();
   void SetShooterToPercentOutput(double output);
   void SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed);
-  void SetHoodToAngle(double angle);
+  void SetHoodToAngle(units::degree_t angle);
   void SetServoSpeed(double percent);
   units::revolutions_per_minute_t GetShooterLeftRPM();
   units::revolutions_per_minute_t GetShooterRightRPM();
@@ -29,11 +29,11 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   void ConfigureHood();
   void ConfigureDashboard();
   void SetupLookupTable();
-  double GetHoodAngle();
+  units::degree_t GetHoodAngle();
   units::revolutions_per_minute_t ConvertTickVelToRPM(int ticksPer100ms);
   int ConvertRPMToTickVel(units::revolutions_per_minute_t rpm);
-  int ConvertHoodAngleToTicks(double angle);
-  double ConvertHoodTicksToAngle(double ticks);
+  int ConvertHoodAngleToTicks(units::degree_t angle);
+  units::degree_t ConvertHoodTicksToAngle(double ticks);
   ShooterLookupTable table;
   nt::NetworkTableEntry leftShooterDash;
   nt::NetworkTableEntry rightShooterDash;

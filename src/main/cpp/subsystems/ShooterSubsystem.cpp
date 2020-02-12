@@ -85,15 +85,15 @@ void ShooterSubsystem::UseOutput(double output, double setpoint) {
 }
 
 double ShooterSubsystem::GetMeasurement() {
-    return GetHoodAngle();
+    return GetHoodAngle().to<double>();
 }
 
-double ShooterSubsystem::GetHoodAngle() {
+units::degree_t ShooterSubsystem::GetHoodAngle() {
     return ConvertHoodTicksToAngle(hoodEncoder.GetQuadraturePosition());
 }
 
-void ShooterSubsystem::SetHoodToAngle(double angle){
-    m_controller.SetSetpoint(angle);
+void ShooterSubsystem::SetHoodToAngle(units::degree_t angle){
+    m_controller.SetSetpoint(angle.to<double>());
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::GetShooterLeftRPM() {
@@ -116,17 +116,17 @@ int ShooterSubsystem::ConvertRPMToTickVel(units::revolutions_per_minute_t rpm) {
     return (rpm.value()  / 600) * (tigertronics::constants::talonFxEncoderTicksPerRev);
 }
 
-int ShooterSubsystem::ConvertHoodAngleToTicks(double angle) {
-    return Util::map(angle, 0, tigertronics::constants::hoodMaxAngle, 0, tigertronics::constants::hoodMaxTicks);
+int ShooterSubsystem::ConvertHoodAngleToTicks(units::degree_t angle) {
+    return Util::map(angle.to<double>(), 0, tigertronics::constants::hoodMaxAngle, 0, tigertronics::constants::hoodMaxTicks);
 }
 
-double ShooterSubsystem::ConvertHoodTicksToAngle(double ticks) {
-    return Util::map(ticks, 0, tigertronics::constants::hoodMaxTicks, 0, tigertronics::constants::hoodMaxAngle);
+units::degree_t ShooterSubsystem::ConvertHoodTicksToAngle(double ticks) {
+    return units::degree_t(Util::map(ticks, 0, tigertronics::constants::hoodMaxTicks, 0, tigertronics::constants::hoodMaxAngle));
 }
 
 void ShooterSubsystem::Periodic() {
     leftShooterDash.SetDouble(GetShooterLeftRPM().value());
     rightShooterDash.SetDouble(GetShooterRightRPM().value());
     avgShooterDash.SetDouble(GetShooterAvgRPM().value());
-    hoodAngleDash.SetDouble(GetHoodAngle());
+    hoodAngleDash.SetDouble(GetHoodAngle().to<double>());
 }

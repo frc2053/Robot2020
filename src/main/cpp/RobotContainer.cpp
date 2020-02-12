@@ -68,12 +68,7 @@ void RobotContainer::ConfigureButtonBindings() {
   
   frc2::JoystickButton posControl(&operatorController, (int)frc::XboxController::Button::kB);
   posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
-  
-  frc2::JoystickButton manualShooter(&operatorController, (int)frc::XboxController::Button::kBumperRight);
-  manualShooter.WhileHeld(ManualShoot(&m_shooter, 
-    [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kLeftHand);} , 
-    [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
-  
+    
   frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
   intakeButton.WhileHeld(AutoIntake(&m_intake));
 
