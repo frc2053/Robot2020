@@ -10,8 +10,8 @@ ShooterSubsystem::ShooterSubsystem() :
     ConfigureLoaderMotor();
     ConfigureShooterMotors();
     ConfigureDashboard();
-    m_controller.SetTolerance(tigertronics::constants::hoodPIDTolerance);
-    hoodEncoder.SetDistancePerPulse(1);
+    ConfigureHood();
+    SetupLookupTable();
 }
 
 void ShooterSubsystem::ConfigureDashboard() {
@@ -63,6 +63,9 @@ void ShooterSubsystem::ConfigureLoaderMotor() {
 
 void ShooterSubsystem::ConfigureHood() {
     SetServoSpeed(0);
+    m_controller.SetTolerance(tigertronics::constants::hoodPIDTolerance);
+    hoodEncoder.ConfigFactoryDefault();
+    hoodEncoder.SetQuadraturePosition(0);
 }
 
 void ShooterSubsystem::SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed) {
@@ -86,7 +89,7 @@ double ShooterSubsystem::GetMeasurement() {
 }
 
 double ShooterSubsystem::GetHoodAngle() {
-    return ConvertHoodTicksToAngle(hoodEncoder.Get());
+    return ConvertHoodTicksToAngle(hoodEncoder.GetQuadraturePosition());
 }
 
 void ShooterSubsystem::SetHoodToAngle(double angle){
@@ -114,11 +117,11 @@ int ShooterSubsystem::ConvertRPMToTickVel(units::revolutions_per_minute_t rpm) {
 }
 
 int ShooterSubsystem::ConvertHoodAngleToTicks(double angle) {
-    return (angle * tigertronics::constants::genericEncoderRobobrio) / 360;
+    return Util::map(angle, 0, tigertronics::constants::hoodMaxAngle, 0, tigertronics::constants::hoodMaxTicks);
 }
 
 double ShooterSubsystem::ConvertHoodTicksToAngle(double ticks) {
-    return (ticks / tigertronics::constants::genericEncoderRobobrio) * 360;
+    return Util::map(ticks, 0, tigertronics::constants::hoodMaxTicks, 0, tigertronics::constants::hoodMaxAngle);
 }
 
 void ShooterSubsystem::Periodic() {

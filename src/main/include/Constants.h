@@ -86,7 +86,7 @@ namespace tigertronics {
         static constexpr int shooterRight = 11;
         static constexpr int loaderWheel = 12;
         static constexpr int hoodServo = 1;
-        static constexpr int hoodEncoder[2] = {2, 3};
+        static constexpr int canifier = 22;
 
         //INTAKE PORTS
         static constexpr int intakeMotor = 13;

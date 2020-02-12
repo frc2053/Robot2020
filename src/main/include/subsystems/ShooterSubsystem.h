@@ -8,7 +8,7 @@
 #include <ntcore.h>
 #include "tigertronics/ContinuousServo.h"
 #include "tigertronics/ShooterLookupTable.h"
-#include <frc/Encoder.h>
+#include <ctre/phoenix/CANifier.h>
 
 class ShooterSubsystem : public frc2::PIDSubsystem {
  public:
@@ -45,7 +45,7 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   ctre::phoenix::motorcontrol::can::TalonFX shooterMotorRight{tigertronics::ports::shooterRight};
   ctre::phoenix::motorcontrol::can::TalonSRX loaderWheel{tigertronics::ports::loaderWheel};
   ContinuousServo hoodServo{tigertronics::ports::hoodServo};
-  frc::Encoder hoodEncoder{tigertronics::ports::hoodEncoder[0], tigertronics::ports::hoodEncoder[1]};
+  ctre::phoenix::CANifier hoodEncoder{tigertronics::ports::canifier};
   double kFF = tigertronics::constants::shooterkF;
   double kP = tigertronics::constants::shooterkP;
   double kI = tigertronics::constants::shooterkI;
