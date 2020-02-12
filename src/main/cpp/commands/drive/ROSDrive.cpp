@@ -8,7 +8,6 @@ void ROSDrive::Initialize() {}
 
 void ROSDrive::Execute() {
   std::shared_ptr<RosTypes::Twist> twist = m_subsystem->GetTwist();
-  std::cout << "driving with ros\n";
   m_subsystem->DriveWithRos(units::meters_per_second_t(twist->linear.x), units::meters_per_second_t(twist->linear.y), units::radians_per_second_t(twist->angular.z));
 }
 
