@@ -26,7 +26,7 @@ public:
 
     void Drive(units::meters_per_second_t xSpeed,
             units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
-            bool fieldRelative);
+            bool fieldRelative, bool velocity);
     const frc::Pose2d& UpdateOdometry();
     void LogModulesToDashboard();
     const frc::Twist2d& GetDrivetrainSpeedsWorld();

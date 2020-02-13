@@ -13,6 +13,7 @@ class SwerveSubsystem : public frc2::SubsystemBase {
   SwerveSubsystem();
   void DriveWithJoystick(double x, double y, double rot, bool fieldRelative);
   void DriveWithRos(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed);
+  void AutoDrive(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed);
   units::degree_t GetImuYaw();
   const frc::Pose2d& GetCurrentPose();
   const frc::Twist2d& GetCurrentTwist();

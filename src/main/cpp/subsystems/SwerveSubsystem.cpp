@@ -34,7 +34,7 @@ void SwerveSubsystem::DriveWithRos(units::meters_per_second_t xSpeed, units::met
     frc::SmartDashboard::PutNumber("Y Cmd", ySpeed.value());
     frc::SmartDashboard::PutNumber("Rot Cmd", rotSpeed.value());
     frc::SmartDashboard::PutString("Drive Mode", "ROS");
-    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, false);
+    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, false, true);
 }
 
 units::degree_t SwerveSubsystem::GetImuYaw() {
@@ -86,7 +86,12 @@ void SwerveSubsystem::DriveWithJoystick(double x, double y, double rot, bool fie
     const auto xSpeed = fowAxis * m_swerve.kMaxSpeed;
     const auto ySpeed = strafeAxis * m_swerve.kMaxSpeed;
     const auto rotSpeed = rotAxis * m_swerve.kMaxAngularSpeed;
-    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, fieldRelative);
+    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, fieldRelative, false);
+}
+
+void SwerveSubsystem::AutoDrive(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed) {
+    frc::SmartDashboard::PutString("Drive Mode", "Auto");
+    m_swerve.Drive(xSpeed, ySpeed, rotSpeed, false, true);
 }
 
 void SwerveSubsystem::Periodic() {

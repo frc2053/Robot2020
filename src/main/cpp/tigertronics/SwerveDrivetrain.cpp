@@ -37,16 +37,16 @@ void SwerveDrivetrain::ManualMoveWheel(std::string wheel, int setpoint) {
 
 void SwerveDrivetrain::ManualMoveWheel(std::string wheel, units::radian_t angle, units::meters_per_second_t speed) {
     if(wheel == "FL") {
-        m_frontLeft.SetDesiredState(speed, angle);
+        m_frontLeft.SetDesiredState(speed, angle, false);
     }
     if(wheel == "FR") {
-        m_frontRight.SetDesiredState(speed, angle);
+        m_frontRight.SetDesiredState(speed, angle, false);
     }
     if(wheel == "BL") {
-        m_backLeft.SetDesiredState(speed, angle);
+        m_backLeft.SetDesiredState(speed, angle, false);
     }
     if(wheel == "BR") {
-        m_backRight.SetDesiredState(speed, angle);
+        m_backRight.SetDesiredState(speed, angle, false);
     }  
 }
 
@@ -55,7 +55,7 @@ void SwerveDrivetrain::ManualMoveWheel(std::string wheel, units::radian_t angle,
 //+rot is CCW
 void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
                        units::meters_per_second_t ySpeed,
-                       units::radians_per_second_t rot, bool fieldRelative) {   
+                       units::radians_per_second_t rot, bool fieldRelative, bool velocity) {   
   std::array<frc::SwerveModuleState, 4> states = m_kinematics.ToSwerveModuleStates(
       fieldRelative ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
                           xSpeed, ySpeed, rot, GetAngle())
@@ -75,10 +75,10 @@ void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
   m_chassisSpeeds.dy = units::meter_t(speeds.vy.value());
   m_chassisSpeeds.dtheta = units::radian_t(speeds.omega.value());
 
-  m_frontLeft.SetDesiredState(fl);
-  m_frontRight.SetDesiredState(fr);
-  m_backLeft.SetDesiredState(bl);
-  m_backRight.SetDesiredState(br);
+  m_frontLeft.SetDesiredState(fl, velocity);
+  m_frontRight.SetDesiredState(fr, velocity);
+  m_backLeft.SetDesiredState(bl, velocity);
+  m_backRight.SetDesiredState(br, velocity);
 }
 
 const frc::Pose2d& SwerveDrivetrain::UpdateOdometry() {
