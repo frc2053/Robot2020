@@ -1,14 +1,15 @@
 #include "subsystems/IntakeSubsystem.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
+#include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/shuffleboard/BuiltInWidgets.h>
 
 IntakeSubsystem::IntakeSubsystem() {
     SetName("IntakeSubsystem");
     ConfigConveyorMotor();
     ConfigFeederMotor();
     ConfigIntakeMotor();
-    frc::SmartDashboard::PutNumber("intake input", 0);
-    frc::SmartDashboard::PutNumber("loader input", 0);
+    ConfigDashboard();
 }
 
 void IntakeSubsystem::ConfigConveyorMotor(){
@@ -33,6 +34,21 @@ void IntakeSubsystem::ConfigIntakeMotor(){
     //incase we plug in a bad talon
     intakeMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
     intakeMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+}
+
+void IntakeSubsystem::ConfigDashboard() {
+    frc::ShuffleboardTab& tab = frc::Shuffleboard::GetTab("Intake Subsystem");
+    wpi::StringMap<std::shared_ptr<nt::Value>> properties{
+        std::make_pair("min", nt::Value::MakeDouble(0)),
+        std::make_pair("max", nt::Value::MakeDouble(5))
+    };
+    dashNumOfBalls = tab.Add("Number of Balls", 0).WithWidget(frc::BuiltInWidgets::kDial).WithSize(2,2).WithProperties(properties).GetEntry();
+    dashDetectedBallIn = tab.Add("Detected Ball In", false).WithWidget(frc::BuiltInWidgets::kBooleanBox).WithSize(1,1).GetEntry();
+    dashDetectedBallOut = tab.Add("Detected Ball Out", false).WithWidget(frc::BuiltInWidgets::kBooleanBox).WithSize(1,1).GetEntry();
+    dashRawIntakeDist = tab.Add("Raw Intake Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
+    dashRawLoaderDist = tab.Add("Raw Loader Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
+    dashFilteredIntakeDist = tab.Add("Filtered Intake Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
+    dashFilteredLoaderDist = tab.Add("Filtered Loader Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
 }
 
 void IntakeSubsystem::SetConveyorBeltSpeed(double speed){
@@ -80,24 +96,13 @@ int IntakeSubsystem::GetNumOfBalls() {
 }
 
 void IntakeSubsystem::Periodic(){
-    //double rawIntakeDist = intakeDistSensor.GetRange();
-    //double rawLoaderDist = loaderDistSensor.GetRange();
-    double rawIntakeDist = frc::SmartDashboard::GetNumber("intake input", 0);
-    double rawLoaderDist = frc::SmartDashboard::GetNumber("loader input", 0);
+    double rawIntakeDist = intakeDistSensor.GetRange();
+    double rawLoaderDist = loaderDistSensor.GetRange();
     intakeDistFiltered = units::millimeter_t(intakeHighFilter.Calculate(intakeLowFilter.Calculate(rawIntakeDist)));
     loaderDistFiltered = units::millimeter_t(loaderHighFilter.Calculate(loaderLowFilter.Calculate(rawLoaderDist)));
-
-    frc::SmartDashboard::PutNumber("raw intake dist", rawIntakeDist);
-    frc::SmartDashboard::PutNumber("raw loader dist", rawLoaderDist);
-
-    frc::SmartDashboard::PutNumber("filtered intake dist", intakeDistFiltered.to<double>());
-    frc::SmartDashboard::PutNumber("filtered loader dist", loaderDistFiltered.to<double>());
     
     bool ballIn = DetectedBallIn();
     bool ballOut = DetectedBallOut();
-
-    frc::SmartDashboard::PutBoolean("detected ball in", ballIn);
-    frc::SmartDashboard::PutBoolean("detected ball out", ballOut);
 
     if(ballIn != detectedIntake) {
         if(ballIn) {
@@ -113,5 +118,11 @@ void IntakeSubsystem::Periodic(){
         detectedLoader = ballOut;
     }
 
-    frc::SmartDashboard::PutNumber("num of balls", numOfBalls);
+    dashNumOfBalls.SetDouble(GetNumOfBalls());
+    dashDetectedBallIn.SetBoolean(ballIn);
+    dashDetectedBallOut.SetBoolean(ballOut);
+    dashRawIntakeDist.SetDouble(rawIntakeDist);
+    dashRawLoaderDist.SetDouble(rawLoaderDist);
+    dashFilteredIntakeDist.SetDouble(intakeDistFiltered.to<double>());
+    dashFilteredLoaderDist.SetDouble(loaderDistFiltered.to<double>());
 }

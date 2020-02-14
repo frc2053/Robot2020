@@ -25,6 +25,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   void ConfigIntakeMotor();
   void ConfigConveyorMotor();
   void ConfigFeederMotor();
+  void ConfigDashboard();
   bool DetectedBallIn();
   bool DetectedBallOut();
   int numOfBalls = 0;
@@ -47,4 +48,11 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   units::millimeter_t intakeDistFiltered = 0_mm;
   units::millimeter_t loaderDistFiltered = 0_mm;
   frc::DoubleSolenoid intakeFlopper{tigertronics::ports::TwelveVoltPCM, tigertronics::ports::intakeSolenoidPortFow, tigertronics::ports::intakeSolenoidPortRev};
+  nt::NetworkTableEntry dashNumOfBalls;
+  nt::NetworkTableEntry dashDetectedBallIn;
+  nt::NetworkTableEntry dashDetectedBallOut;
+  nt::NetworkTableEntry dashRawLoaderDist;
+  nt::NetworkTableEntry dashRawIntakeDist;
+  nt::NetworkTableEntry dashFilteredLoaderDist;
+  nt::NetworkTableEntry dashFilteredIntakeDist;
   };
