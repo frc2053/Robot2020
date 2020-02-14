@@ -65,6 +65,11 @@ namespace tigertronics {
         static constexpr double hoodkD = 0;
 
         static constexpr int hoodPIDTolerance = 2;
+
+
+        //INTAKE
+        static constexpr double highPassConst = 0.05;
+        static constexpr units::millimeter_t distThreshold = 25.4_mm;
     }
 
     namespace ports {
