@@ -17,7 +17,7 @@
 class RobotContainer {
  public:
   RobotContainer();
-
+  frc2::Command* GetAutonomousCommand();
   SwerveSubsystem m_drivetrain;
   ControlPanelSubsystem m_controlpanel;
   ShooterSubsystem m_shooter;

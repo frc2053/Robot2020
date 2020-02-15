@@ -89,7 +89,7 @@ double ShooterSubsystem::GetMeasurement() {
 }
 
 units::degree_t ShooterSubsystem::GetHoodAngle() {
-    return ConvertHoodTicksToAngle(hoodEncoder.GetQuadraturePosition());
+    return units::degree_t(Util::map(0, ENCODER_MAX_VAL, 0, 90, hoodEncoder.GetQuadraturePosition()));
 }
 
 void ShooterSubsystem::SetHoodToAngle(units::degree_t angle){

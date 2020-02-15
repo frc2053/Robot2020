@@ -31,6 +31,9 @@ public:
     void LogModulesToDashboard();
     const frc::Twist2d& GetDrivetrainSpeedsWorld();
 
+    frc::SwerveDriveOdometry<4> GetOdom();
+    frc::SwerveDriveKinematics<4> GetKinematics();
+
     units::meters_per_second_t kMaxSpeed =
     3.0_mps;  // 3 meters per second
     units::radians_per_second_t kMaxAngularSpeed{
@@ -38,8 +41,7 @@ public:
 
     void ManualMoveWheel(std::string wheel, int setpoint);
     void ManualMoveWheel(std::string wheel, units::radian_t angle, units::meters_per_second_t speed);
-
- private:
+    
     //Apparently all of math is Right Hand Rule Coordinate system but I dont like it
     units::meter_t widthLoc = tigertronics::constants::drivebaseWidth / 2;
     units::meter_t lengthLoc = tigertronics::constants::drivebaseLength / 2;
@@ -59,11 +61,13 @@ public:
     MockAHRS m_imu{};
     #endif
 
+    frc::Twist2d m_chassisSpeeds;
     frc::SwerveDriveKinematics<4> m_kinematics{
         m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation,
         m_backRightLocation};
 
     frc::SwerveDriveOdometry<4> m_odometry{m_kinematics, GetAngle(), frc::Pose2d()};
+    void SetModuleStates(std::array<frc::SwerveModuleState, 4> desiredStates);
 
-    frc::Twist2d m_chassisSpeeds;
+ private:
 };

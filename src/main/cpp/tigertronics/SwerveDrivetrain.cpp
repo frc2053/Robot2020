@@ -9,6 +9,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 SwerveDrivetrain::SwerveDrivetrain() {
+    printf("got to swerve drivetrain constructor\n");
     m_imu.ZeroYaw();
     m_frontLeft.InvertDrive(true);
     m_frontRight.InvertDrive(false);
@@ -33,6 +34,14 @@ void SwerveDrivetrain::ManualMoveWheel(std::string wheel, int setpoint) {
     if(wheel == "BR") {
         m_backRight.SetSetpointAbs(setpoint);
     }
+}
+
+frc::SwerveDriveOdometry<4> SwerveDrivetrain::GetOdom() {
+    return m_odometry;
+}
+
+frc::SwerveDriveKinematics<4> SwerveDrivetrain::GetKinematics() {
+    return m_kinematics;
 }
 
 void SwerveDrivetrain::ManualMoveWheel(std::string wheel, units::radian_t angle, units::meters_per_second_t speed) {
@@ -79,6 +88,16 @@ void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
   m_frontRight.SetDesiredState(fr, velocity);
   m_backLeft.SetDesiredState(bl, velocity);
   m_backRight.SetDesiredState(br, velocity);
+}
+
+void SwerveDrivetrain::SetModuleStates(
+    std::array<frc::SwerveModuleState, 4> desiredStates) {
+  m_kinematics.NormalizeWheelSpeeds(&desiredStates,
+                                        kMaxSpeed);
+  m_frontLeft.SetDesiredState(desiredStates[0], true);
+  m_backLeft.SetDesiredState(desiredStates[1], true);
+  m_frontRight.SetDesiredState(desiredStates[2], true);
+  m_backRight.SetDesiredState(desiredStates[3], true);
 }
 
 const frc::Pose2d& SwerveDrivetrain::UpdateOdometry() {

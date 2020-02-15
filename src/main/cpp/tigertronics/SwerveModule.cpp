@@ -105,7 +105,7 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState& state, bool velocityM
 }
 
 frc::SwerveModuleState SwerveModule::GetState() {
-    units::radians_per_second_t wheelSpeed = units::revolutions_per_minute_t(ConvertTalonVelocityToRadiansPerSecond(m_driveMotor.GetSelectedSensorVelocity(), kDriveEncoderResolution));
+    units::radians_per_second_t wheelSpeed = units::revolutions_per_minute_t(ConvertTalonVelocityToRadiansPerSecond(m_driveMotor.GetSelectedSensorVelocity(), 6697));
     frc::SwerveModuleState state;
     state.angle = frc::Rotation2d(ConvertEncoderUnitsToRadians(m_turningMotor.GetSelectedSensorPosition(), kTurningEncoderResolution));
     state.speed = ConvertAngularToLinearVelocity(wheelSpeed, kWheelRadius);

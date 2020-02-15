@@ -2,13 +2,14 @@
 
 #include "units/units.h"
 #include "frc/util/Color.h"
+#include <frc/trajectory/TrapezoidProfile.h>
 
 namespace tigertronics {
     namespace constants {
         //PHYSICAL DIMENSIONS
         static constexpr units::meter_t drivebaseLength = 24_in;
         static constexpr units::meter_t drivebaseWidth = 23_in;
-        static constexpr units::meter_t driveWheelRadius = 3_in / 2;
+        static constexpr units::meter_t driveWheelRadius = 2.25_in / 2;
         static constexpr double swerveDriveGearReduction = 5.33 / 1;
 
         //COLOR INFO
@@ -37,7 +38,7 @@ namespace tigertronics {
         static constexpr double swerveDrivekI = 0.0;
         static constexpr double swerveDrivekD = 0.0;
 
-        static constexpr double swerveAnglekP = 1;
+        static constexpr double swerveAnglekP = .01;
         static constexpr double swerveAnglekI = 0;
         static constexpr double swerveAnglekD = 0;
         static constexpr double swerveAngleTolerance = 2;
@@ -60,7 +61,7 @@ namespace tigertronics {
         static constexpr double shooterkI = 0.000001;
         static constexpr double shooterkD = 0;
 
-        static constexpr double hoodkP = 0;
+        static constexpr double hoodkP = .1;
         static constexpr double hoodkI = 0;
         static constexpr double hoodkD = 0;
 
@@ -70,6 +71,8 @@ namespace tigertronics {
         //INTAKE
         static constexpr double highPassConst = 0.05;
         static constexpr units::millimeter_t distThreshold = 25.4_mm;
+
+        static const frc::TrapezoidProfile<units::radians>::Constraints kThetaControllerConstraints;
     }
 
     namespace ports {

@@ -29,6 +29,14 @@ std::shared_ptr<RosTypes::Twist> SwerveSubsystem::GetTwist() {
     return twist;
 }
 
+frc::SwerveDriveOdometry<4> SwerveSubsystem::GetOdom() {
+    return m_swerve.GetOdom();
+}
+
+frc::SwerveDriveKinematics<4> SwerveSubsystem::GetKinematics() {
+    return m_swerve.GetKinematics();
+}
+
 void SwerveSubsystem::DriveWithRos(units::meters_per_second_t xSpeed, units::meters_per_second_t ySpeed, units::radians_per_second_t rotSpeed) {
     frc::SmartDashboard::PutNumber("X Cmd", xSpeed.value());
     frc::SmartDashboard::PutNumber("Y Cmd", ySpeed.value());

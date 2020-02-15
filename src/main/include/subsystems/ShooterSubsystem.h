@@ -50,4 +50,5 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   double kP = tigertronics::constants::shooterkP;
   double kI = tigertronics::constants::shooterkI;
   double kD = tigertronics::constants::shooterkD;
+  int ENCODER_MAX_VAL = 16585;
 };

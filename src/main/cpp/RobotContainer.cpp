@@ -7,6 +7,11 @@
 #include "commands/drive/WheelTest.h"
 #include "commands/ChangeJetsonIP.h"
 #include "commands/drive/TurnToAngle.h"
+#include <frc/trajectory/Trajectory.h>
+#include <frc/trajectory/TrajectoryGenerator.h>
+#include <frc2/command/SequentialCommandGroup.h>
+#include <frc2/command/SwerveControllerCommand.h>
+#include <commands/shooter/SetHoodToAngle.h>
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -24,6 +29,9 @@ RobotContainer::RobotContainer() : m_drivetrain(){
 void RobotContainer::ConfigureButtonBindings() {
   frc::SmartDashboard::PutData("Change Jetson IP", new ChangeJetsonIP([this] { return frc::SmartDashboard::GetString("Jetson IP", "10.20.53.42"); }, &m_drivetrain));
   frc::SmartDashboard::PutData("Wheel Test", new WheelTest(&m_drivetrain));
+
+  frc::SmartDashboard::PutData("Set Wheel To RPM", new AutoShoot(&m_shooter, [this] { return units::revolutions_per_minute_t(frc::SmartDashboard::GetNumber("Shooter Velocity", 0)); }));
+  frc::SmartDashboard::PutData("Set Hood To Angle", new SetHoodToAngle(&m_shooter, [this] { return units::degree_t(frc::SmartDashboard::GetNumber("Shooter Angle", 0)); }));
 
   frc2::JoystickButton rosButton(&driverController, (int)frc::XboxController::Button::kBumperLeft);
   rosButton.WhileHeld(ROSDrive(&m_drivetrain));
@@ -75,7 +83,52 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kB);
   feederButton.WhileHeld(AutoFeed(&m_intake));
 
-  frc2::JoystickButton autoShooter(&operatorController, (int)frc::XboxController::Button::kX);
-  autoShooter.WhenHeld(AutoShoot(&m_shooter));
+  //frc2::JoystickButton autoShooter(&operatorController, (int)frc::XboxController::Button::kX);
+  //autoShooter.WhenHeld(AutoShoot(&m_shooter));
   
+}
+
+frc2::Command* RobotContainer::GetAutonomousCommand() {
+  // Set up config for trajectory
+  frc::TrajectoryConfig config(10_fps,
+                               units::meters_per_second_squared_t(3));
+  // Add kinematics to ensure max speed is actually obeyed
+  config.SetKinematics(m_drivetrain.m_swerve.m_kinematics);
+
+  // An example trajectory to follow.  All units in meters.
+  auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d(0_m, 0_m, frc::Rotation2d(0_deg)),
+      // Pass through these two interior waypoints, making an 's' curve path
+      {frc::Translation2d(8_ft, 0_ft)},
+      // End 3 meters straight ahead of where we started, facing forward
+      frc::Pose2d(8_ft, 5_ft, frc::Rotation2d(0_deg)),
+      // Pass the config
+      config);
+
+  frc2::SwerveControllerCommand<4> swerveControllerCommand(
+      exampleTrajectory, [this]() { return m_drivetrain.GetCurrentPose(); },
+
+      m_drivetrain.m_swerve.m_kinematics,
+
+      frc2::PIDController(0.00158, 0, 0),
+      frc2::PIDController(0.00158, 0, 0),
+      frc::ProfiledPIDController<units::radians>(
+          tigertronics::constants::swerveAnglekP, 0, tigertronics::constants::swerveAnglekD,
+          tigertronics::constants::kThetaControllerConstraints),
+
+      [this](auto moduleStates) { m_drivetrain.m_swerve.SetModuleStates(moduleStates); },
+
+      {&m_drivetrain});
+
+  // no auto
+  return new frc2::SequentialCommandGroup(
+      std::move(swerveControllerCommand), std::move(swerveControllerCommand),
+      frc2::InstantCommand(
+          [this]() {
+            m_drivetrain.AutoDrive(units::meters_per_second_t(0),
+                          units::meters_per_second_t(0),
+                          units::radians_per_second_t(0));
+          },
+          {}));
 }

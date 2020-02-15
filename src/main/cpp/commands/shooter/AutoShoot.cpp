@@ -1,23 +1,21 @@
-//shoots balls, *very* unfinished
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 #include "commands/shooter/AutoShoot.h"
 
-AutoShoot::AutoShoot(ShooterSubsystem* subsystem) 
-: shooterSubsystem{subsystem} {
-    SetName("AutoShoot");
-    AddRequirements({shooterSubsystem});
+// NOTE:  Consider using this command inline, rather than writing a subclass.
+// For more information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+AutoShoot::AutoShoot(ShooterSubsystem* subsystem, std::function<units::revolutions_per_minute_t()> angle) : m_subsystem(subsystem), speed(angle) {
+  SetName("AutoShoot");
+  AddRequirements({subsystem});
 }
 
-void AutoShoot::Execute() {
-    //shooter value set to an arbitrary value
-    shooterSubsystem->SetShooterToPercentOutput(.75);
-    //still needs control of hood (if necessary)
-    //and running the belt to feed balls
-}
-
-bool AutoShoot::IsFinished() { return true; }
-
-void AutoShoot::End(bool) {
-    shooterSubsystem->SetShooterToPercentOutput(0);
-    //still needs to set the belt to speed(0)
+// Called when the command is initially scheduled.
+void AutoShoot::Initialize() {
+  m_subsystem->SetShooterToVelocity(speed());
 }
