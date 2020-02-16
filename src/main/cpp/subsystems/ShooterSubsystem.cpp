@@ -124,6 +124,27 @@ units::degree_t ShooterSubsystem::ConvertHoodTicksToAngle(double ticks) {
     return units::degree_t(Util::map(ticks, 0, tigertronics::constants::hoodMaxTicks, 0, tigertronics::constants::hoodMaxAngle));
 }
 
+units::meter_t ShooterSubsystem::GetDistanceToTarget() {
+    return units::meter_t(visionX);
+}
+
+units::degree_t ShooterSubsystem::GetAngleToTarget() {
+    return units::degree_t(visionYaw);
+}
+
+void ShooterSubsystem::GetVisionData() {
+    std::vector<double> defaultVals;
+    defaultVals.push_back(0);
+    defaultVals.push_back(0);
+    defaultVals.push_back(0);
+    std::vector targetPose = frc::SmartDashboard::GetNumberArray("chameleon-vision/PS3 Eye Camera/targetpose", defaultVals);
+    double targetYaw = frc::SmartDashboard::GetNumber("chameleon-vision/PS3 Eye Camera/targetYaw", 0);
+
+    visionX = targetPose[0];
+    visionY = targetPose[1];
+    visionYaw = targetYaw;
+}
+
 void ShooterSubsystem::Periodic() {
     leftShooterDash.SetDouble(GetShooterLeftRPM().value());
     rightShooterDash.SetDouble(GetShooterRightRPM().value());

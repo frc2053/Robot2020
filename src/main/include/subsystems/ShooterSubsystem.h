@@ -23,6 +23,8 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   units::revolutions_per_minute_t GetShooterLeftRPM();
   units::revolutions_per_minute_t GetShooterRightRPM();
   units::revolutions_per_minute_t GetShooterAvgRPM();
+  units::meter_t GetDistanceToTarget();
+  units::degree_t GetAngleToTarget();
  private:
   void ConfigureShooterMotors();
   void ConfigureLoaderMotor();
@@ -33,6 +35,7 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   units::revolutions_per_minute_t ConvertTickVelToRPM(int ticksPer100ms);
   int ConvertRPMToTickVel(units::revolutions_per_minute_t rpm);
   int ConvertHoodAngleToTicks(units::degree_t angle);
+  void GetVisionData();
   units::degree_t ConvertHoodTicksToAngle(double ticks);
   ShooterLookupTable table;
   nt::NetworkTableEntry leftShooterDash;
@@ -50,5 +53,8 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   double kP = tigertronics::constants::shooterkP;
   double kI = tigertronics::constants::shooterkI;
   double kD = tigertronics::constants::shooterkD;
+  double visionX = 0;
+  double visionY = 0;
+  double visionYaw = 0;
   int ENCODER_MAX_VAL = 16585;
 };
