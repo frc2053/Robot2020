@@ -10,6 +10,13 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc2/command/SwerveControllerCommand.h>
 #include <commands/shooter/SetHoodToAngle.h>
+#include "commands/drive/TeleopDrive.h"
+#include "commands/controlpanel/ManualWheelRotation.h"
+#include "commands/controlpanel/RotationControl.h"
+#include "commands/controlpanel/PositionControl.h"
+#include "commands/shooter/SetShooterToVelocity.h"
+#include "commands/intake/AutoFeed.h"
+#include "commands/intake/AutoIntake.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -31,7 +38,7 @@ RobotContainer::RobotContainer() : m_drivetrain(){
 void RobotContainer::ConfigureButtonBindings() {
   frc::SmartDashboard::PutData("Wheel Test", new WheelTest(&m_drivetrain));
 
-  frc::SmartDashboard::PutData("Set Wheel To RPM", new AutoShoot(&m_shooter, [this] { return units::revolutions_per_minute_t(frc::SmartDashboard::GetNumber("Shooter Velocity", 0)); }));
+  frc::SmartDashboard::PutData("Set Wheel To RPM", new SetShooterToVelocity(&m_shooter, [this] { return units::revolutions_per_minute_t(frc::SmartDashboard::GetNumber("Shooter Velocity", 0)); }));
   frc::SmartDashboard::PutData("Set Hood To Angle", new SetHoodToAngle(&m_shooter, [this] { return units::degree_t(frc::SmartDashboard::GetNumber("Shooter Angle", 0)); }));
 
   frc2::JoystickButton rotateToZeroButton(&driverController, (int)frc::XboxController::Button::kY);

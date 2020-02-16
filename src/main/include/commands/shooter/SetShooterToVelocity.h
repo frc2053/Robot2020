@@ -11,11 +11,11 @@
 #include <frc2/command/InstantCommand.h>
 #include "subsystems/ShooterSubsystem.h"
 
-class AutoShoot
+class SetShooterToVelocity
     : public frc2::CommandHelper<frc2::InstantCommand,
-                                 AutoShoot> {
+                                 SetShooterToVelocity> {
  public:
-  AutoShoot(ShooterSubsystem* subsystem, std::function<units::revolutions_per_minute_t()> angle);
+  SetShooterToVelocity(ShooterSubsystem* subsystem, std::function<units::revolutions_per_minute_t()> angle);
 
   void Initialize() override;
  private:

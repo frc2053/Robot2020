@@ -5,17 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/shooter/AutoShoot.h"
+#include "commands/shooter/SetShooterToVelocity.h"
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-AutoShoot::AutoShoot(ShooterSubsystem* subsystem, std::function<units::revolutions_per_minute_t()> angle) : m_subsystem(subsystem), speed(angle) {
-  SetName("AutoShoot");
+SetShooterToVelocity::SetShooterToVelocity(ShooterSubsystem* subsystem, std::function<units::revolutions_per_minute_t()> angle) : m_subsystem(subsystem), speed(angle) {
+  SetName("SetShooterToVelocity");
   AddRequirements({subsystem});
 }
 
 // Called when the command is initially scheduled.
-void AutoShoot::Initialize() {
+void SetShooterToVelocity::Initialize() {
   m_subsystem->SetShooterToVelocity(speed());
 }
