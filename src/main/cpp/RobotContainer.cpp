@@ -1,11 +1,9 @@
 #include "RobotContainer.h"
 #include "frc2/command/button/JoystickButton.h"
 #include "frc/Joystick.h"
-#include "commands/drive/ROSDrive.h"
 #include "frc/XboxController.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "commands/drive/WheelTest.h"
-#include "commands/ChangeJetsonIP.h"
 #include "commands/drive/TurnToAngle.h"
 #include <frc/trajectory/Trajectory.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
@@ -23,18 +21,16 @@ RobotContainer::RobotContainer() : m_drivetrain(){
   ));
 
   ConfigureButtonBindings();
-  
+
+  frc::SmartDashboard::PutNumber("Shooter Velocity", 0);
+  frc::SmartDashboard::PutNumber("Shooter Angle", 0);
 }
 
 void RobotContainer::ConfigureButtonBindings() {
-  frc::SmartDashboard::PutData("Change Jetson IP", new ChangeJetsonIP([this] { return frc::SmartDashboard::GetString("Jetson IP", "10.20.53.42"); }, &m_drivetrain));
   frc::SmartDashboard::PutData("Wheel Test", new WheelTest(&m_drivetrain));
 
   frc::SmartDashboard::PutData("Set Wheel To RPM", new AutoShoot(&m_shooter, [this] { return units::revolutions_per_minute_t(frc::SmartDashboard::GetNumber("Shooter Velocity", 0)); }));
   frc::SmartDashboard::PutData("Set Hood To Angle", new SetHoodToAngle(&m_shooter, [this] { return units::degree_t(frc::SmartDashboard::GetNumber("Shooter Angle", 0)); }));
-
-  frc2::JoystickButton rosButton(&driverController, (int)frc::XboxController::Button::kBumperLeft);
-  rosButton.WhileHeld(ROSDrive(&m_drivetrain));
 
   frc2::JoystickButton rotateToZeroButton(&driverController, (int)frc::XboxController::Button::kY);
   rotateToZeroButton.WhenPressed(TurnToAngle(
