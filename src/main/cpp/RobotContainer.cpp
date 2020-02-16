@@ -5,10 +5,6 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "commands/drive/WheelTest.h"
 #include "commands/drive/TurnToAngle.h"
-#include <frc/trajectory/Trajectory.h>
-#include <frc/trajectory/TrajectoryGenerator.h>
-#include <frc2/command/SequentialCommandGroup.h>
-#include <frc2/command/SwerveControllerCommand.h>
 #include <commands/shooter/SetHoodToAngle.h>
 #include "commands/drive/TeleopDrive.h"
 #include "commands/controlpanel/ManualWheelRotation.h"
@@ -28,6 +24,8 @@ RobotContainer::RobotContainer() : m_drivetrain(){
   ));
 
   m_shooter.Enable();
+
+  m_chooser.SetDefaultOption("Follow Path Auto", &m_followPathAuto);
 
   ConfigureButtonBindings();
 
@@ -94,46 +92,5 @@ void RobotContainer::ConfigureButtonBindings() {
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // Set up config for trajectory
-  frc::TrajectoryConfig config(10_fps,
-                               units::meters_per_second_squared_t(3));
-  // Add kinematics to ensure max speed is actually obeyed
-  config.SetKinematics(m_drivetrain.m_swerve.m_kinematics);
-
-  // An example trajectory to follow.  All units in meters.
-  auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
-      // Start at the origin facing the +X direction
-      frc::Pose2d(0_m, 0_m, frc::Rotation2d(0_deg)),
-      // Pass through these two interior waypoints, making an 's' curve path
-      {frc::Translation2d(8_ft, 0_ft)},
-      // End 3 meters straight ahead of where we started, facing forward
-      frc::Pose2d(8_ft, 5_ft, frc::Rotation2d(0_deg)),
-      // Pass the config
-      config);
-
-  frc2::SwerveControllerCommand<4> swerveControllerCommand(
-      exampleTrajectory, [this]() { return m_drivetrain.GetCurrentPose(); },
-
-      m_drivetrain.m_swerve.m_kinematics,
-
-      frc2::PIDController(0.00158, 0, 0),
-      frc2::PIDController(0.00158, 0, 0),
-      frc::ProfiledPIDController<units::radians>(
-          tigertronics::constants::swerveAnglekP, 0, tigertronics::constants::swerveAnglekD,
-          tigertronics::constants::kThetaControllerConstraints),
-
-      [this](auto moduleStates) { m_drivetrain.m_swerve.SetModuleStates(moduleStates); },
-
-      {&m_drivetrain});
-
-  // no auto
-  return new frc2::SequentialCommandGroup(
-      std::move(swerveControllerCommand), std::move(swerveControllerCommand),
-      frc2::InstantCommand(
-          [this]() {
-            m_drivetrain.AutoDrive(units::meters_per_second_t(0),
-                          units::meters_per_second_t(0),
-                          units::radians_per_second_t(0));
-          },
-          {}));
+  return m_chooser.GetSelected();
 }

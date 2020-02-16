@@ -67,6 +67,11 @@ namespace tigertronics {
 
         static constexpr int hoodPIDTolerance = 2;
 
+        //PATH FOLLOWING CONSTS
+        static constexpr double pathFollowingkP = 0.00158;
+        static constexpr double pathFollowingkI = 0;
+        static constexpr double pathFollowingkD = 0;
+
 
         //INTAKE
         static constexpr double highPassConst = 0.05;
