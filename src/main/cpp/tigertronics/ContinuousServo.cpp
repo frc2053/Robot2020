@@ -9,8 +9,7 @@
 #include "frc/smartdashboard/SendableRegistry.h"
 
 ContinuousServo::ContinuousServo(int channel) : frc::PWMSpeedController(channel) {
-    SetBounds(2.1, 2.102, 1.5, .9002, .9);
-    SetPeriodMultiplier(frc::PWMSpeedController::kPeriodMultiplier_1X);
+    SetBounds(1.9, 1.89, 1.550, 1.11, 1.1);
+    SetPeriodMultiplier(frc::PWMSpeedController::kPeriodMultiplier_4X);
     SetSpeed(0.0);
-    SetZeroLatch();
 }

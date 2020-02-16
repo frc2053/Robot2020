@@ -20,6 +20,8 @@ RobotContainer::RobotContainer() : m_drivetrain(){
     &m_drivetrain
   ));
 
+  m_shooter.Enable();
+
   ConfigureButtonBindings();
 
   frc::SmartDashboard::PutNumber("Shooter Velocity", 0);

@@ -3,7 +3,7 @@
 #include <frc/shuffleboard/BuiltInWidgets.h>
 #include <algorithm>
 #include "tigertronics/Util.h"
-
+#include <frc/smartdashboard/SmartDashboard.h>
 ShooterSubsystem::ShooterSubsystem() :
     frc2::PIDSubsystem(frc2::PIDController(tigertronics::constants::hoodkP, tigertronics::constants::hoodkI, tigertronics::constants::hoodkD)) {
     SetName("Shooter Subsystem");
@@ -89,7 +89,7 @@ double ShooterSubsystem::GetMeasurement() {
 }
 
 units::degree_t ShooterSubsystem::GetHoodAngle() {
-    return units::degree_t(Util::map(0, ENCODER_MAX_VAL, 0, 90, hoodEncoder.GetQuadraturePosition()));
+    return units::degree_t(Util::map(hoodEncoder.GetQuadraturePosition(), 0, ENCODER_MAX_VAL, 0, 90));
 }
 
 void ShooterSubsystem::SetHoodToAngle(units::degree_t angle){
