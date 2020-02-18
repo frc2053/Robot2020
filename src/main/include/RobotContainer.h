@@ -8,6 +8,7 @@
 #include "subsystems/IntakeSubsystem.h"
 #include "commands/drive/FollowPath.h"
 #include <frc/smartdashboard/SendableChooser.h>
+#include "commands/auto/TenPowerCellAuto.h"
 
 class RobotContainer {
  public:
@@ -32,6 +33,9 @@ class RobotContainer {
     frc::Pose2d(8_ft, -5_ft, frc::Rotation2d(90_deg)), //end points and angle 
     &m_drivetrain //subsystem
   };
+  
+  TenPowerCellAuto m_tenCellAuto{&m_drivetrain, &m_intake, &m_shooter};
+
   frc::SendableChooser<frc2::Command*> m_chooser;
 
   void ConfigureButtonBindings();

@@ -23,17 +23,13 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub, bool redAlli) :
-  m_swerveSubsystem(swerveSub), m_intakeSubsystem(intakeSub), m_shooterSubsystem(shooterSub), redAlliance(redAlli) {
+TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub) :
+  m_swerveSubsystem(swerveSub), m_intakeSubsystem(intakeSub), m_shooterSubsystem(shooterSub) {
 
   frc::Pose2d startPose;
   frc::Rotation2d startAngle;
-  if(redAlli) {
-    startPose = frc::Pose2d(0_ft, 43.2_ft, frc::Rotation2d(0_deg));
-  }
-  else {
-    startPose = frc::Pose2d(0_ft, 43.2_ft, frc::Rotation2d(0_deg));
-  }
+  startPose = frc::Pose2d(0_ft, 43.2_ft, frc::Rotation2d(0_deg));
+
 
   FollowPath toControlPanel{
     10_fps, //max speed

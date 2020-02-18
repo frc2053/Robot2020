@@ -26,6 +26,7 @@ RobotContainer::RobotContainer() : m_drivetrain(){
   m_shooter.Enable();
 
   m_chooser.SetDefaultOption("Follow Path Auto", &m_followPathAuto);
+  m_chooser.AddOption("Ten Cell Auto", &m_tenCellAuto);
 
   ConfigureButtonBindings();
 
