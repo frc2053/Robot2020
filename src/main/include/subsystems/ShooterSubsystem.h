@@ -25,6 +25,7 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   units::revolutions_per_minute_t GetShooterAvgRPM();
   units::meter_t GetDistanceToTarget();
   units::degree_t GetAngleToTarget();
+  ShooterLookupTable::LookupValue GetAngleAndRPMForGoal(units::meter_t distance);
  private:
   void ConfigureShooterMotors();
   void ConfigureLoaderMotor();

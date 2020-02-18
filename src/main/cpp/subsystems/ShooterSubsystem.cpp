@@ -96,6 +96,10 @@ void ShooterSubsystem::SetHoodToAngle(units::degree_t angle){
     m_controller.SetSetpoint(angle.to<double>());
 }
 
+ShooterLookupTable::LookupValue ShooterSubsystem::GetAngleAndRPMForGoal(units::meter_t distance) {
+    return table.Get(distance);
+}
+
 units::revolutions_per_minute_t ShooterSubsystem::GetShooterLeftRPM() {
     return ConvertTickVelToRPM(shooterMotorLeft.GetSelectedSensorVelocity());
 }
