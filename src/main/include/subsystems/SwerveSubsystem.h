@@ -16,6 +16,7 @@ class SwerveSubsystem : public frc2::SubsystemBase {
   void Periodic() override;
   void ManualWheelMove(std::string wheel, int abs_setpoint);
   void ManualWheelMove(std::string wheel, units::radian_t angle, units::meters_per_second_t speed);
+  void SetRobotPose(const frc::Pose2d& newPose, const frc::Rotation2d& newYaw);
   frc::SwerveDriveOdometry<4> GetOdom();
   frc::SwerveDriveKinematics<4> GetKinematics();
   SwerveDrivetrain m_swerve;
