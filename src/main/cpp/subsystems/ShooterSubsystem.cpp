@@ -154,4 +154,14 @@ void ShooterSubsystem::Periodic() {
     rightShooterDash.SetDouble(GetShooterRightRPM().value());
     avgShooterDash.SetDouble(GetShooterAvgRPM().value());
     hoodAngleDash.SetDouble(GetHoodAngle().to<double>());
+    double shufflesetpointrpm = shooterSpeedSetpointDash.GetDouble(0);
+    double shufflesetpointangle = hoodAngleSetpointDash.GetDouble(0);
+    if(std::fabs(shufflesetpointrpm - lastSetpointRpm) < 0.0001) {
+        SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
+    }
+    if(std::fabs(shufflesetpointangle - lastSetpointAngle) < 0.0001) {
+        SetHoodToAngle(units::degree_t(shufflesetpointangle));
+    }
+    lastSetpointAngle = shufflesetpointangle;
+    lastSetpointRpm = shufflesetpointrpm;
 }

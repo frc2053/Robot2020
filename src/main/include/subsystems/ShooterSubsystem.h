@@ -58,4 +58,6 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   double visionY = 0;
   double visionYaw = 0;
   int ENCODER_MAX_VAL = 16585;
+  double lastSetpointRpm;
+  double lastSetpointAngle;
 };
