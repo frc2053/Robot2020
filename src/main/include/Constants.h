@@ -112,6 +112,6 @@ namespace tigertronics {
         static constexpr int intakeSolenoidPortRev = 1;
 
         //CONTROL PANEL
-        static constexpr int controlPanel = 10;
+        static constexpr int controlPanel = 19;
     }
 }
