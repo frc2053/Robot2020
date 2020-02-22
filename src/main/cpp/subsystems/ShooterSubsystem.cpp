@@ -25,8 +25,28 @@ void ShooterSubsystem::ConfigureDashboard() {
 
 void ShooterSubsystem::SetupLookupTable() {
     //ADD MORE AS NEEDED
-    table.AddLookupValue(1_m, ShooterLookupTable::LookupValue{ 3000_rpm, 45_deg });
-    table.AddLookupValue(5_m, ShooterLookupTable::LookupValue{ 6000_rpm, 20_deg });
+    table.AddLookupValue(0_ft, ShooterLookupTable::LookupValue{ 2000_rpm, 10_deg });
+    table.AddLookupValue(1_ft, ShooterLookupTable::LookupValue{ 2500_rpm, 20_deg });
+    table.AddLookupValue(2_ft, ShooterLookupTable::LookupValue{ 2000_rpm, 20_deg });
+    table.AddLookupValue(3_ft, ShooterLookupTable::LookupValue{ 2300_rpm, 39_deg });
+    table.AddLookupValue(4_ft, ShooterLookupTable::LookupValue{ 2400_rpm, 45_deg });
+    table.AddLookupValue(5_ft, ShooterLookupTable::LookupValue{ 2400_rpm, 49_deg });
+    table.AddLookupValue(6_ft, ShooterLookupTable::LookupValue{ 2400_rpm, 55_deg });
+    table.AddLookupValue(7_ft, ShooterLookupTable::LookupValue{ 2400_rpm, 55_deg });
+    table.AddLookupValue(8_ft, ShooterLookupTable::LookupValue{ 2600_rpm, 58_deg });
+    table.AddLookupValue(9_ft, ShooterLookupTable::LookupValue{ 2600_rpm, 58_deg });
+    table.AddLookupValue(10_ft, ShooterLookupTable::LookupValue{ 2700_rpm, 61_deg });
+    table.AddLookupValue(11_ft, ShooterLookupTable::LookupValue{ 2800_rpm, 62_deg });
+    table.AddLookupValue(12_ft, ShooterLookupTable::LookupValue{ 2800_rpm, 62_deg });
+    table.AddLookupValue(13_ft, ShooterLookupTable::LookupValue{ 3400_rpm, 72_deg });
+    table.AddLookupValue(14_ft, ShooterLookupTable::LookupValue{ 3700_rpm, 71_deg });
+    table.AddLookupValue(15_ft, ShooterLookupTable::LookupValue{ 3800_rpm, 72_deg });
+    table.AddLookupValue(16_ft, ShooterLookupTable::LookupValue{ 3800_rpm, 72_deg });
+    table.AddLookupValue(17_ft, ShooterLookupTable::LookupValue{ 4400_rpm, 71_deg });
+    table.AddLookupValue(18_ft, ShooterLookupTable::LookupValue{ 4600_rpm, 72_deg });
+    table.AddLookupValue(19_ft, ShooterLookupTable::LookupValue{ 5000_rpm, 70_deg });
+    table.AddLookupValue(20_ft, ShooterLookupTable::LookupValue{ 5000_rpm, 70_deg });
+    table.AddLookupValue(21_ft, ShooterLookupTable::LookupValue{ 5700_rpm, 72_deg });
 }
 
 void ShooterSubsystem::ConfigureShooterMotors() {
