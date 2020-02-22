@@ -14,6 +14,8 @@
 #include "commands/intake/AutoFeed.h"
 #include "commands/intake/AutoIntake.h"
 #include "commands/intake/SetLoaderWheelSpeed.h"
+#include "frc2/command/ParallelRaceGroup.h"
+#include "commands/drive/ZeroYaw.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -34,42 +36,67 @@ RobotContainer::RobotContainer() : m_drivetrain(){
 }
 
 void RobotContainer::ConfigureButtonBindings() {
+  frc::SmartDashboard::PutData("Zero Yaw", new ZeroYaw(&m_drivetrain));
   frc::SmartDashboard::PutData("Wheel Test", new WheelTest(&m_drivetrain));
 
   //frc::SmartDashboard::PutData("Set Wheel To RPM", new SetShooterToVelocity(&m_shooter, [this] { return units::revolutions_per_minute_t(frc::SmartDashboard::GetNumber("Shooter Velocity", 0)); }));
   //frc::SmartDashboard::PutData("Set Hood To Angle", new SetHoodToAngle(&m_shooter, [this] { return units::degree_t(frc::SmartDashboard::GetNumber("Shooter Angle", 0)); }));
 
   frc2::JoystickButton rotateToZeroButton(&driverController, (int)frc::XboxController::Button::kY);
-  rotateToZeroButton.WhenPressed(TurnToAngle(
-    [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
-    [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
-    0_deg,
-    &m_drivetrain
-  ));
+  rotateToZeroButton.WhenPressed(
+    TurnToAngle(
+      [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+      [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+      0_deg,
+      &m_drivetrain,
+      [this] {
+        double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
+        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+      }
+    )
+  );
 
   frc2::JoystickButton rotateToGenerator112Button(&driverController, (int)frc::XboxController::Button::kX);
-  rotateToGenerator112Button.WhenPressed(TurnToAngle(
-    [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
-    [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
-    112.5_deg,
-    &m_drivetrain
-  ));
+  rotateToGenerator112Button.WhenPressed(
+    TurnToAngle(
+      [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+      [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+      112.5_deg,
+      &m_drivetrain,
+      [this] {
+        double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
+        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+      }
+    )
+  );
 
   frc2::JoystickButton rotateToGenerator67Button(&driverController, (int)frc::XboxController::Button::kB);
-  rotateToGenerator67Button.WhenPressed(TurnToAngle(
-    [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
-    [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
-    -67.5_deg,
-    &m_drivetrain
-  ));
+  rotateToGenerator67Button.WhenPressed(
+    TurnToAngle(
+      [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+      [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+      -67.5_deg,
+      &m_drivetrain,
+      [this] {
+        double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
+        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+      }
+    )
+  );
 
   frc2::JoystickButton rotateTo180Button(&driverController, (int)frc::XboxController::Button::kA);
-  rotateTo180Button.WhenPressed(TurnToAngle(
-    [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
-    [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
-    180_deg,
-    &m_drivetrain
-  ));
+  rotateTo180Button.WhenPressed(
+    TurnToAngle(
+      [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+      [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+      180_deg,
+      &m_drivetrain,
+      [this] {
+        double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
+        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+      }
+    )
+  );
 
   //frc2::JoystickButton manualCPWheel(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
   //manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));

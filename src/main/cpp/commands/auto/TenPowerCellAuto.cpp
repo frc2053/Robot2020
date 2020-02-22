@@ -100,7 +100,7 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     //path to in front of generator
     std::move(toGeneratorShoot),
     //turn to align with goal
-    TurnToGoal([](){return 0;}, [](){return 0;}, m_shooterSubsystem, m_swerveSubsystem),
+    TurnToGoal([](){return 0;}, [](){return 0;}, m_shooterSubsystem, m_swerveSubsystem, [](){return false; }),
     //spins up shooter to appropriate rpm and hood angle
     SetShooterToGoal(m_shooterSubsystem),
     //start spraying
@@ -130,7 +130,7 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     //move to front of goal for more accurate shot
     std::move(toFinalShot),
     //turn to align with goal
-    TurnToGoal([](){return 0;}, [](){return 0;}, m_shooterSubsystem, m_swerveSubsystem),
+    TurnToGoal([](){return 0;}, [](){return 0;}, m_shooterSubsystem, m_swerveSubsystem, [](){return false; }),
     //spins up shooter to appropriate rpm and hood angle
     SetShooterToGoal(m_shooterSubsystem),
     //start spraying

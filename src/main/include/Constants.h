@@ -24,7 +24,7 @@ namespace tigertronics {
         static constexpr int genericEncoderRobobrio = 1024;
 
         //SWERVE TURNING MOTOR CONFIG
-        static constexpr double swerveTurningkP = 12;
+        static constexpr double swerveTurningkP = 15;
         static constexpr double swerveTurningkI = 0;
         static constexpr double swerveTurningkD = 120;
         static constexpr units::radians_per_second_t swerveTurningMaxVel = 3600_rad_per_s;
@@ -38,9 +38,9 @@ namespace tigertronics {
         static constexpr double swerveDrivekI = 0.0;
         static constexpr double swerveDrivekD = 0.0;
 
-        static constexpr double swerveAnglekP = .01;
+        static constexpr double swerveAnglekP = .05;
         static constexpr double swerveAnglekI = 0;
-        static constexpr double swerveAnglekD = 0;
+        static constexpr double swerveAnglekD = 100;
         static constexpr double swerveAngleTolerance = 2;
 
         static constexpr int swerveFLCal = 993;  //483

@@ -8,16 +8,16 @@
 #pragma once
 
 #include <frc2/command/CommandHelper.h>
-#include <frc2/command/SequentialCommandGroup.h>
-#include "subsystems/ShooterSubsystem.h"
+#include <frc2/command/InstantCommand.h>
 #include "subsystems/SwerveSubsystem.h"
 
-class TurnToGoal
-    : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 TurnToGoal> {
+class ZeroYaw
+    : public frc2::CommandHelper<frc2::InstantCommand,
+                                 ZeroYaw> {
  public:
-  TurnToGoal(std::function<double()> fow, std::function<double()> strafe, ShooterSubsystem* shooterSub, SwerveSubsystem* swerveSub, std::function<bool()> controllerOverride);
+  ZeroYaw(SwerveSubsystem* swerveSub);
+
+  void Initialize() override;
  private:
-  ShooterSubsystem* m_shooterSubsystem;
-  SwerveSubsystem* m_swerveSubsystem;
+  SwerveSubsystem* m_subsystem;
 };

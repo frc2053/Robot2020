@@ -20,6 +20,10 @@ units::degree_t SwerveSubsystem::GetImuYaw() {
     return m_swerve.GetAngle().Degrees();
 }
 
+void SwerveSubsystem::ZeroYaw() {
+    m_swerve.ZeroYaw();
+}
+
 void SwerveSubsystem::ManualWheelMove(std::string wheel, int abs_setpoint) {
     m_swerve.ManualMoveWheel(wheel, abs_setpoint);
 }

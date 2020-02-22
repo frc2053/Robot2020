@@ -129,3 +129,7 @@ void SwerveDrivetrain::LogModulesToDashboard() {
     frc::SmartDashboard::PutData(&m_backLeft);
     frc::SmartDashboard::PutData(&m_backRight);
 }
+
+void SwerveDrivetrain::ZeroYaw() {
+    m_imu.ZeroYaw();
+}

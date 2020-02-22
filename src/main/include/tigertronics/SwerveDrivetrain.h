@@ -68,6 +68,6 @@ public:
 
     frc::SwerveDriveOdometry<4> m_odometry{m_kinematics, GetAngle(), frc::Pose2d()};
     void SetModuleStates(std::array<frc::SwerveModuleState, 4> desiredStates);
-
+    void ZeroYaw();
  private:
 };

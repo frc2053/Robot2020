@@ -5,19 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/drive/TurnToGoal.h"
-#include "commands/drive/TurnToAngle.h"
+#include "commands/drive/ZeroYaw.h"
+
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-TurnToGoal::TurnToGoal(std::function<double()> fow, std::function<double()> strafe, ShooterSubsystem* shooterSub, SwerveSubsystem* swerveSub, std::function<bool()> controllerOverride) : m_shooterSubsystem(shooterSub), m_swerveSubsystem(swerveSub) {
-  AddCommands(
-    TurnToAngle(    
-      fow,
-      strafe,
-      shooterSub->GetAngleToTarget(),
-      m_swerveSubsystem,
-      controllerOverride
-    )
-  );
+ZeroYaw::ZeroYaw(SwerveSubsystem* swerveSub) : m_subsystem(swerveSub) {
+  // Use addRequirements() here to declare subsystem dependencies.
+}
+
+// Called when the command is initially scheduled.
+void ZeroYaw::Initialize() {
+  m_subsystem->ZeroYaw();
 }
