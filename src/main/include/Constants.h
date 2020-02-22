@@ -7,8 +7,8 @@
 namespace tigertronics {
     namespace constants {
         //PHYSICAL DIMENSIONS
-        static constexpr units::meter_t drivebaseLength = 24_in;
-        static constexpr units::meter_t drivebaseWidth = 23_in;
+        static constexpr units::meter_t drivebaseLength = 22_in;
+        static constexpr units::meter_t drivebaseWidth = 22_in;
         static constexpr units::meter_t driveWheelRadius = 3_in / 2;
         static constexpr double swerveDriveGearReduction = 5.33 / 1;
 
