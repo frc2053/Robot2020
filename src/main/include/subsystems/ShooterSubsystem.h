@@ -10,11 +10,9 @@
 #include "tigertronics/ShooterLookupTable.h"
 #include <ctre/phoenix/CANifier.h>
 
-class ShooterSubsystem : public frc2::PIDSubsystem {
+class ShooterSubsystem : public frc2::SubsystemBase {
  public:
   ShooterSubsystem();
-  void UseOutput(double output, double setpoint) override;
-  double GetMeasurement() override;
   void Periodic();
   void SetShooterToPercentOutput(double output);
   void SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed);
@@ -60,4 +58,5 @@ class ShooterSubsystem : public frc2::PIDSubsystem {
   int ENCODER_MAX_VAL = 16585;
   double lastSetpointRpm;
   double lastSetpointAngle;
+  frc2::PIDController hoodController{tigertronics::constants::hoodkP, tigertronics::constants::hoodkI, tigertronics::constants::hoodkD};
 };

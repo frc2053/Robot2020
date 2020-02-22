@@ -15,7 +15,7 @@ class RobotContainer {
   RobotContainer();
   frc2::Command* GetAutonomousCommand();
   SwerveSubsystem m_drivetrain;
-  ControlPanelSubsystem m_controlpanel;
+  //ControlPanelSubsystem m_controlpanel;
   ShooterSubsystem m_shooter;
   IntakeSubsystem m_intake;
 

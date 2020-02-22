@@ -4,8 +4,7 @@
 #include <algorithm>
 #include "tigertronics/Util.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-ShooterSubsystem::ShooterSubsystem() :
-    frc2::PIDSubsystem(frc2::PIDController(tigertronics::constants::hoodkP, tigertronics::constants::hoodkI, tigertronics::constants::hoodkD)) {
+ShooterSubsystem::ShooterSubsystem() {
     SetName("Shooter Subsystem");
     ConfigureLoaderMotor();
     ConfigureShooterMotors();
@@ -41,9 +40,10 @@ void ShooterSubsystem::ConfigureShooterMotors() {
     shooterMotorRight.Config_kD(0, kP);
 
     shooterMotorRight.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
+    shooterMotorRight.SetInverted(true);
 
     shooterMotorLeft.Follow(shooterMotorRight);
-    shooterMotorLeft.SetInverted(true);
+    shooterMotorLeft.SetInverted(false);
 
     shooterMotorLeft.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
     shooterMotorLeft.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
@@ -63,7 +63,7 @@ void ShooterSubsystem::ConfigureLoaderMotor() {
 
 void ShooterSubsystem::ConfigureHood() {
     SetServoSpeed(0);
-    m_controller.SetTolerance(tigertronics::constants::hoodPIDTolerance);
+    hoodController.SetTolerance(tigertronics::constants::hoodPIDTolerance);
     hoodEncoder.ConfigFactoryDefault();
     hoodEncoder.SetQuadraturePosition(0);
 }
@@ -80,20 +80,12 @@ void ShooterSubsystem::SetServoSpeed(double percent) {
     hoodServo.Set(std::clamp(percent, -1.0, 1.0));
 }
 
-void ShooterSubsystem::UseOutput(double output, double setpoint) {
-    SetServoSpeed(output);
-}
-
-double ShooterSubsystem::GetMeasurement() {
-    return GetHoodAngle().to<double>();
-}
-
 units::degree_t ShooterSubsystem::GetHoodAngle() {
     return units::degree_t(Util::map(hoodEncoder.GetQuadraturePosition(), 0, ENCODER_MAX_VAL, 0, 90));
 }
 
 void ShooterSubsystem::SetHoodToAngle(units::degree_t angle){
-    m_controller.SetSetpoint(angle.to<double>());
+    hoodController.SetSetpoint(angle.to<double>());
 }
 
 ShooterLookupTable::LookupValue ShooterSubsystem::GetAngleAndRPMForGoal(units::meter_t distance) {
@@ -150,18 +142,22 @@ void ShooterSubsystem::GetVisionData() {
 }
 
 void ShooterSubsystem::Periodic() {
+    double pidoutputhood = hoodController.Calculate(GetHoodAngle().to<double>());
+    SetServoSpeed(pidoutputhood);
     leftShooterDash.SetDouble(GetShooterLeftRPM().value());
     rightShooterDash.SetDouble(GetShooterRightRPM().value());
     avgShooterDash.SetDouble(GetShooterAvgRPM().value());
     hoodAngleDash.SetDouble(GetHoodAngle().to<double>());
     double shufflesetpointrpm = shooterSpeedSetpointDash.GetDouble(0);
     double shufflesetpointangle = hoodAngleSetpointDash.GetDouble(0);
-    if(std::fabs(shufflesetpointrpm - lastSetpointRpm) < 0.0001) {
-        SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
+    SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
+    SetHoodToAngle(units::degree_t(shufflesetpointangle));
+    if(hoodEncoder.GetQuadraturePosition() >= 15645) {
+        hoodServo.SetPosition(15644);
+        hoodServo.SetSpeed(0);
     }
-    if(std::fabs(shufflesetpointangle - lastSetpointAngle) < 0.0001) {
-        SetHoodToAngle(units::degree_t(shufflesetpointangle));
+    if(hoodEncoder.GetQuadraturePosition() <= -50){
+        hoodServo.SetPosition(-50);
+        hoodServo.SetSpeed(0);
     }
-    lastSetpointAngle = shufflesetpointangle;
-    lastSetpointRpm = shufflesetpointrpm;
 }

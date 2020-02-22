@@ -13,6 +13,7 @@
 #include "commands/shooter/SetShooterToVelocity.h"
 #include "commands/intake/AutoFeed.h"
 #include "commands/intake/AutoIntake.h"
+#include "commands/intake/SetLoaderWheelSpeed.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -23,22 +24,20 @@ RobotContainer::RobotContainer() : m_drivetrain(){
     &m_drivetrain
   ));
 
-  m_shooter.Enable();
-
   m_chooser.SetDefaultOption("Follow Path Auto", &m_followPathAuto);
   m_chooser.AddOption("Ten Cell Auto", &m_tenCellAuto);
 
   ConfigureButtonBindings();
 
-  frc::SmartDashboard::PutNumber("Shooter Velocity", 0);
-  frc::SmartDashboard::PutNumber("Shooter Angle", 0);
+  //frc::SmartDashboard::PutNumber("Shooter Velocity", 0);
+  //frc::SmartDashboard::PutNumber("Shooter Angle", 0);
 }
 
 void RobotContainer::ConfigureButtonBindings() {
   frc::SmartDashboard::PutData("Wheel Test", new WheelTest(&m_drivetrain));
 
-  frc::SmartDashboard::PutData("Set Wheel To RPM", new SetShooterToVelocity(&m_shooter, [this] { return units::revolutions_per_minute_t(frc::SmartDashboard::GetNumber("Shooter Velocity", 0)); }));
-  frc::SmartDashboard::PutData("Set Hood To Angle", new SetHoodToAngle(&m_shooter, [this] { return units::degree_t(frc::SmartDashboard::GetNumber("Shooter Angle", 0)); }));
+  //frc::SmartDashboard::PutData("Set Wheel To RPM", new SetShooterToVelocity(&m_shooter, [this] { return units::revolutions_per_minute_t(frc::SmartDashboard::GetNumber("Shooter Velocity", 0)); }));
+  //frc::SmartDashboard::PutData("Set Hood To Angle", new SetHoodToAngle(&m_shooter, [this] { return units::degree_t(frc::SmartDashboard::GetNumber("Shooter Angle", 0)); }));
 
   frc2::JoystickButton rotateToZeroButton(&driverController, (int)frc::XboxController::Button::kY);
   rotateToZeroButton.WhenPressed(TurnToAngle(
@@ -72,20 +71,21 @@ void RobotContainer::ConfigureButtonBindings() {
     &m_drivetrain
   ));
 
-  frc2::JoystickButton manualCPWheel(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
+  //frc2::JoystickButton manualCPWheel(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
+  //manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
 
-  frc2::JoystickButton rotControl(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  rotControl.WhileActiveOnce(RotationControl(&m_controlpanel));
+  //frc2::JoystickButton rotControl(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
+  //rotControl.WhileActiveOnce(RotationControl(&m_controlpanel));
   
-  frc2::JoystickButton posControl(&operatorController, (int)frc::XboxController::Button::kB);
-  posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
+  //frc2::JoystickButton posControl(&operatorController, (int)frc::XboxController::Button::kB);
+  //posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
     
   frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
   intakeButton.WhileHeld(AutoIntake(&m_intake));
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kB);
-  feederButton.WhileHeld(AutoFeed(&m_intake));
+  feederButton.WhileHeld(SetLoaderWheelSpeed(&m_intake, 1));
+  feederButton.WhenReleased(SetLoaderWheelSpeed(&m_intake, 0));
 
   //frc2::JoystickButton autoShooter(&operatorController, (int)frc::XboxController::Button::kX);
   //autoShooter.WhenHeld(AutoShoot(&m_shooter));

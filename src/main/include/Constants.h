@@ -7,9 +7,9 @@
 namespace tigertronics {
     namespace constants {
         //PHYSICAL DIMENSIONS
-        static constexpr units::meter_t drivebaseLength = 24_in;
-        static constexpr units::meter_t drivebaseWidth = 23_in;
-        static constexpr units::meter_t driveWheelRadius = 2.25_in / 2;
+        static constexpr units::meter_t drivebaseLength = 22_in;
+        static constexpr units::meter_t drivebaseWidth = 22_in;
+        static constexpr units::meter_t driveWheelRadius = 3_in / 2;
         static constexpr double swerveDriveGearReduction = 5.33 / 1;
 
         //COLOR INFO
@@ -43,10 +43,10 @@ namespace tigertronics {
         static constexpr double swerveAnglekD = 0;
         static constexpr double swerveAngleTolerance = 2;
 
-        static constexpr int swerveFLCal = 483;  //539
-        static constexpr int swerveFRCal = 605;  //594  
-        static constexpr int swerveBLCal = 2570; //2441 
-        static constexpr int swerveBRCal = 1420; //1522  
+        static constexpr int swerveFLCal = 993;  //483
+        static constexpr int swerveFRCal = 1360;  //605 
+        static constexpr int swerveBLCal = 1531; //2570
+        static constexpr int swerveBRCal = 3762; //1420  
 
 
         //SHOOTER PHYSICALS
@@ -99,7 +99,7 @@ namespace tigertronics {
         static constexpr int shooterLeft = 10;
         static constexpr int shooterRight = 11;
         static constexpr int loaderWheel = 12;
-        static constexpr int hoodServo = 1;
+        static constexpr int hoodServo = 2;
         static constexpr int canifier = 22;
 
         //INTAKE PORTS
