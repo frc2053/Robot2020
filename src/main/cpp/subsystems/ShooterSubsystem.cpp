@@ -174,9 +174,9 @@ void ShooterSubsystem::Periodic() {
     SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
     SetHoodToAngle(units::degree_t(shufflesetpointangle));
     if(hoodEncoder.GetQuadraturePosition() >= 15645) {
-        hoodServo.SetSpeed(0);
+        SetServoSpeed(0);
     }
     if(hoodEncoder.GetQuadraturePosition() <= -50){
-        hoodServo.SetSpeed(0);
+        SetServoSpeed(0);
     }
 }
