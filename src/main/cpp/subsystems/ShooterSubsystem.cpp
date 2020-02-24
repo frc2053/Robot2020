@@ -162,6 +162,7 @@ void ShooterSubsystem::GetVisionData() {
 }
 
 void ShooterSubsystem::Periodic() {
+    GetVisionData();
     double pidoutputhood = hoodController.Calculate(GetHoodAngle().to<double>());
     SetServoSpeed(pidoutputhood);
     leftShooterDash.SetDouble(GetShooterLeftRPM().value());
