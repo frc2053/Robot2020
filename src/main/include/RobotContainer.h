@@ -8,6 +8,7 @@
 #include "subsystems/IntakeSubsystem.h"
 #include "commands/drive/FollowPath.h"
 #include <frc/smartdashboard/SendableChooser.h>
+#include "subsystems/ClimberSubsystem.h"
 #include "commands/auto/TenPowerCellAuto.h"
 
 class RobotContainer {
@@ -18,6 +19,7 @@ class RobotContainer {
   //ControlPanelSubsystem m_controlpanel;
   ShooterSubsystem m_shooter;
   IntakeSubsystem m_intake;
+  ClimberSubsystem m_climber;
 
  private:
 

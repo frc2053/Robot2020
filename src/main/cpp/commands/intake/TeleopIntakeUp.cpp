@@ -16,8 +16,8 @@
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 TeleopIntakeUp::TeleopIntakeUp(IntakeSubsystem* intakeSub) : m_intakeSubsystem(intakeSub) {
   AddCommands(
-    IntakeUp(intakeSub),
-    SetIntakeSpeed(intakeSub, 0),
-    SetConveyorSpeed(intakeSub, 0)
+    IntakeUp(m_intakeSubsystem),
+    SetIntakeSpeed(m_intakeSubsystem, 0),
+    SetConveyorSpeed(m_intakeSubsystem, 0)
   );
 }

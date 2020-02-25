@@ -15,7 +15,13 @@
 #include "commands/intake/AutoIntake.h"
 #include "commands/intake/SetLoaderWheelSpeed.h"
 #include "frc2/command/ParallelRaceGroup.h"
+#include "commands/intake/TeleopIntakeDown.h"
+#include "commands/intake/TeleopIntakeUp.h"
+#include "commands/climber/ClimbElevatorUp.h"
+#include "commands/climber/ClimbElevatorDown.h"
 #include "commands/drive/ZeroYaw.h"
+#include "commands/shooter/SetHoodToAngle.h"
+#include "commands/shooter/SetShooterToVelocity.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -108,11 +114,22 @@ void RobotContainer::ConfigureButtonBindings() {
   //posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
     
   frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
-  intakeButton.WhileHeld(AutoIntake(&m_intake));
+  intakeButton.WhenHeld(TeleopIntakeDown(&m_intake));
+  intakeButton.WhenReleased(TeleopIntakeUp(&m_intake));
 
-  frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kB);
+  frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
   feederButton.WhileHeld(SetLoaderWheelSpeed(&m_intake, 1));
   feederButton.WhenReleased(SetLoaderWheelSpeed(&m_intake, 0));
+
+  frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
+  climberButtonUp.WhenPressed(ClimbElevatorUp(&m_climber));
+
+  frc2::JoystickButton climberButtonDown(&operatorController, (int)frc::XboxController::Button::kBack);
+  climberButtonDown.WhenPressed(ClimbElevatorDown(&m_climber));
+
+  frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
+  shootButton.WhenHeld(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 72_deg;}), SetShooterToVelocity(&m_shooter, [](){return 3800_rpm;})});
+  shootButton.WhenReleased(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 0_deg;}), SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})});
 
   //frc2::JoystickButton autoShooter(&operatorController, (int)frc::XboxController::Button::kX);
   //autoShooter.WhenHeld(AutoShoot(&m_shooter));
