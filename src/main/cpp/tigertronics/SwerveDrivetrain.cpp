@@ -79,15 +79,29 @@ void SwerveDrivetrain::Drive(units::meters_per_second_t xSpeed,
 
   frc::ChassisSpeeds speeds = m_kinematics.ToChassisSpeeds(fl, fr, bl, br);
 
-
   m_chassisSpeeds.dx = units::meter_t(speeds.vx.value());
   m_chassisSpeeds.dy = units::meter_t(speeds.vy.value());
   m_chassisSpeeds.dtheta = units::radian_t(speeds.omega.value());
 
-  m_frontLeft.SetDesiredState(fl, velocity);
-  m_frontRight.SetDesiredState(fr, velocity);
-  m_backLeft.SetDesiredState(bl, velocity);
-  m_backRight.SetDesiredState(br, velocity);
+  if(previousYaw != units::radians_per_second_t(0) && previousX != 0_mps && previousY != 0_mps) {
+      if(xSpeed == 0_mps && ySpeed == 0_mps && rot == units::radians_per_second_t(0)) {
+            m_frontLeft.SetDesiredState(previousStates.at(0), velocity);
+            m_frontRight.SetDesiredState(previousStates.at(1), velocity);
+            m_backLeft.SetDesiredState(previousStates.at(2), velocity);
+            m_backRight.SetDesiredState(previousStates.at(3), velocity);
+      }
+  }
+  else {
+    m_frontLeft.SetDesiredState(fl, velocity);
+    m_frontRight.SetDesiredState(fr, velocity);
+    m_backLeft.SetDesiredState(bl, velocity);
+    m_backRight.SetDesiredState(br, velocity);
+  }
+
+  previousStates = states;
+  previousX = xSpeed;
+  previousY = ySpeed;
+  previousYaw = rot;
 }
 
 void SwerveDrivetrain::SetModuleStates(

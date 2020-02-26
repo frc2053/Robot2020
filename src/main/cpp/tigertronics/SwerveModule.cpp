@@ -121,6 +121,7 @@ void SwerveModule::SetupDriveMotor() {
     m_driveMotor.Config_kD(0, kDriveD, 10);
     m_driveMotor.SetInverted(false);
     m_driveMotor.ConfigOpenloopRamp(.25, 10);
+    m_driveMotor.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
 void SwerveModule::SetupTurningMotor() {
@@ -128,6 +129,7 @@ void SwerveModule::SetupTurningMotor() {
     m_turningMotor.ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Relative, 0, 10);
     m_turningMotor.SetSensorPhase(false);
     m_turningMotor.SetInverted(true);
+    m_turningMotor.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
     m_turningMotor.SetStatusFramePeriod(ctre::phoenix::motorcontrol::StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
     m_turningMotor.SetStatusFramePeriod(ctre::phoenix::motorcontrol::StatusFrameEnhanced::Status_10_MotionMagic, 10, 10);
     m_turningMotor.ConfigNominalOutputForward(0, 10);
