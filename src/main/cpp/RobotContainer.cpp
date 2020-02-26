@@ -22,6 +22,7 @@
 #include "commands/drive/ZeroYaw.h"
 #include "commands/shooter/SetHoodToAngle.h"
 #include "commands/shooter/SetShooterToVelocity.h"
+#include "commands/drive/TurnToGoal.h"
 #include "commands/intake/SetConveyorSpeed.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
@@ -54,7 +55,7 @@ void RobotContainer::ConfigureButtonBindings() {
     TurnToAngle(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
-      0_deg,
+      [](){return 0; },
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
@@ -68,7 +69,7 @@ void RobotContainer::ConfigureButtonBindings() {
     TurnToAngle(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
-      112.5_deg,
+      [](){return 112.5; },
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
@@ -82,7 +83,7 @@ void RobotContainer::ConfigureButtonBindings() {
     TurnToAngle(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
-      -67.5_deg,
+      [](){return -67.5; },
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
@@ -96,7 +97,21 @@ void RobotContainer::ConfigureButtonBindings() {
     TurnToAngle(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
-      180_deg,
+      [](){return 180; },
+      &m_drivetrain,
+      [this] {
+        double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
+        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+      }
+    )
+  );
+
+  frc2::JoystickButton rotateToGoal(&driverController, (int)frc::XboxController::Button::kBumperRight);
+  rotateToGoal.WhenHeld(
+    TurnToGoal(
+      [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
+      [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
+      &m_shooter,
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);

@@ -13,12 +13,12 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-TurnToAngle::TurnToAngle(std::function<double()> fow, std::function<double()> strafe, units::degree_t targetAngle, SwerveSubsystem* swerveSub, std::function<bool()> override)
+TurnToAngle::TurnToAngle(std::function<double()> fow, std::function<double()> strafe, std::function<double()> targetAngle, SwerveSubsystem* swerveSub, std::function<bool()> override)
     : CommandHelper(frc2::PIDController(tigertronics::constants::swerveAnglekP, tigertronics::constants::swerveAnglekI, tigertronics::constants::swerveAnglekD),
                     // This should return the measurement
                     [swerveSub] { return swerveSub->GetImuYaw().to<double>(); },
                     // This should return the setpoint (can also be a constant)
-                    [targetAngle] { return targetAngle.to<double>(); },
+                    targetAngle,
                     // This uses the output
                     [fow, strafe, swerveSub](double output) {
                       swerveSub->DriveWithJoystick(strafe(), fow(), std::clamp(output, -.4, .4), true);
@@ -30,5 +30,5 @@ TurnToAngle::TurnToAngle(std::function<double()> fow, std::function<double()> st
 
 // Returns true when the command should end.
 bool TurnToAngle::IsFinished() { 
-  return GetController().AtSetpoint() || controllerOverride();
+  return controllerOverride();
 }
