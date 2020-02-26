@@ -19,8 +19,8 @@ void ShooterSubsystem::ConfigureDashboard() {
     rightShooterDash = tab.Add("Right Motor Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
     avgShooterDash = tab.Add("Average Motor Velocity", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
     hoodAngleDash = tab.Add("Hood Angle", 0).WithWidget(frc::BuiltInWidgets::kDial).WithSize(2,2).GetEntry();
-    shooterSpeedSetpointDash = tab.Add("Shooter Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2, 1).GetEntry();
-    hoodAngleSetpointDash = tab.Add("Hood Angle Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2,1 ).GetEntry();
+    //shooterSpeedSetpointDash = tab.Add("Shooter Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2, 1).GetEntry();
+    //hoodAngleSetpointDash = tab.Add("Hood Angle Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2,1 ).GetEntry();
 }
 
 void ShooterSubsystem::SetupLookupTable() {
@@ -171,12 +171,14 @@ void ShooterSubsystem::Periodic() {
     hoodAngleDash.SetDouble(GetHoodAngle().to<double>());
     double shufflesetpointrpm = shooterSpeedSetpointDash.GetDouble(0);
     double shufflesetpointangle = hoodAngleSetpointDash.GetDouble(0);
-    SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
-    SetHoodToAngle(units::degree_t(shufflesetpointangle));
+    //SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
+    //SetHoodToAngle(units::degree_t(shufflesetpointangle));
     if(hoodEncoder.GetQuadraturePosition() >= 15645) {
         SetServoSpeed(0);
+        hoodEncoder.SetQuadraturePosition(15635);
     }
     if(hoodEncoder.GetQuadraturePosition() <= -50){
         SetServoSpeed(0);
+        hoodEncoder.SetQuadraturePosition(-40);
     }
 }
