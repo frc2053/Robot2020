@@ -22,6 +22,7 @@
 #include "commands/drive/ZeroYaw.h"
 #include "commands/shooter/SetHoodToAngle.h"
 #include "commands/shooter/SetShooterToVelocity.h"
+#include "commands/intake/SetConveyorSpeed.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -118,8 +119,8 @@ void RobotContainer::ConfigureButtonBindings() {
   intakeButton.WhenReleased(TeleopIntakeUp(&m_intake));
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhileHeld(SetLoaderWheelSpeed(&m_intake, 1));
-  feederButton.WhenReleased(SetLoaderWheelSpeed(&m_intake, 0));
+  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
+  feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_intake, 0)});
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
   climberButtonUp.WhenPressed(ClimbElevatorUp(&m_climber));
