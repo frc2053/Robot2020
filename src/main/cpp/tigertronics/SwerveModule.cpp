@@ -23,6 +23,7 @@ SwerveModule::SwerveModule(const int driveMotorPort, const int turingMotorPort, 
     , moduleName(name) {
     SetupDriveMotor();
     SetupTurningMotor();
+    CalculateCalibrationSetpoint();
 }
 
 std::string SwerveModule::GetModuleName() {
