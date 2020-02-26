@@ -70,8 +70,4 @@ public:
     void SetModuleStates(std::array<frc::SwerveModuleState, 4> desiredStates);
     void ZeroYaw();
  private:
-    units::meters_per_second_t previousX = 0_mps;
-    units::meters_per_second_t previousY = 0_mps;
-    units::radians_per_second_t previousYaw = units::radians_per_second_t(0);
-    std::array<frc::SwerveModuleState, 4> previousStates;
 };

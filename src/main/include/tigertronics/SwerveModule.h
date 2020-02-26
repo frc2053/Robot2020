@@ -13,6 +13,7 @@ class SwerveModule : public frc::Sendable, public frc::SendableHelper<SwerveModu
 public:
     SwerveModule(int driveMotorChannel, int turningMotorChannel, int calibrationValue, std::string name);
     frc::SwerveModuleState GetState();
+    void CalculateCalibrationSetpoint();
     void SetDesiredState(frc::SwerveModuleState& state, bool velocity);
     void SetDesiredState(units::meters_per_second_t speed, const frc::Rotation2d& angle, bool velocity);
     void InitSendable(frc::SendableBuilder& builder) override;

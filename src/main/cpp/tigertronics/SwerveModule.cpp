@@ -33,7 +33,19 @@ void SwerveModule::SetDesiredState(units::meters_per_second_t speed, const frc::
     frc::SwerveModuleState state;
     state.speed = speed;
     state.angle = angle;
+    //dont reset modules to zero when letting go of joystick
+    if(speed == 0_mps) {
+        m_driveMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+        return;
+    }
     SetDesiredState(state, velocity);
+}
+
+void SwerveModule::CalculateCalibrationSetpoint() {
+    int currentPos = m_turningMotor.GetSensorCollection().GetPulseWidthPosition() & 0xFFF;
+    int setpoint = currentPos - kCalibrationValue;
+    m_turningMotor.SetSelectedSensorPosition(setpoint, 0, 10);
+    SetSetpointAbs(setpoint);
 }
 
 void SwerveModule::SetSetpointAbs(int setpoint) {
