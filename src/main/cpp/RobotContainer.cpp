@@ -11,8 +11,6 @@
 #include "commands/controlpanel/RotationControl.h"
 #include "commands/controlpanel/PositionControl.h"
 #include "commands/shooter/SetShooterToVelocity.h"
-#include "commands/intake/AutoFeed.h"
-#include "commands/intake/AutoIntake.h"
 #include "commands/intake/SetLoaderWheelSpeed.h"
 #include "frc2/command/ParallelRaceGroup.h"
 #include "commands/intake/TeleopIntakeDown.h"
@@ -120,15 +118,6 @@ void RobotContainer::ConfigureButtonBindings() {
     )
   );
 
-  //frc2::JoystickButton manualCPWheel(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  //manualCPWheel.WhileHeld(ManualWheelRotation(&m_controlpanel, [this] { return operatorController.GetY(frc::GenericHID::JoystickHand::kRightHand);} ));
-
-  //frc2::JoystickButton rotControl(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  //rotControl.WhileActiveOnce(RotationControl(&m_controlpanel));
-  
-  //frc2::JoystickButton posControl(&operatorController, (int)frc::XboxController::Button::kB);
-  //posControl.WhileActiveOnce(PositionControl(&m_controlpanel));
-    
   frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
   intakeButton.WhenHeld(TeleopIntakeDown(&m_intake));
   intakeButton.WhenReleased(TeleopIntakeUp(&m_intake));
@@ -146,9 +135,6 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
   shootButton.WhenHeld(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 72_deg;}), SetShooterToVelocity(&m_shooter, [](){return 3800_rpm;})});
   shootButton.WhenReleased(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 0_deg;}), SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})});
-
-  //frc2::JoystickButton autoShooter(&operatorController, (int)frc::XboxController::Button::kX);
-  //autoShooter.WhenHeld(AutoShoot(&m_shooter));
   
 }
 

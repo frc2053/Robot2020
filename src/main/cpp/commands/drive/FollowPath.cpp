@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 #include "commands/drive/FollowPath.h"
 
 #include <frc/trajectory/Trajectory.h>
@@ -13,9 +6,6 @@
 #include <frc2/command/SwerveControllerCommand.h>
 #include <frc2/command/InstantCommand.h>
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.
-// For more information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 FollowPath::FollowPath(units::meters_per_second_t maxSpeed, units::meters_per_second_squared_t maxAccel, const frc::Pose2d& startPt, const std::vector<frc::Translation2d>& middlePts, const frc::Pose2d& endPt, SwerveSubsystem* swerve) :
   m_maxSpeed(maxSpeed),
   m_maxAccel(maxAccel),
