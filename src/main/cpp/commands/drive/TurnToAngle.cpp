@@ -20,5 +20,5 @@ TurnToAngle::TurnToAngle(std::function<double()> fow, std::function<double()> st
 
 // Returns true when the command should end.
 bool TurnToAngle::IsFinished() { 
-  return controllerOverride();
+  return m_controller.AtSetpoint() || controllerOverride();
 }
