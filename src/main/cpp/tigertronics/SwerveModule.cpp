@@ -34,11 +34,6 @@ void SwerveModule::SetDesiredState(units::meters_per_second_t speed, const frc::
     frc::SwerveModuleState state;
     state.speed = speed;
     state.angle = angle;
-    //dont reset modules to zero when letting go of joystick
-    if(speed == 0_mps) {
-        m_driveMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
-        return;
-    }
     SetDesiredState(state, velocity);
 }
 
@@ -109,6 +104,12 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState& state, bool velocityM
     //frc::SwerveModuleState optimizedState = OptimizeModuleAngle(state);
 
     //state.angle = frc::Rotation2d(units::degree_t(ConstrainAngle(state.angle.Degrees().to<double>())));
+
+    //dont reset modules to zero when letting go of joystick
+    if(state.speed == 0_mps) {
+        m_driveMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+        return;
+    }
 
     std::pair<int, int> finalSet = FindSetpointInTicks(state.angle.Radians());
     m_driveMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, Util::map(state.speed.value() * finalSet.second, -3, 3, -1, 1));
