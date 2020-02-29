@@ -9,6 +9,7 @@
 #include "tigertronics/ContinuousServo.h"
 #include "tigertronics/ShooterLookupTable.h"
 #include <ctre/phoenix/CANifier.h>
+#include <frc/Relay.h>
 
 class ShooterSubsystem : public frc2::SubsystemBase {
  public:
@@ -59,4 +60,8 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   double lastSetpointRpm;
   double lastSetpointAngle;
   frc2::PIDController hoodController{tigertronics::constants::hoodkP, tigertronics::constants::hoodkI, tigertronics::constants::hoodkD};
+  frc::Relay m_relay{tigertronics::ports::ledRelay};
+
+  bool lightOn = false;
+
 };

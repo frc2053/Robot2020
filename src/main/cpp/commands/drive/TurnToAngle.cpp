@@ -20,5 +20,7 @@ TurnToAngle::TurnToAngle(std::function<double()> fow, std::function<double()> st
 
 // Returns true when the command should end.
 bool TurnToAngle::IsFinished() { 
+  std::cout << "currentAngle: " << m_controller.GetSetpoint() << "\n";
+  std::cout << "error: " << m_controller.GetPositionError() << "\n";
   return m_controller.AtSetpoint() || controllerOverride();
 }

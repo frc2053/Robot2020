@@ -11,6 +11,8 @@ ShooterSubsystem::ShooterSubsystem() {
     ConfigureDashboard();
     ConfigureHood();
     SetupLookupTable();
+    frc::SmartDashboard::PutBoolean("Light On/Off", lightOn);
+
 }
 
 void ShooterSubsystem::ConfigureDashboard() {
@@ -153,8 +155,8 @@ void ShooterSubsystem::GetVisionData() {
     defaultVals.push_back(0);
     defaultVals.push_back(0);
     defaultVals.push_back(0);
-    std::vector targetPose = frc::SmartDashboard::GetNumberArray("chameleon-vision/PS3 Eye Camera/targetpose", defaultVals);
-    double targetYaw = frc::SmartDashboard::GetNumber("chameleon-vision/PS3 Eye Camera/targetYaw", 0);
+    std::vector<double> targetPose = frc::SmartDashboard::GetNumberArray("chameleon-vision/USB Camera-B4.09.24.1/targetPose", defaultVals);
+    double targetYaw = frc::SmartDashboard::GetNumber("chameleon-vision/USB Camera-B4.09.24.1/targetYaw", 0);
 
     visionX = targetPose[0];
     visionY = targetPose[1];
@@ -181,4 +183,13 @@ void ShooterSubsystem::Periodic() {
         SetServoSpeed(0);
         hoodEncoder.SetQuadraturePosition(-40);
     }
+    // Turning LED on/off from SmartDashboard
+    lightOn = frc::SmartDashboard::GetBoolean("Light On/Off", false);
+    if(lightOn) {
+      m_relay.Set(frc::Relay::kOn);
+    }
+    else {
+      m_relay.Set(frc::Relay::kOff);
+    }
+
 }
