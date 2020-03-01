@@ -8,10 +8,10 @@ class SetShooterToVelocity
     : public frc2::CommandHelper<frc2::InstantCommand,
                                  SetShooterToVelocity> {
  public:
-  SetShooterToVelocity(ShooterSubsystem* subsystem, std::function<units::revolutions_per_minute_t()> angle);
+  SetShooterToVelocity(ShooterSubsystem* subsystem, std::function<units::revolutions_per_minute_t()> speed);
 
   void Initialize() override;
  private:
   ShooterSubsystem* m_subsystem;
-  std::function<units::revolutions_per_minute_t()> speed;
+  std::function<units::revolutions_per_minute_t()> m_speed;
 };

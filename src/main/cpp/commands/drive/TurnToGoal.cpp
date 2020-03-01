@@ -6,7 +6,7 @@ TurnToGoal::TurnToGoal(std::function<double()> fow, std::function<double()> stra
     TurnToAngle(    
       fow,
       strafe,
-      [swerveSub, shooterSub]() { return swerveSub->GetImuYaw().to<double>() - shooterSub->GetAngleToTarget().to<double>(); },
+      [swerveSub, shooterSub]() { return -shooterSub->GetAngleToTarget().to<double>(); },
       m_swerveSubsystem,
       controllerOverride
     )

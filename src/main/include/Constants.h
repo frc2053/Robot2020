@@ -38,9 +38,9 @@ namespace tigertronics {
         static constexpr double swerveDrivekI = 0.0;
         static constexpr double swerveDrivekD = 0.0;
 
-        static constexpr double swerveAnglekP = .05;
+        static constexpr double swerveAnglekP = 0.05;
         static constexpr double swerveAnglekI = 0;
-        static constexpr double swerveAnglekD = 100;
+        static constexpr double swerveAnglekD = 0.005;
         static constexpr double swerveAngleTolerance = 2;
 
         static constexpr int swerveFLCal = 993;  //483
@@ -100,12 +100,14 @@ namespace tigertronics {
         static constexpr int shooterRight = 11;
         static constexpr int loaderWheel = 12;
         static constexpr int hoodServo = 2;
-        static constexpr int canifier = 22;
+        static constexpr int hoodEncoderA = 1;
+        static constexpr int hoodEncoderB = 2;
 
         //INTAKE PORTS
         static constexpr int intakeMotor = 13;
         static constexpr int conveyorMotor = 14;
         static constexpr int feederMotor = 15;
+        static constexpr int funnelMotor = 16;
         static constexpr int tofSensorIntake = 0;
         static constexpr int tofSensorConveyor = 1;
         static constexpr int intakeSolenoidPortFow = 0;

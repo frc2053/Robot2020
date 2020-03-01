@@ -12,6 +12,8 @@ ShooterSubsystem::ShooterSubsystem() {
     ConfigureHood();
     SetupLookupTable();
     frc::SmartDashboard::PutBoolean("Light On/Off", lightOn);
+    network_table = nt::NetworkTableInstance::GetDefault();
+    cameraTable = network_table.GetTable("chameleon-vision")->GetSubTable("USB Camera-B4.09.24.1");
 
 }
 
@@ -23,6 +25,10 @@ void ShooterSubsystem::ConfigureDashboard() {
     hoodAngleDash = tab.Add("Hood Angle", 0).WithWidget(frc::BuiltInWidgets::kDial).WithSize(2,2).GetEntry();
     //shooterSpeedSetpointDash = tab.Add("Shooter Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2, 1).GetEntry();
     //hoodAngleSetpointDash = tab.Add("Hood Angle Setpoint", 0).WithWidget(frc::BuiltInWidgets::kTextView).WithSize(2,1 ).GetEntry();
+    hoodEncoder.SetSamplesToAverage(50);
+    hoodEncoder.SetMinRate(1.0);
+    hoodEncoder.SetDistancePerPulse(1);
+    hoodEncoder.SetReverseDirection(true);
 }
 
 void ShooterSubsystem::SetupLookupTable() {
@@ -86,8 +92,6 @@ void ShooterSubsystem::ConfigureLoaderMotor() {
 void ShooterSubsystem::ConfigureHood() {
     SetServoSpeed(0);
     hoodController.SetTolerance(tigertronics::constants::hoodPIDTolerance);
-    hoodEncoder.ConfigFactoryDefault();
-    hoodEncoder.SetQuadraturePosition(0);
 }
 
 void ShooterSubsystem::SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed) {
@@ -103,7 +107,7 @@ void ShooterSubsystem::SetServoSpeed(double percent) {
 }
 
 units::degree_t ShooterSubsystem::GetHoodAngle() {
-    return units::degree_t(Util::map(hoodEncoder.GetQuadraturePosition(), 0, ENCODER_MAX_VAL, 0, 90));
+    return units::degree_t(Util::map(hoodEncoder.Get(), 0, ENCODER_MAX_VAL, 0, 90));
 }
 
 void ShooterSubsystem::SetHoodToAngle(units::degree_t angle){
@@ -155,12 +159,19 @@ void ShooterSubsystem::GetVisionData() {
     defaultVals.push_back(0);
     defaultVals.push_back(0);
     defaultVals.push_back(0);
-    std::vector<double> targetPose = frc::SmartDashboard::GetNumberArray("chameleon-vision/USB Camera-B4.09.24.1/targetPose", defaultVals);
-    double targetYaw = frc::SmartDashboard::GetNumber("chameleon-vision/USB Camera-B4.09.24.1/targetYaw", 0);
-
+    std::vector<double> targetPose = cameraTable->GetNumberArray("targetPose", defaultVals);
+    double targetYaw = cameraTable->GetNumber("targetYaw", 0);
     visionX = targetPose[0];
     visionY = targetPose[1];
-    visionYaw = targetYaw;
+    visionYaw = visionFilter.Calculate(targetYaw);
+}
+
+units::degree_t ShooterSubsystem::GetAngleToGoTo() {
+    return units::convert<units::radians, units::degrees>(angletogoto);
+}
+
+units::revolutions_per_minute_t ShooterSubsystem::GetRPMToGoTo() {
+    return rpmtogoto;
 }
 
 void ShooterSubsystem::Periodic() {
@@ -173,15 +184,23 @@ void ShooterSubsystem::Periodic() {
     hoodAngleDash.SetDouble(GetHoodAngle().to<double>());
     double shufflesetpointrpm = shooterSpeedSetpointDash.GetDouble(0);
     double shufflesetpointangle = hoodAngleSetpointDash.GetDouble(0);
+    frc::SmartDashboard::PutNumber("hood raw", hoodEncoder.Get());
+    frc::SmartDashboard::PutNumber("distance to goal", GetDistanceToTarget().to<double>());
     //SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
     //SetHoodToAngle(units::degree_t(shufflesetpointangle));
-    if(hoodEncoder.GetQuadraturePosition() >= 15645) {
+    if(hoodEncoder.Get() >= 3950) {
         SetServoSpeed(0);
-        hoodEncoder.SetQuadraturePosition(15635);
+        //hoodEncoder.Set(15635);
     }
-    if(hoodEncoder.GetQuadraturePosition() <= -50){
+    if(hoodEncoder.Get() <= 0){
         SetServoSpeed(0);
-        hoodEncoder.SetQuadraturePosition(-40);
+        //hoodEncoder.SetQuadraturePosition(-40);
+    }
+    if(hoodServo.Get() > .1) {
+        if(hoodEncoder.GetRate() <= 1) {
+            SetServoSpeed(0);
+            std::cout << "Servo stalled!\n";
+        }
     }
     // Turning LED on/off from SmartDashboard
     lightOn = frc::SmartDashboard::GetBoolean("Light On/Off", false);
@@ -192,4 +211,9 @@ void ShooterSubsystem::Periodic() {
       m_relay.Set(frc::Relay::kOff);
     }
 
+    ShooterLookupTable::LookupValue val = table.Get(GetDistanceToTarget());
+    angletogoto = val.angle;
+    rpmtogoto = val.rpm;
+    frc::SmartDashboard::PutNumber("Angle Setpoint", angletogoto.to<double>());
+    frc::SmartDashboard::PutNumber("Rpm Setpoint", rpmtogoto.to<double>());
 }

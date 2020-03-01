@@ -22,6 +22,7 @@
 #include "commands/shooter/SetShooterToVelocity.h"
 #include "commands/drive/TurnToGoal.h"
 #include "commands/intake/SetConveyorSpeed.h"
+#include "commands/shooter/SetShooterToGoal.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -105,7 +106,7 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton rotateToGoal(&driverController, (int)frc::XboxController::Button::kBumperRight);
-  rotateToGoal.WhenHeld(
+  rotateToGoal.WhenPressed(
     TurnToGoal(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
@@ -133,9 +134,8 @@ void RobotContainer::ConfigureButtonBindings() {
   climberButtonDown.WhenPressed(ClimbElevatorDown(&m_climber));
 
   frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
-  shootButton.WhenHeld(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 72_deg;}), SetShooterToVelocity(&m_shooter, [](){return 3800_rpm;})});
+  shootButton.WhileHeld(SetShooterToGoal(&m_shooter));
   shootButton.WhenReleased(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 0_deg;}), SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})});
-  
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
