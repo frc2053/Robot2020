@@ -45,6 +45,7 @@ RobotContainer::RobotContainer() : m_drivetrain(){
 void RobotContainer::ConfigureButtonBindings() {
   frc::SmartDashboard::PutData("Zero Yaw", new ZeroYaw(&m_drivetrain));
   frc::SmartDashboard::PutData("Wheel Test", new WheelTest(&m_drivetrain));
+  frc::SmartDashboard::PutData("Set Shooter Goal", new SetShooterToGoal(&m_shooter));
 
   //frc::SmartDashboard::PutData("Set Wheel To RPM", new SetShooterToVelocity(&m_shooter, [this] { return units::revolutions_per_minute_t(frc::SmartDashboard::GetNumber("Shooter Velocity", 0)); }));
   //frc::SmartDashboard::PutData("Set Hood To Angle", new SetHoodToAngle(&m_shooter, [this] { return units::degree_t(frc::SmartDashboard::GetNumber("Shooter Angle", 0)); }));

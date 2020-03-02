@@ -33,28 +33,28 @@ void ShooterSubsystem::ConfigureDashboard() {
 
 void ShooterSubsystem::SetupLookupTable() {
     //ADD MORE AS NEEDED
-    table.AddLookupValue(0_ft, ShooterLookupTable::LookupValue{ 2000_rpm, 10_deg });
-    table.AddLookupValue(1_ft, ShooterLookupTable::LookupValue{ 2500_rpm, 20_deg });
-    table.AddLookupValue(2_ft, ShooterLookupTable::LookupValue{ 2000_rpm, 20_deg });
-    table.AddLookupValue(3_ft, ShooterLookupTable::LookupValue{ 2300_rpm, 39_deg });
-    table.AddLookupValue(4_ft, ShooterLookupTable::LookupValue{ 2400_rpm, 45_deg });
-    table.AddLookupValue(5_ft, ShooterLookupTable::LookupValue{ 2400_rpm, 49_deg });
-    table.AddLookupValue(6_ft, ShooterLookupTable::LookupValue{ 2400_rpm, 55_deg });
-    table.AddLookupValue(7_ft, ShooterLookupTable::LookupValue{ 2400_rpm, 55_deg });
-    table.AddLookupValue(8_ft, ShooterLookupTable::LookupValue{ 2600_rpm, 58_deg });
-    table.AddLookupValue(9_ft, ShooterLookupTable::LookupValue{ 2600_rpm, 58_deg });
-    table.AddLookupValue(10_ft, ShooterLookupTable::LookupValue{ 2700_rpm, 61_deg });
-    table.AddLookupValue(11_ft, ShooterLookupTable::LookupValue{ 2800_rpm, 62_deg });
-    table.AddLookupValue(12_ft, ShooterLookupTable::LookupValue{ 2800_rpm, 62_deg });
-    table.AddLookupValue(13_ft, ShooterLookupTable::LookupValue{ 3400_rpm, 72_deg });
-    table.AddLookupValue(14_ft, ShooterLookupTable::LookupValue{ 3700_rpm, 71_deg });
-    table.AddLookupValue(15_ft, ShooterLookupTable::LookupValue{ 3800_rpm, 72_deg });
-    table.AddLookupValue(16_ft, ShooterLookupTable::LookupValue{ 3800_rpm, 72_deg });
-    table.AddLookupValue(17_ft, ShooterLookupTable::LookupValue{ 4400_rpm, 71_deg });
-    table.AddLookupValue(18_ft, ShooterLookupTable::LookupValue{ 4600_rpm, 72_deg });
-    table.AddLookupValue(19_ft, ShooterLookupTable::LookupValue{ 5000_rpm, 70_deg });
-    table.AddLookupValue(20_ft, ShooterLookupTable::LookupValue{ 5000_rpm, 70_deg });
-    table.AddLookupValue(21_ft, ShooterLookupTable::LookupValue{ 5700_rpm, 72_deg });
+    table.AddLookupValue(0_ft, LookupValue{ 2000_rpm, 10_deg });
+    table.AddLookupValue(1_ft, LookupValue{ 2500_rpm, 20_deg });
+    table.AddLookupValue(2_ft, LookupValue{ 2000_rpm, 20_deg });
+    table.AddLookupValue(3_ft, LookupValue{ 2300_rpm, 39_deg });
+    table.AddLookupValue(4_ft, LookupValue{ 2400_rpm, 45_deg });
+    table.AddLookupValue(5_ft, LookupValue{ 2400_rpm, 49_deg });
+    table.AddLookupValue(6_ft, LookupValue{ 2400_rpm, 55_deg });
+    table.AddLookupValue(7_ft, LookupValue{ 2400_rpm, 55_deg });
+    table.AddLookupValue(8_ft, LookupValue{ 2600_rpm, 58_deg });
+    table.AddLookupValue(9_ft, LookupValue{ 2600_rpm, 58_deg });
+    table.AddLookupValue(10_ft, LookupValue{ 2700_rpm, 61_deg });
+    table.AddLookupValue(11_ft, LookupValue{ 2800_rpm, 62_deg });
+    table.AddLookupValue(12_ft, LookupValue{ 2800_rpm, 62_deg });
+    table.AddLookupValue(13_ft, LookupValue{ 3400_rpm, 72_deg });
+    table.AddLookupValue(14_ft, LookupValue{ 3700_rpm, 71_deg });
+    table.AddLookupValue(15_ft, LookupValue{ 3800_rpm, 72_deg });
+    table.AddLookupValue(16_ft, LookupValue{ 3800_rpm, 72_deg });
+    table.AddLookupValue(17_ft, LookupValue{ 4400_rpm, 71_deg });
+    table.AddLookupValue(18_ft, LookupValue{ 4600_rpm, 72_deg });
+    table.AddLookupValue(19_ft, LookupValue{ 5000_rpm, 70_deg });
+    table.AddLookupValue(20_ft, LookupValue{ 5000_rpm, 70_deg });
+    table.AddLookupValue(21_ft, LookupValue{ 5700_rpm, 72_deg });
 }
 
 void ShooterSubsystem::ConfigureShooterMotors() {
@@ -95,6 +95,7 @@ void ShooterSubsystem::ConfigureHood() {
 }
 
 void ShooterSubsystem::SetShooterToVelocity(units::revolutions_per_minute_t shaftSpeed) {
+    std::cout << "SETTING SHOOTER VEL TO: " << shaftSpeed.to<double>() << "\n";
     shooterMotorRight.Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, ConvertRPMToTickVel(shaftSpeed));
 }
 
@@ -111,10 +112,11 @@ units::degree_t ShooterSubsystem::GetHoodAngle() {
 }
 
 void ShooterSubsystem::SetHoodToAngle(units::degree_t angle){
+    std::cout << "SETTING HOOD ANGLE TO: " << angle.to<double>() << "\n";
     hoodController.SetSetpoint(angle.to<double>());
 }
 
-ShooterLookupTable::LookupValue ShooterSubsystem::GetAngleAndRPMForGoal(units::meter_t distance) {
+LookupValue ShooterSubsystem::GetAngleAndRPMForGoal(units::meter_t distance) {
     return table.Get(distance);
 }
 
@@ -167,7 +169,7 @@ void ShooterSubsystem::GetVisionData() {
 }
 
 units::degree_t ShooterSubsystem::GetAngleToGoTo() {
-    return units::convert<units::radians, units::degrees>(angletogoto);
+    return units::degree_t(angletogoto);
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::GetRPMToGoTo() {
@@ -211,7 +213,7 @@ void ShooterSubsystem::Periodic() {
       m_relay.Set(frc::Relay::kOff);
     }
 
-    ShooterLookupTable::LookupValue val = table.Get(GetDistanceToTarget());
+    LookupValue val = table.Get(GetDistanceToTarget());
     angletogoto = val.angle;
     rpmtogoto = val.rpm;
     frc::SmartDashboard::PutNumber("Angle Setpoint", angletogoto.to<double>());

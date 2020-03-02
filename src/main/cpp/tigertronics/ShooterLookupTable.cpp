@@ -13,11 +13,11 @@ void ShooterLookupTable::RemoveLookupValue(units::meter_t distance) {
     table.erase(it);
 }
 
-ShooterLookupTable::LookupValue ShooterLookupTable::Get(units::meter_t distance) {
+LookupValue ShooterLookupTable::Get(units::meter_t distance) {
     return Interpolate(distance);
 }
 
-ShooterLookupTable::LookupValue ShooterLookupTable::Interpolate(units::meter_t val)
+LookupValue ShooterLookupTable::Interpolate(units::meter_t val)
 {
     // if we have exactly this value in the map, just return it                                                                                                                                                                 
     if (table.find(val) != table.end()) return table.at(val);

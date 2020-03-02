@@ -28,7 +28,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   units::revolutions_per_minute_t GetShooterAvgRPM();
   units::meter_t GetDistanceToTarget();
   units::degree_t GetAngleToTarget();
-  ShooterLookupTable::LookupValue GetAngleAndRPMForGoal(units::meter_t distance);
+  LookupValue GetAngleAndRPMForGoal(units::meter_t distance);
   units::revolutions_per_minute_t GetRPMToGoTo();
   units::degree_t GetAngleToGoTo();
  private:
