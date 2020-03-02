@@ -59,7 +59,7 @@ void RobotContainer::ConfigureButtonBindings() {
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
-        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+        return val > .2 || val < -.2; 
       }
     )
   );
@@ -73,7 +73,7 @@ void RobotContainer::ConfigureButtonBindings() {
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
-        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+        return val > .2 || val < -.2; 
       }
     )
   );
@@ -87,7 +87,7 @@ void RobotContainer::ConfigureButtonBindings() {
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
-        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+        return val > .2 || val < -.2; 
       }
     )
   );
@@ -101,7 +101,7 @@ void RobotContainer::ConfigureButtonBindings() {
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
-        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+        return val > .2 || val < -.2; 
       }
     )
   );
@@ -115,7 +115,7 @@ void RobotContainer::ConfigureButtonBindings() {
       &m_drivetrain,
       [this] {
         double val = driverController.GetX(frc::XboxController::JoystickHand::kRightHand);
-        return std::abs(val - 0) <= 0.0001 * std::abs(val); 
+        return val > .2 || val < -.2; 
       }
     )
   );
