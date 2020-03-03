@@ -30,7 +30,7 @@ LookupValue ShooterLookupTable::Interpolate(units::meter_t val)
 
 
     LookupValue retVal;
-    retVal.angle = units::radian_t(lower->second.angle + (upper->second.angle - lower->second.angle) * units::meter_t(val - lower->first) / units::math::fabs(upper->first - lower->first));
-    retVal.rpm = units::revolutions_per_minute_t(lower->second.rpm + (upper->second.rpm - lower->second.rpm) * units::meter_t(val - lower->first) / units::math::fabs(upper->first - lower->first));
+    retVal.angle = lower->second.angle + (upper->second.angle - lower->second.angle) * units::meter_t(val - lower->first) / units::math::fabs(upper->first - lower->first);
+    retVal.rpm = lower->second.rpm + (upper->second.rpm - lower->second.rpm) * units::meter_t(val - lower->first) / units::math::fabs(upper->first - lower->first);
     return retVal;
 }

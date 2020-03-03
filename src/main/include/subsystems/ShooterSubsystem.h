@@ -71,6 +71,6 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   frc::Relay m_relay{tigertronics::ports::ledRelay};
   frc::LinearFilter<double> visionFilter = frc::LinearFilter<double>::MovingAverage(10);
   bool lightOn = false;
-  units::revolutions_per_minute_t rpmtogoto{0};
-  units::radian_t angletogoto{0};
+  units::revolutions_per_minute_t rpmtogoto{0_rpm};
+  units::degree_t angletogoto{0_deg};
 };

@@ -14,7 +14,8 @@ ShooterSubsystem::ShooterSubsystem() {
     frc::SmartDashboard::PutBoolean("Light On/Off", lightOn);
     network_table = nt::NetworkTableInstance::GetDefault();
     cameraTable = network_table.GetTable("chameleon-vision")->GetSubTable("USB Camera-B4.09.24.1");
-
+    angletogoto = 0_deg;
+    rpmtogoto = 0_rpm;
 }
 
 void ShooterSubsystem::ConfigureDashboard() {
@@ -169,7 +170,7 @@ void ShooterSubsystem::GetVisionData() {
 }
 
 units::degree_t ShooterSubsystem::GetAngleToGoTo() {
-    return units::degree_t(angletogoto);
+    return angletogoto;
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::GetRPMToGoTo() {
