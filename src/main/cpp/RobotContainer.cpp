@@ -125,7 +125,7 @@ void RobotContainer::ConfigureButtonBindings() {
   intakeButton.WhenReleased(TeleopIntakeUp(&m_intake));
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
+  feederButton.WhenHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
   feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_intake, 0)});
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
@@ -135,7 +135,7 @@ void RobotContainer::ConfigureButtonBindings() {
   climberButtonDown.WhenPressed(ClimbElevatorDown(&m_climber));
 
   frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
-  shootButton.WhileHeld(SetShooterToGoal(&m_shooter));
+  shootButton.WhenHeld(SetShooterToGoal(&m_shooter));
   shootButton.WhenReleased(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 0_deg;}), SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})});
 }
 
