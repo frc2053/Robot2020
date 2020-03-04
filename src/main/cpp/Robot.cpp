@@ -10,7 +10,9 @@ void Robot::RobotInit() {}
 
 void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
 
-void Robot::DisabledInit() {}
+void Robot::DisabledInit() {
+  m_container.m_shooter.SetServoSpeed(0);
+}
 
 void Robot::DisabledPeriodic() {}
 
