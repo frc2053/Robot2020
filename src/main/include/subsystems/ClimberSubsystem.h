@@ -15,5 +15,5 @@ class ClimberSubsystem : public frc2::SubsystemBase {
   
   frc::DoubleSolenoid climbPTO{tigertronics::ports::TwentyFourVoltPCM, tigertronics::ports::climberPTOPortFow, tigertronics::ports::climberPTOPortRev};
   frc::DoubleSolenoid climbBrake{tigertronics::ports::TwentyFourVoltPCM, tigertronics::ports::climberBrakePortFow, tigertronics::ports::climberBrakePortRev};
-  frc::DoubleSolenoid climbElevator{tigertronics::ports::TwentyFourVoltPCM, tigertronics::ports::climberElevatorSolenoidPortFow, tigertronics::ports::climberElevatorSolenoidPortRev};
+  frc::DoubleSolenoid climbElevator{tigertronics::ports::TwelveVoltPCM, tigertronics::ports::climberElevatorSolenoidPortFow, tigertronics::ports::climberElevatorSolenoidPortRev};
 };

@@ -191,6 +191,7 @@ void ShooterSubsystem::Periodic() {
     frc::SmartDashboard::PutNumber("distance to goal", GetDistanceToTarget().to<double>());
     //SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
     //SetHoodToAngle(units::degree_t(shufflesetpointangle));
+    /*
     if(hoodEncoder.Get() >= 3950) {
         SetServoSpeed(0);
         //hoodEncoder.Set(15635);
@@ -199,6 +200,7 @@ void ShooterSubsystem::Periodic() {
         SetServoSpeed(0);
         //hoodEncoder.SetQuadraturePosition(-40);
     }
+    */
     // Turning LED on/off from SmartDashboard
     lightOn = frc::SmartDashboard::GetBoolean("Light On/Off", false);
     if(lightOn) {

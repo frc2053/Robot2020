@@ -23,6 +23,8 @@
 #include "commands/drive/TurnToGoal.h"
 #include "commands/intake/SetConveyorSpeed.h"
 #include "commands/shooter/SetShooterToGoal.h"
+#include "commands/intake/IntakeDown.h"
+#include "commands/intake/IntakeUp.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -133,6 +135,12 @@ void RobotContainer::ConfigureButtonBindings() {
 
   frc2::JoystickButton climberButtonDown(&operatorController, (int)frc::XboxController::Button::kBack);
   climberButtonDown.WhenPressed(ClimbElevatorDown(&m_climber));
+
+  frc2::JoystickButton intakeFlopperUp(&operatorController, (int)frc::XboxController::Button::kY);
+  intakeFlopperUp.WhenPressed(IntakeUp(&m_intake));
+
+  frc2::JoystickButton intakeFlopperDown(&operatorController, (int)frc::XboxController::Button::kX);
+  intakeFlopperDown.WhenPressed(IntakeDown(&m_intake));
 
   frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
   shootButton.WhenHeld(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [this](){return m_shooter.GetAngleToGoTo();}), SetShooterToVelocity(&m_shooter, [this](){return m_shooter.GetRPMToGoTo();})});
