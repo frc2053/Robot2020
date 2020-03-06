@@ -12,6 +12,7 @@
 #include "commands/controlpanel/PositionControl.h"
 #include "commands/shooter/SetShooterToVelocity.h"
 #include "commands/intake/SetLoaderWheelSpeed.h"
+#include "commands/intake/SetFunnelWheelSpeed.h"
 #include "frc2/command/ParallelRaceGroup.h"
 #include "commands/intake/TeleopIntakeDown.h"
 #include "commands/intake/TeleopIntakeUp.h"
@@ -121,8 +122,8 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
-  intakeButton.WhenHeld(TeleopIntakeDown(&m_intake));
-  intakeButton.WhenReleased(TeleopIntakeUp(&m_intake));
+  intakeButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, 1)});
+  intakeButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
   feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});

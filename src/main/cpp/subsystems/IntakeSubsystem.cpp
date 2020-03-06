@@ -8,6 +8,7 @@ IntakeSubsystem::IntakeSubsystem() {
     SetName("IntakeSubsystem");
     ConfigConveyorMotor();
     ConfigFeederMotor();
+    ConfigFunnelMotor();
     ConfigIntakeMotor();
     ConfigDashboard();
 }
@@ -18,6 +19,14 @@ void IntakeSubsystem::ConfigConveyorMotor(){
     //incase we plug in a bad talon
     conveyorMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
     conveyorMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+}
+
+void IntakeSubsystem::ConfigFunnelMotor(){
+    funnelMotor.ConfigFactoryDefault();
+
+    //incase we plug in a bad talon
+    funnelMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+    funnelMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
 }
 
 void IntakeSubsystem::ConfigFeederMotor(){
@@ -57,6 +66,10 @@ void IntakeSubsystem::SetConveyorBeltSpeed(double speed){
 
 void IntakeSubsystem::SetFeederWheelSpeed(double speed){
     feederMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+}
+
+void IntakeSubsystem::SetFunnelWheelSpeed(double speed){
+    funnelMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
 }
 
 void IntakeSubsystem::SetIntakeWheelsSpeed(double speed){

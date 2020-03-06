@@ -15,6 +15,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   void SetIntakeWheelsSpeed(double speed);
   void SetConveyorBeltSpeed(double speed);
   void SetFeederWheelSpeed(double speed);
+  void SetFunnelWheelSpeed(double speed);
   void SetIntakeFow();
   void SetIntakeRev();
   void SetNumOfBalls(int balls);
@@ -25,6 +26,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   void ConfigIntakeMotor();
   void ConfigConveyorMotor();
   void ConfigFeederMotor();
+  void ConfigFunnelMotor();
   void ConfigDashboard();
   bool DetectedBallIn();
   bool DetectedBallOut();
@@ -32,6 +34,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   ctre::phoenix::motorcontrol::can::TalonSRX intakeMotor{tigertronics::ports::intakeMotor};
   ctre::phoenix::motorcontrol::can::TalonSRX conveyorMotor{tigertronics::ports::conveyorMotor};
   ctre::phoenix::motorcontrol::can::TalonSRX feederMotor{tigertronics::ports::feederMotor};
+  ctre::phoenix::motorcontrol::can::TalonSRX funnelMotor{tigertronics::ports::funnelMotor};
   #if defined(__FRC_ROBORIO__)
   frc::TimeOfFlight intakeDistSensor{tigertronics::ports::tofSensorIntake};
   frc::TimeOfFlight loaderDistSensor{tigertronics::ports::tofSensorConveyor};
