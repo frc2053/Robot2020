@@ -194,15 +194,9 @@ void ShooterSubsystem::Periodic() {
         SetServoSpeed(0);
         //hoodEncoder.Set(15635);
     }
-    if(hoodEncoder.Get() <= 0){
+    if(hoodEncoder.Get() <= -10){
         SetServoSpeed(0);
         //hoodEncoder.SetQuadraturePosition(-40);
-    }
-    if(hoodServo.Get() > .1) {
-        if(hoodEncoder.GetRate() <= 1) {
-            SetServoSpeed(0);
-            std::cout << "Servo stalled!\n";
-        }
     }
     // Turning LED on/off from SmartDashboard
     lightOn = frc::SmartDashboard::GetBoolean("Light On/Off", false);

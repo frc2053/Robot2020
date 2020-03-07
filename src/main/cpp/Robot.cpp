@@ -5,8 +5,12 @@
 #include <frc2/command/WaitCommand.h>
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc/shuffleboard/Shuffleboard.h>
+#include <wpi/PortForwarder.h>
 
-void Robot::RobotInit() {}
+void Robot::RobotInit() {
+  wpi::PortForwarder::GetInstance().Add(5800, "chameleon-vision.local", 5800);
+  wpi::PortForwarder::GetInstance().Add(1181, "chameleon-vision.local", 1181);
+}
 
 void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
 
