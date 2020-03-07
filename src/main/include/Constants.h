@@ -110,16 +110,16 @@ namespace tigertronics {
         static constexpr int funnelMotor = 16;
         static constexpr int tofSensorIntake = 0;
         static constexpr int tofSensorConveyor = 1;
-        static constexpr int intakeSolenoidPortFow = 2;
-        static constexpr int intakeSolenoidPortRev = 5;
+        static constexpr int intakeSolenoidPortFow = 0;
+        static constexpr int intakeSolenoidPortRev = 1;
 
         //CLIMBER PORTS
-        static constexpr int climberPTOPortFow = 0;
-        static constexpr int climberPTOPortRev = 5;
-        static constexpr int climberBrakePortFow = 6;
-        static constexpr int climberBrakePortRev = 7;
-        static constexpr int climberElevatorSolenoidPortFow = 3;
-        static constexpr int climberElevatorSolenoidPortRev = 4;
+        static constexpr int climberPTOPortFow = 2;
+        static constexpr int climberPTOPortRev = 3;
+        static constexpr int climberBrakePortFow = 4;
+        static constexpr int climberBrakePortRev = 5;
+        static constexpr int climberElevatorSolenoidPortFow = 6;
+        static constexpr int climberElevatorSolenoidPortRev = 7;
 
         //CONTROL PANEL
         static constexpr int controlPanel = 19;
