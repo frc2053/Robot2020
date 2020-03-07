@@ -136,7 +136,7 @@ void RobotContainer::ConfigureButtonBindings() {
   climberButtonDown.WhenPressed(ClimbElevatorDown(&m_climber));
 
   frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
-  shootButton.WhileHeld(SetShooterToGoal(&m_shooter));
+  shootButton.WhileHeld(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [this](){return m_shooter.GetAngleToGoTo();}), SetShooterToVelocity(&m_shooter, [this](){return m_shooter.GetRPMToGoTo();})});
   shootButton.WhenReleased(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 0_deg;}), SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})});
 }
 
