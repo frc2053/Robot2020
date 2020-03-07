@@ -24,6 +24,8 @@
 #include "commands/drive/TurnToGoal.h"
 #include "commands/intake/SetConveyorSpeed.h"
 #include "commands/shooter/SetShooterToGoal.h"
+#include "commands/intake/IntakeDown.h"
+#include "commands/intake/IntakeUp.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -126,7 +128,7 @@ void RobotContainer::ConfigureButtonBindings() {
   intakeButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
+  feederButton.WhenHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
   feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_intake, 0)});
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
@@ -135,8 +137,14 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton climberButtonDown(&operatorController, (int)frc::XboxController::Button::kBack);
   climberButtonDown.WhenPressed(ClimbElevatorDown(&m_climber));
 
+  frc2::JoystickButton intakeFlopperUp(&operatorController, (int)frc::XboxController::Button::kY);
+  intakeFlopperUp.WhenPressed(IntakeUp(&m_intake));
+
+  frc2::JoystickButton intakeFlopperDown(&operatorController, (int)frc::XboxController::Button::kX);
+  intakeFlopperDown.WhenPressed(IntakeDown(&m_intake));
+
   frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
-  shootButton.WhileHeld(SetShooterToGoal(&m_shooter));
+  shootButton.WhenHeld(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [this](){return m_shooter.GetAngleToGoTo();}), SetShooterToVelocity(&m_shooter, [this](){return m_shooter.GetRPMToGoTo();})});
   shootButton.WhenReleased(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 0_deg;}), SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})});
 }
 

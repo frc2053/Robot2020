@@ -14,7 +14,8 @@ ShooterSubsystem::ShooterSubsystem() {
     frc::SmartDashboard::PutBoolean("Light On/Off", lightOn);
     network_table = nt::NetworkTableInstance::GetDefault();
     cameraTable = network_table.GetTable("chameleon-vision")->GetSubTable("USB Camera-B4.09.24.1");
-
+    angletogoto = 0_deg;
+    rpmtogoto = 0_rpm;
 }
 
 void ShooterSubsystem::ConfigureDashboard() {
@@ -169,7 +170,7 @@ void ShooterSubsystem::GetVisionData() {
 }
 
 units::degree_t ShooterSubsystem::GetAngleToGoTo() {
-    return units::degree_t(angletogoto);
+    return angletogoto;
 }
 
 units::revolutions_per_minute_t ShooterSubsystem::GetRPMToGoTo() {
@@ -190,6 +191,7 @@ void ShooterSubsystem::Periodic() {
     frc::SmartDashboard::PutNumber("distance to goal", GetDistanceToTarget().to<double>());
     //SetShooterToVelocity(units::revolutions_per_minute_t(shufflesetpointrpm));
     //SetHoodToAngle(units::degree_t(shufflesetpointangle));
+    /*
     if(hoodEncoder.Get() >= 3950) {
         SetServoSpeed(0);
         //hoodEncoder.Set(15635);
@@ -198,12 +200,7 @@ void ShooterSubsystem::Periodic() {
         SetServoSpeed(0);
         //hoodEncoder.SetQuadraturePosition(-40);
     }
-    if(hoodServo.Get() > .1) {
-        if(hoodEncoder.GetRate() <= 1) {
-            SetServoSpeed(0);
-            std::cout << "Servo stalled!\n";
-        }
-    }
+    */
     // Turning LED on/off from SmartDashboard
     lightOn = frc::SmartDashboard::GetBoolean("Light On/Off", false);
     if(lightOn) {
