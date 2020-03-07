@@ -82,8 +82,13 @@ namespace tigertronics {
 
     namespace ports {
         //PCM CAN
+<<<<<<< HEAD
         static constexpr int TwentyFourVoltPCM = 1;
         static constexpr int TwelveVoltPCM = 0;
+=======
+        static constexpr int TwelveVoltPCM = 0;
+        static constexpr int TwentyFourVoltPCM = 1;
+>>>>>>> parent of 3662602... Pneumatics
 
         //SWERVE PORTS
         static constexpr int swerveFLDrive = 2;
