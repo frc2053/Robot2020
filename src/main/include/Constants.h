@@ -82,18 +82,8 @@ namespace tigertronics {
 
     namespace ports {
         //PCM CAN
-<<<<<<< HEAD
-<<<<<<< HEAD
-        static constexpr int TwentyFourVoltPCM = 1;
-        static constexpr int TwelveVoltPCM = 0;
-=======
         static constexpr int TwelveVoltPCM = 0;
         static constexpr int TwentyFourVoltPCM = 1;
->>>>>>> parent of 3662602... Pneumatics
-=======
-        static constexpr int TwelveVoltPCM = 0;
-        static constexpr int TwentyFourVoltPCM = 1;
->>>>>>> parent of 3662602... Pneumatics
 
         //SWERVE PORTS
         static constexpr int swerveFLDrive = 2;
@@ -120,7 +110,6 @@ namespace tigertronics {
         static constexpr int funnelMotor = 16;
         static constexpr int tofSensorIntake = 0;
         static constexpr int tofSensorConveyor = 1;
-<<<<<<< HEAD
         static constexpr int intakeSolenoidPortFow = 2;
         static constexpr int intakeSolenoidPortRev = 5;
 
@@ -131,18 +120,6 @@ namespace tigertronics {
         static constexpr int climberBrakePortRev = 7;
         static constexpr int climberElevatorSolenoidPortFow = 3;
         static constexpr int climberElevatorSolenoidPortRev = 4;
-=======
-        static constexpr int intakeSolenoidPortFow = 0;
-        static constexpr int intakeSolenoidPortRev = 1;
-
-        //CLIMBER PORTS
-        static constexpr int climberPTOPortFow = 2;
-        static constexpr int climberPTOPortRev = 3;
-        static constexpr int climberBrakePortFow = 4;
-        static constexpr int climberBrakePortRev = 5;
-        static constexpr int climberElevatorSolenoidPortFow = 6;
-        static constexpr int climberElevatorSolenoidPortRev = 7;
->>>>>>> parent of 3662602... Pneumatics
 
         //CONTROL PANEL
         static constexpr int controlPanel = 19;
