@@ -82,8 +82,8 @@ namespace tigertronics {
 
     namespace ports {
         //PCM CAN
-        static constexpr int TwentyFourVoltPCM = 1;
-        static constexpr int TwelveVoltPCM = 0;
+        static constexpr int TwentyFourVoltPCM = 0;
+        static constexpr int TwelveVoltPCM = 1;
 
         //SWERVE PORTS
         static constexpr int swerveFLDrive = 2;
@@ -114,8 +114,8 @@ namespace tigertronics {
         static constexpr int intakeSolenoidPortRev = 5;
 
         //CLIMBER PORTS
-        static constexpr int climberPTOPortFow = 0;
-        static constexpr int climberPTOPortRev = 5;
+        static constexpr int climberPTOPortFow = 1;
+        static constexpr int climberPTOPortRev = 0;
         static constexpr int climberBrakePortFow = 6;
         static constexpr int climberBrakePortRev = 7;
         static constexpr int climberElevatorSolenoidPortFow = 3;
