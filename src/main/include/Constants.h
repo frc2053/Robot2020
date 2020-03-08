@@ -123,6 +123,8 @@ namespace tigertronics {
 
         //CONTROL PANEL
         static constexpr int controlPanel = 19;
+        static constexpr int controlPanelSolenoidFow = 2;
+        static constexpr int controlPanelSolenoidRev = 3;
 
         //LEDs
         static constexpr int ledRelay = 0;
