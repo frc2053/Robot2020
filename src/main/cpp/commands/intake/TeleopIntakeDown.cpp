@@ -6,8 +6,10 @@
 
 TeleopIntakeDown::TeleopIntakeDown(IntakeSubsystem* intakeSub) : m_intakeSubsystem(intakeSub) {
   AddCommands(
+    // IntakeDown(m_intakeSubsystem),
+    // SetIntakeSpeed(m_intakeSubsystem, 1),
+    // SetLoaderWheelSpeed(m_intakeSubsystem, 0)
     IntakeDown(m_intakeSubsystem),
-    SetIntakeSpeed(m_intakeSubsystem, 1),
-    SetLoaderWheelSpeed(m_intakeSubsystem, -.3)
+    SetIntakeSpeed(m_intakeSubsystem, 1)
   );
 }

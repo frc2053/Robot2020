@@ -44,12 +44,17 @@ RobotContainer::RobotContainer() : m_drivetrain(){
   m_chooser.AddOption("Ten Cell Auto", &m_tenCellAuto);
   m_chooser.AddOption("Shoot Balls Auto", &m_shootBallsAuto);
 
+  /*
   m_controlChooser.SetDefaultOption("Manual", &m_wheelControl);
   m_controlChooser.AddOption("Position Control", &m_posControl);
   m_controlChooser.AddOption("Rotation Control", &m_rotControl);
+  */
+  frc::SmartDashboard::PutData("positionControl", &m_posControl);
+  frc::SmartDashboard::PutData("rotationControl", &m_rotControl);
 
   frc::Shuffleboard::GetTab("Auto").Add(m_chooser);
   frc::Shuffleboard::GetTab("ControlPanel").Add(m_controlChooser);
+  frc::Shuffleboard::GetTab("ControlPanel").Add(m_controlpanel);
 
   ConfigureButtonBindings();
 
@@ -137,10 +142,14 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
-  intakeButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, 1)});
-  intakeButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
+  // intakeButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, 1)});
+  // intakeButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
+  intakeButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake)});
+  intakeButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake)});
 
   frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kB);
+  // conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, .5), SetFunnelWheelSpeed(&m_intake, 1)});
+  // conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, 0), SetFunnelWheelSpeed(&m_intake, 0)});
   conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, .5), SetFunnelWheelSpeed(&m_intake, 1)});
   conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, 0), SetFunnelWheelSpeed(&m_intake, 0)});
 
@@ -154,8 +163,10 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton climberButtonDown(&operatorController, (int)frc::XboxController::Button::kBack);
   climberButtonDown.WhenPressed(ClimbElevatorDown(&m_climber));
 
+  /*
   frc2::JoystickButton controlPanelThing(&operatorController, (int)frc::XboxController::Button::kY);
   controlPanelThing.WhenPressed(m_controlChooser.GetSelected());
+  */
 
   frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
   shootButton.WhileHeld(frc2::SequentialCommandGroup {

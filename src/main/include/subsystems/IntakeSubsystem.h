@@ -12,6 +12,8 @@ class IntakeSubsystem : public frc2::SubsystemBase {
  public: 
   IntakeSubsystem();
   void Periodic();
+  void SetIndexerActive(bool active);
+  void SetFiring(bool isFiring);
   void SetIntakeWheelsSpeed(double speed);
   void SetConveyorBeltSpeed(double speed);
   void SetFeederWheelSpeed(double speed);
@@ -31,6 +33,9 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   bool DetectedBallIn();
   bool DetectedBallOut();
   int numOfBalls = 0;
+  float conveyorSpeed = 0;
+  bool conveyorIndexActivated = false;
+  bool firing = true;
   ctre::phoenix::motorcontrol::can::TalonSRX intakeMotor{tigertronics::ports::intakeMotor};
   ctre::phoenix::motorcontrol::can::TalonSRX conveyorMotor{tigertronics::ports::conveyorMotor};
   ctre::phoenix::motorcontrol::can::TalonSRX feederMotor{tigertronics::ports::feederMotor};

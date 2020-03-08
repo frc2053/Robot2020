@@ -25,8 +25,12 @@ void PositionControl::Execute() {
     currentColor = controlPanelSubsystem->ReturnColorSensed();
     */
    while(!(colorGoal == currentColor)){
+       std::cout << "inside while loop\n";
        controlPanelSubsystem->SetControlPanelWheelSpeed(.1);
+       std::cout << "wheel is on in the code\n";
        currentColor = controlPanelSubsystem->ReturnColorSensed();
+       std::cout << "color has been sensed:\n";
+
    }
    isDone = true;
 }

@@ -62,8 +62,18 @@ void IntakeSubsystem::ConfigDashboard() {
     dashFilteredLoaderDist = tab.Add("Filtered Loader Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
 }
 
+
+void IntakeSubsystem::SetIndexerActive(bool active){
+    conveyorIndexActivated = active;
+}
+  
+void IntakeSubsystem::SetFiring(bool isFiring){
+    firing = isFiring;
+}
+
 void IntakeSubsystem::SetConveyorBeltSpeed(double speed){
-    conveyorMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+    // conveyorMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+    conveyorSpeed = speed;
 }
 
 void IntakeSubsystem::SetFeederWheelSpeed(double speed){
@@ -133,6 +143,16 @@ void IntakeSubsystem::Periodic(){
         detectedLoader = ballOut;
     }
 
+    if (firing) {
+
+    } else {
+        if (conveyorIndexActivated) {
+
+        } else {
+            
+        }
+    }
+    
     dashNumOfBalls.SetDouble(GetNumOfBalls());
     dashDetectedBallIn.SetBoolean(ballIn);
     dashDetectedBallOut.SetBoolean(ballOut);
