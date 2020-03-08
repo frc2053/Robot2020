@@ -1,6 +1,7 @@
 //runs the control panel manipulation motor 
 
 #include "commands/controlpanel/ManualWheelRotation.h"
+#include <frc/shuffleboard/Shuffleboard.h>
 
 ManualWheelRotation::ManualWheelRotation(ControlPanelSubsystem* subsystem, std::function<double()> run) 
 : controlPanelSubsystem{subsystem} , runIt(run){
@@ -9,8 +10,10 @@ ManualWheelRotation::ManualWheelRotation(ControlPanelSubsystem* subsystem, std::
     isDone = false;
 }
 
-void ManualWheelRotation::Execute() { controlPanelSubsystem->SetControlPanelWheelSpeed(runIt()); }
+void ManualWheelRotation::Execute() { 
+    controlPanelSubsystem->SetControlPanelWheelSpeed(runIt()); 
+}
 
-bool ManualWheelRotation::IsFinished() { return true; }
+bool ManualWheelRotation::IsFinished() { return false; }
 
-void ManualWheelRotation::End(bool) { controlPanelSubsystem->SetControlPanelWheelSpeed(0); }
+void ManualWheelRotation::End(bool) { }

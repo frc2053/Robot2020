@@ -16,13 +16,21 @@ void PositionControl::Initialize() {
 }
 
 //starts rotating the control panel and senses the color
-//stops rotating when target color is reached
+//finishes when target color is reached
 void PositionControl::Execute() {
-    controlPanelSubsystem->SetControlPanelWheelSpeed(.5);
+    /*
+    controlPanelSubsystem->SetControlPanelWheelSpeed(.1);
     if(currentColor == colorGoal)
     { isDone = true; }
     currentColor = controlPanelSubsystem->ReturnColorSensed();
+    */
+   while(!(colorGoal == currentColor)){
+       controlPanelSubsystem->SetControlPanelWheelSpeed(.1);
+       currentColor = controlPanelSubsystem->ReturnColorSensed();
+   }
+   isDone = true;
 }
+
 
 void PositionControl::End(bool) {
     controlPanelSubsystem->SetControlPanelWheelSpeed(0);

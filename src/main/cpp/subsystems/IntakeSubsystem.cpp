@@ -16,6 +16,8 @@ IntakeSubsystem::IntakeSubsystem() {
 void IntakeSubsystem::ConfigConveyorMotor(){
     conveyorMotor.ConfigFactoryDefault();
 
+    conveyorMotor.ConfigClosedloopRamp(0.5);
+    
     //incase we plug in a bad talon
     conveyorMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
     conveyorMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
