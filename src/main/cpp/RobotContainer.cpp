@@ -24,6 +24,7 @@
 #include "commands/drive/TurnToGoal.h"
 #include "commands/intake/SetConveyorSpeed.h"
 #include "commands/shooter/SetShooterToGoal.h"
+#include "frc/shuffleboard/Shuffleboard.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -36,6 +37,9 @@ RobotContainer::RobotContainer() : m_drivetrain(){
 
   m_chooser.SetDefaultOption("Follow Path Auto", &m_followPathAuto);
   m_chooser.AddOption("Ten Cell Auto", &m_tenCellAuto);
+  m_chooser.AddOption("Shoot Balls Auto", &m_shootBallsAuto);
+
+  frc::Shuffleboard::GetTab("Auto").Add(m_chooser);
 
   ConfigureButtonBindings();
 
@@ -52,7 +56,7 @@ void RobotContainer::ConfigureButtonBindings() {
   //frc::SmartDashboard::PutData("Set Hood To Angle", new SetHoodToAngle(&m_shooter, [this] { return units::degree_t(frc::SmartDashboard::GetNumber("Shooter Angle", 0)); }));
 
   frc2::JoystickButton rotateToZeroButton(&driverController, (int)frc::XboxController::Button::kY);
-  rotateToZeroButton.WhenPressed(
+  rotateToZeroButton.WhenHeld(
     TurnToAngle(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
@@ -66,7 +70,7 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton rotateToGenerator112Button(&driverController, (int)frc::XboxController::Button::kX);
-  rotateToGenerator112Button.WhenPressed(
+  rotateToGenerator112Button.WhenHeld(
     TurnToAngle(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
@@ -80,7 +84,7 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton rotateToGenerator67Button(&driverController, (int)frc::XboxController::Button::kB);
-  rotateToGenerator67Button.WhenPressed(
+  rotateToGenerator67Button.WhenHeld(
     TurnToAngle(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
@@ -94,7 +98,7 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton rotateTo180Button(&driverController, (int)frc::XboxController::Button::kA);
-  rotateTo180Button.WhenPressed(
+  rotateTo180Button.WhenHeld(
     TurnToAngle(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
@@ -108,7 +112,7 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton rotateToGoal(&driverController, (int)frc::XboxController::Button::kBumperRight);
-  rotateToGoal.WhenPressed(
+  rotateToGoal.WhenHeld(
     TurnToGoal(
       [this] { return driverController.GetY(frc::GenericHID::JoystickHand::kLeftHand); },
       [this] { return driverController.GetX(frc::GenericHID::JoystickHand::kLeftHand); },
@@ -136,8 +140,24 @@ void RobotContainer::ConfigureButtonBindings() {
   climberButtonDown.WhenPressed(ClimbElevatorDown(&m_climber));
 
   frc2::JoystickButton shootButton(&operatorController, (int)frc::XboxController::Button::kBumperRight);
-  shootButton.WhileHeld(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [this](){return m_shooter.GetAngleToGoTo();}), SetShooterToVelocity(&m_shooter, [this](){return m_shooter.GetRPMToGoTo();})});
-  shootButton.WhenReleased(frc2::SequentialCommandGroup{SetHoodToAngle(&m_shooter, [](){return 0_deg;}), SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})});
+  shootButton.WhileHeld(frc2::SequentialCommandGroup {
+    frc2::InstantCommand(
+      [this]() {
+          m_shooter.moveRequested = true;
+      }
+    ),
+    SetHoodToAngle(&m_shooter, [this](){return m_shooter.GetAngleToGoTo();}), 
+    SetShooterToVelocity(&m_shooter, [this](){return m_shooter.GetRPMToGoTo();})
+  });
+  shootButton.WhenReleased(frc2::SequentialCommandGroup {
+    frc2::InstantCommand(
+      [this]() {
+          m_shooter.moveRequested = false;
+      }
+    ),
+    SetHoodToAngle(&m_shooter, [](){return 0_deg;}), 
+    SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})
+  });
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

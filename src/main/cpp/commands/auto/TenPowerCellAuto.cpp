@@ -89,7 +89,7 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     std::move(toControlPanel),
     //Might have to add a drive backwards command here?
     //Wait until we have 5 balls
-    frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;}),
+    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;}),
     //Close up intake
     IntakeUp(m_intakeSubsystem),
     SetIntakeSpeed(m_intakeSubsystem, 0),
@@ -107,7 +107,7 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     SetLoaderWheelSpeed(m_intakeSubsystem, 1),
     SetConveyorSpeed(m_intakeSubsystem, 1),
     //stop when we dont have any more balls
-    frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 0;}),
+    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 0;}),
     //put intake down for next 5 balls
     IntakeDown(m_intakeSubsystem),
     SetIntakeSpeed(m_intakeSubsystem, 1),
@@ -118,11 +118,11 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     //go to side of generator
     std::move(toGeneratorBall),
     //grab two ball
-    frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 2;}),
+    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 2;}),
     //go to our trench
     std::move(toTrench),
     //grab 3 more balls
-    frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;}),
+    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;}),
     //Close up intake
     IntakeUp(m_intakeSubsystem),
     SetIntakeSpeed(m_intakeSubsystem, 0),
@@ -135,8 +135,8 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     SetShooterToGoal(m_shooterSubsystem),
     //start spraying
     SetLoaderWheelSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_intakeSubsystem, 1),
+    SetConveyorSpeed(m_intakeSubsystem, 1)
     //Done
-    frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;})
+    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;})
   );
 }

@@ -3,7 +3,7 @@
 #include "Constants.h"
 #include "frc/XboxController.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-
+#include <frc/DriverStation.h>
 TurnToAngle::TurnToAngle(std::function<double()> fow, std::function<double()> strafe, std::function<double()> targetAngle, SwerveSubsystem* swerveSub, std::function<bool()> override)
     : CommandHelper(frc2::PIDController(tigertronics::constants::swerveAnglekP, tigertronics::constants::swerveAnglekI, tigertronics::constants::swerveAnglekD),
                     // This should return the measurement
@@ -23,5 +23,10 @@ TurnToAngle::TurnToAngle(std::function<double()> fow, std::function<double()> st
 bool TurnToAngle::IsFinished() {
   std::cout << "currentAngle: " << m_controller.GetSetpoint() << "\n";
   std::cout << "error: " << m_controller.GetPositionError() << "\n";
-  return m_controller.AtSetpoint() || controllerOverride();
+  if(frc::DriverStation::GetInstance().IsAutonomous()) {
+    return m_controller.AtSetpoint() || controllerOverride();
+  }
+  else {
+    return controllerOverride();
+  }
 }

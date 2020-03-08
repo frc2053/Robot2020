@@ -8,7 +8,7 @@ TeleopIntakeDown::TeleopIntakeDown(IntakeSubsystem* intakeSub) : m_intakeSubsyst
   AddCommands(
     IntakeDown(m_intakeSubsystem),
     SetIntakeSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_intakeSubsystem, 1),
+    SetConveyorSpeed(m_intakeSubsystem, .5),
     SetLoaderWheelSpeed(m_intakeSubsystem, -.3)
   );
 }

@@ -10,6 +10,7 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include "subsystems/ClimberSubsystem.h"
 #include "commands/auto/TenPowerCellAuto.h"
+#include "commands/auto/ShootBallsAuto.h"
 
 class RobotContainer {
  public:
@@ -31,12 +32,13 @@ class RobotContainer {
     10_fps, //max speed
     units::meters_per_second_squared_t(3), //max accel
     frc::Pose2d(0_m, 0_m, frc::Rotation2d(0_deg)), //start pt
-    {frc::Translation2d(8_ft, 0_ft)}, //middle pts
-    frc::Pose2d(8_ft, -5_ft, frc::Rotation2d(90_deg)), //end points and angle 
+    {frc::Translation2d(.5_ft, 0_ft)}, //middle pts
+    frc::Pose2d(1_ft, 0_ft, frc::Rotation2d(0_deg)), //end points and angle 
     &m_drivetrain //subsystem
   };
 
   TenPowerCellAuto m_tenCellAuto{&m_drivetrain, &m_intake, &m_shooter};
+  ShootBallsAuto m_shootBallsAuto{&m_drivetrain, &m_intake, &m_shooter};
 
   frc::SendableChooser<frc2::Command*> m_chooser;
 

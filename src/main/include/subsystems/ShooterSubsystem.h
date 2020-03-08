@@ -31,6 +31,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   LookupValue GetAngleAndRPMForGoal(units::meter_t distance);
   units::revolutions_per_minute_t GetRPMToGoTo();
   units::degree_t GetAngleToGoTo();
+  bool moveRequested = false;
  private:
   void ConfigureShooterMotors();
   void ConfigureLoaderMotor();

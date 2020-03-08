@@ -10,7 +10,7 @@ class TenPowerCellAuto
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  TenPowerCellAuto> {
  public:
-  TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSu);
+  TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub);
  private:
   SwerveSubsystem* m_swerveSubsystem;
   IntakeSubsystem* m_intakeSubsystem;
