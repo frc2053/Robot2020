@@ -24,7 +24,7 @@ class ShootBallsAuto
   IntakeSubsystem* m_intakeSubsystem;
   ShooterSubsystem* m_shooterSubsystem;
 
-  frc::Pose2d startPose{0_ft, 0_ft, frc::Rotation2d{0_deg}};
+  frc::Pose2d startPose{0_ft, 0_ft, frc::Rotation2d(0_deg)};
   frc::Rotation2d startAngle;
 
   FollowPath movePastInitLine {
@@ -32,7 +32,7 @@ class ShootBallsAuto
       units::meters_per_second_squared_t(3), //max accel
       startPose, //start pt
       {}, //middle pts
-      frc::Pose2d(4_ft, 0_ft, frc::Rotation2d{0_deg}), //end points and angle 
+      frc::Pose2d(1_ft, 0_ft, frc::Rotation2d(0_deg)), //end points and angle 
       m_swerveSubsystem //subsystem
   };
 };

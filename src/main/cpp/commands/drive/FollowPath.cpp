@@ -20,6 +20,14 @@ FollowPath::FollowPath(units::meters_per_second_t maxSpeed, units::meters_per_se
   config.SetKinematics(m_drivetrain->m_swerve.m_kinematics);
 
   // An example trajectory to follow.  All units in meters.
+  std::cout << "start point: X: " << m_startPt.Translation().X() << ", Y: " << m_startPt.Translation().Y() << ", Yaw: " << m_startPt.Rotation().Degrees() << "\n";
+
+  for(frc::Translation2d middlePt : m_middlePts) {
+      std::cout << "middle point: X: " << middlePt.X() << ", Y: " << middlePt.Y() << "\n";
+  }
+
+  std::cout << "end point: X: " << m_endPt.Translation().X() << ", Y: " << m_endPt.Translation().Y() << ", Yaw: " << m_endPt.Rotation().Degrees() << "\n";
+
   auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
       m_startPt,
       m_middlePts,
