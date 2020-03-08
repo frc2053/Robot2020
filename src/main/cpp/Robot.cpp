@@ -38,8 +38,6 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-  frc::SmartDashboard::PutNumber("vision yaw", m_container.m_shooter.GetAngleToTarget().to<double>());
-  frc::SmartDashboard::PutNumber("vision error", m_container.m_drivetrain.GetImuYaw().to<double>() - m_container.m_shooter.GetAngleToTarget().to<double>());
 }
 
 void Robot::TestPeriodic() {}

@@ -11,7 +11,6 @@ ShooterSubsystem::ShooterSubsystem() {
     ConfigureDashboard();
     ConfigureHood();
     SetupLookupTable();
-    frc::SmartDashboard::PutBoolean("Light On/Off", lightOn);
     network_table = nt::NetworkTableInstance::GetDefault();
     cameraTable = network_table.GetTable("chameleon-vision")->GetSubTable("USB Camera-B4.09.24.1");
     hoodController.SetSetpoint(0);
@@ -213,13 +212,6 @@ void ShooterSubsystem::Periodic() {
            }
        }
    }
-    lightOn = frc::SmartDashboard::GetBoolean("Light On/Off", false);
-    if(lightOn) {
-      m_relay.Set(frc::Relay::kOn);
-    }
-    else {
-      m_relay.Set(frc::Relay::kOff);
-    }
 
     LookupValue val = table.Get(GetDistanceToTarget());
     angletogoto = val.angle;
