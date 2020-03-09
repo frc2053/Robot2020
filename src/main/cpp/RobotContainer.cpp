@@ -16,9 +16,8 @@
 #include "frc2/command/ParallelRaceGroup.h"
 #include "commands/intake/ConveyorOn.h"
 #include "commands/intake/ConveyorOff.h"
-#include "commands/intake/TeleopIntakeDown.h"
-#include "commands/intake/TeleopIntakeDown.h"
-#include "commands/intake/TeleopIntakeUp.h"
+#include "commands/intake/IntakeDown.h"
+#include "commands/intake/IntakeUp.h"
 #include "commands/climber/ClimbElevatorUp.h"
 #include "commands/climber/ClimbElevatorDown.h"
 #include "commands/drive/ZeroYaw.h"
@@ -27,6 +26,8 @@
 #include "commands/drive/TurnToGoal.h"
 #include "commands/intake/SetConveyorSpeed.h"
 #include "commands/shooter/SetShooterToGoal.h"
+#include "commands/intake/FeedingOff.h"
+#include "commands/intake/FeedingOn.h"
 #include <frc/shuffleboard/Shuffleboard.h>
 
 RobotContainer::RobotContainer() : m_drivetrain(){
@@ -156,19 +157,13 @@ void RobotContainer::ConfigureButtonBindings() {
   // feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
   // feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_intake, 0)});
 
-  frc2::JoystickButton intakeDownButton(&operatorController, (int)frc::XboxController::Button::kX);
-  intakeDownButton.WhenPressed(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake)});
+  frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
+  intakeButton.WhenPressed(IntakeDown(&m_intake));
+  intakeButton.WhenReleased(IntakeUp(&m_intake));
 
-  frc2::JoystickButton intakeUpButton(&operatorController, (int)frc::XboxController::Button::kB);
-  intakeUpButton.WhenPressed(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake)});
-
-  frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kA);
-  conveyorButton.WhenPressed(frc2::SequentialCommandGroup{ConveyorOn(&m_intake)});
-  conveyorButton.WhenReleased(frc2::SequentialCommandGroup{ConveyorOff(&m_intake)});
-
-  frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhenPressed(frc2::SequentialCommandGroup{FeedingOn(&m_intake)});
-  feederButton.WhenReleased(frc2::SequentialCommandGroup{FeedingOff(&m_intake)});
+  frc2::JoystickButton fireButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
+  fireButton.WhenPressed(FeedingOn(&m_intake));
+  fireButton.WhenReleased(FeedingOff(&m_intake));
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
   climberButtonUp.WhenPressed(ClimbElevatorUp(&m_climber));

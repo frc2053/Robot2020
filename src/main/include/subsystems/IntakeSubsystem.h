@@ -39,25 +39,25 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   int numOfBalls = 0;
 
   bool override = false;
-  bool indexing = false;
+  bool indexing = true;
   bool firing = false;
   bool intakeDown = false;
 
-  float intakeOverrideSpeed = 0;
-  float intakeIndexSpeed = 1.0;
-  float intakeFiringSpeed = 0.0;
+  double intakeOverrideSpeed = 0;
+  double intakeIndexSpeed = 1.0;
+  double intakeFiringSpeed = 0.0;
 
-  float funnelOverrideSpeed = 0;
-  float funnelIndexSpeed = 0.5;
-  float conveyorFiringSpeed = 1.0;
+  double funnelOverrideSpeed = 0;
+  double funnelIndexSpeed = 0.5;
+  double funnelFiringSpeed = 1;
 
-  float conveyorOverrideSpeed = 0;
-  float conveyorIndexSpeed = 0.3;
-  float conveyorFiringSpeed = 1.0;
+  double conveyorOverrideSpeed = 0;
+  double conveyorIndexSpeed = 0.3;
+  double conveyorFiringSpeed = 1.0;
 
-  float feederOverrideSpeed = 0;
-  float feederIndexSpeed = 0.0;
-  float feederFiringSpeed = 1.0;
+  double feederOverrideSpeed = 0;
+  double feederIndexSpeed = 0.0;
+  double feederFiringSpeed = 1.0;
 
   ctre::phoenix::motorcontrol::can::TalonSRX intakeMotor{tigertronics::ports::intakeMotor};
   ctre::phoenix::motorcontrol::can::TalonSRX conveyorMotor{tigertronics::ports::conveyorMotor};

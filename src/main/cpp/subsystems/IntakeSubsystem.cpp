@@ -97,12 +97,12 @@ void IntakeSubsystem::SetIntakeWheelsOverrideSpeed(double speed){
 
 void IntakeSubsystem::SetIntakeFow() {
     // intakeFlopper.Set(frc::DoubleSolenoid::Value::kForward);
-    intakeForward = true;
+    intakeDown = true;
 }
 
 void IntakeSubsystem::SetIntakeRev() {
     // intakeFlopper.Set(frc::DoubleSolenoid::Value::kReverse);
-    intakeForward = false;
+    intakeDown = false;
 }
 
 units::millimeter_t IntakeSubsystem::GetIntakeDistFiltered() {
@@ -163,31 +163,42 @@ void IntakeSubsystem::Periodic(){
         intakeFlopper.Set(frc::DoubleSolenoid::Value::kReverse);
     }
 
+    //override only is true in auto
     if (override) {
         intakeSpeed = intakeOverrideSpeed;
-        funnelSpeed = funelOverrideSpeed;
+        funnelSpeed = funnelOverrideSpeed;
         conveyorSpeed = conveyorOverrideSpeed;
         feederSpeed = feederOverrideSpeed;
-    } else if (firing) {
+    } 
+    //if we are shooting only
+    else if (firing) {
         intakeSpeed = intakeFiringSpeed;
-        funnelSpeed = funelFiringSpeed;
+        funnelSpeed = funnelFiringSpeed;
         conveyorSpeed = conveyorFiringSpeed;
         feederSpeed = feederFiringSpeed;
-    } else if (indexing) {
-        if (ballIn){
-            conveyorSpeed = conveyorIndexingSpeed;
-        } else {
-            conveyorSpeed = 0;
-        }
-        if (intakeDown){
-            intakeSpeed = intakeIndexingSpeed;
+    }
+    //default, when we aren't doing anything else
+    else if (indexing) {
+        if (intakeDown) {
+            intakeSpeed = intakeIndexSpeed;
         } else {
             intakeSpeed = 0;
         }
-        funnelSpeed = funelIndexingSpeed;
-        feederSpeed = feederIndexingSpeed;
-    } else {
-        // Just leave shit zero in any other case
+
+        if (ballIn) {
+            conveyorSpeed = conveyorIndexSpeed;
+            funnelSpeed = funnelIndexSpeed;
+        } else {
+            conveyorSpeed = 0;
+            funnelSpeed = 0;
+        }
+    } 
+    //shouldnt ever get here unless manually override somehow
+    else {
+        intakeSpeed = 0;
+        funnelSpeed = 0;
+        conveyorSpeed = 0;
+        feederSpeed = 0;
     }
 
     intakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, intakeSpeed);

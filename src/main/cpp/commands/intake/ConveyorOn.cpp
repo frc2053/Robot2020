@@ -1,6 +1,6 @@
 #include "commands/intake/ConveyorOn.h"
 
-ConveyorOff::ConveyorOn(IntakeSubsystem* intakeSub) :
+ConveyorOn::ConveyorOn(IntakeSubsystem* intakeSub) :
   m_intakeSubsystem(intakeSub) {
   AddRequirements(m_intakeSubsystem);
 }
