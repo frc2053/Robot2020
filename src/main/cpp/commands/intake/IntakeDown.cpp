@@ -5,5 +5,5 @@ IntakeDown::IntakeDown(IntakeSubsystem* intake) : intakeSub(intake) {
 }
 
 void IntakeDown::Initialize() {
-  intakeSub->SetIntakeRev();
+  intakeSub->SetIntakeFow();
 }

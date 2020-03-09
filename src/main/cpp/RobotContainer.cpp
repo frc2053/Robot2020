@@ -157,9 +157,19 @@ void RobotContainer::ConfigureButtonBindings() {
   // feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
   // feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_intake, 0)});
 
-  frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
-  intakeButton.WhenPressed(IntakeDown(&m_intake));
-  intakeButton.WhenReleased(IntakeUp(&m_intake));
+  // frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
+  // intakeButton.WhenPressed(IntakeDown(&m_intake));
+  // intakeButton.WhenReleased(IntakeUp(&m_intake));
+  
+  frc2::JoystickButton intakeDownButton(&operatorController, (int)frc::XboxController::Button::kX);
+  intakeDownButton.WhenPressed(IntakeDown(&m_intake));
+  
+  frc2::JoystickButton intakeUpButton(&operatorController, (int)frc::XboxController::Button::kB);
+  intakeUpButton.WhenPressed(IntakeUp(&m_intake));
+  
+  frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kA);
+  conveyorButton.WhenActive(ConveyorOn(&m_intake));
+  conveyorButton.WhenInactive(ConveyorOff(&m_intake));
 
   frc2::JoystickButton fireButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
   fireButton.WhenPressed(FeedingOn(&m_intake));

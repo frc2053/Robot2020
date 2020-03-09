@@ -41,7 +41,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   bool override = false;
   bool indexing = true;
   bool firing = false;
-  bool intakeDown = false;
+  bool intakeForward = false;
 
   double intakeOverrideSpeed = 0;
   double intakeIndexSpeed = 1.0;

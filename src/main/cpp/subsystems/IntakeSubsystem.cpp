@@ -97,12 +97,12 @@ void IntakeSubsystem::SetIntakeWheelsOverrideSpeed(double speed){
 
 void IntakeSubsystem::SetIntakeFow() {
     // intakeFlopper.Set(frc::DoubleSolenoid::Value::kForward);
-    intakeDown = true;
+    intakeForward = true;
 }
 
 void IntakeSubsystem::SetIntakeRev() {
     // intakeFlopper.Set(frc::DoubleSolenoid::Value::kReverse);
-    intakeDown = false;
+    intakeForward = false;
 }
 
 units::millimeter_t IntakeSubsystem::GetIntakeDistFiltered() {
@@ -135,6 +135,9 @@ void IntakeSubsystem::Periodic(){
     intakeDistFiltered = units::millimeter_t(intakeHighFilter.Calculate(intakeLowFilter.Calculate(rawIntakeDist)));
     loaderDistFiltered = units::millimeter_t(loaderHighFilter.Calculate(loaderLowFilter.Calculate(rawLoaderDist)));
     
+    frc::Shuffleboard::GetTab("Intake Subsystem").AddNumber("Intake Distance Filtered", intakeDistFiltered);
+    frc::Shuffleboard::GetTab("Intake Subsystem").AddNumber("Loader Distance Filtered", loaderDistFiltered);
+
     bool ballIn = DetectedBallIn();
     bool ballOut = DetectedBallOut();
 
@@ -157,10 +160,10 @@ void IntakeSubsystem::Periodic(){
         detectedLoader = ballOut;
     }
     
-    if (intakeDown) {
-        intakeFlopper.Set(frc::DoubleSolenoid::Value::kForward);
-    } else {
+    if (intakeForward) {
         intakeFlopper.Set(frc::DoubleSolenoid::Value::kReverse);
+    } else {
+        intakeFlopper.Set(frc::DoubleSolenoid::Value::kForward);
     }
 
     //override only is true in auto
@@ -179,7 +182,7 @@ void IntakeSubsystem::Periodic(){
     }
     //default, when we aren't doing anything else
     else if (indexing) {
-        if (intakeDown) {
+        if (intakeForward) {
             intakeSpeed = intakeIndexSpeed;
         } else {
             intakeSpeed = 0;
@@ -187,11 +190,10 @@ void IntakeSubsystem::Periodic(){
 
         if (ballIn) {
             conveyorSpeed = conveyorIndexSpeed;
-            funnelSpeed = funnelIndexSpeed;
         } else {
             conveyorSpeed = 0;
-            funnelSpeed = 0;
         }
+        funnelSpeed = funnelIndexSpeed;
     } 
     //shouldnt ever get here unless manually override somehow
     else {
