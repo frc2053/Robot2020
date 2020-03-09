@@ -1,11 +1,11 @@
 #include "commands/intake/SetLoaderWheelSpeed.h"
 
-SetLoaderWheelSpeed::SetLoaderWheelSpeed(IntakeSubsystem* intakeSub, double intakeSpeed) :
+SetLoaderWheelSpeed::SetLoaderWheelSpeed(IntakeSubsystem* intakeSub, double loaderSpeed) :
     m_intakeSubsystem(intakeSub) {
   AddRequirements(m_intakeSubsystem);
-  speed = intakeSpeed;
+  speed = loaderSpeed;
 }
 
 void SetLoaderWheelSpeed::Initialize() {
-  m_intakeSubsystem->SetFeederWheelSpeed(speed);
+  m_intakeSubsystem->SetFeederWheelOverrideSpeed(speed);
 }

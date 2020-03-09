@@ -1,11 +1,11 @@
 #include "commands/intake/SetConveyorSpeed.h"
 
-SetConveyorSpeed::SetConveyorSpeed(IntakeSubsystem* intakeSub, double intakeSpeed) :
+SetConveyorSpeed::SetConveyorSpeed(IntakeSubsystem* intakeSub, double conveyorSpeed) :
   m_intakeSubsystem(intakeSub) {
-  speed = intakeSpeed;
   AddRequirements(m_intakeSubsystem);
+  speed = conveyorSpeed;
 }
 
 void SetConveyorSpeed::Initialize() {
-  m_intakeSubsystem->SetConveyorBeltSpeed(speed);
+  m_intakeSubsystem->SetConveyorBeltOverrideSpeed(speed);
 }

@@ -12,14 +12,17 @@ class IntakeSubsystem : public frc2::SubsystemBase {
  public: 
   IntakeSubsystem();
   void Periodic();
-  void SetIndexerActive(bool active);
+  void SetOverride(bool isOverride);
+  void SetIndexing(bool isIndexing);
   void SetFiring(bool isFiring);
-  void SetIntakeWheelsSpeed(double speed);
-  void SetConveyorBeltSpeed(double speed);
-  void SetFeederWheelSpeed(double speed);
-  void SetFunnelWheelSpeed(double speed);
+
+  void SetIntakeWheelsOverrideSpeed(double speed);
+  void SetConveyorBeltOverrideSpeed(double speed);
+  void SetFeederWheelOverrideSpeed(double speed);
+  void SetFunnelWheelOverrideSpeed(double speed);
   void SetIntakeFow();
   void SetIntakeRev();
+  
   void SetNumOfBalls(int balls);
   int GetNumOfBalls();
   units::millimeter_t GetIntakeDistFiltered();
@@ -32,10 +35,30 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   void ConfigDashboard();
   bool DetectedBallIn();
   bool DetectedBallOut();
+
   int numOfBalls = 0;
-  float conveyorSpeed = 0;
-  bool conveyorIndexActivated = false;
-  bool firing = true;
+
+  bool override = false;
+  bool indexing = false;
+  bool firing = false;
+  bool intakeDown = false;
+
+  float intakeOverrideSpeed = 0;
+  float intakeIndexSpeed = 1.0;
+  float intakeFiringSpeed = 0.0;
+
+  float funnelOverrideSpeed = 0;
+  float funnelIndexSpeed = 0.5;
+  float conveyorFiringSpeed = 1.0;
+
+  float conveyorOverrideSpeed = 0;
+  float conveyorIndexSpeed = 0.3;
+  float conveyorFiringSpeed = 1.0;
+
+  float feederOverrideSpeed = 0;
+  float feederIndexSpeed = 0.0;
+  float feederFiringSpeed = 1.0;
+
   ctre::phoenix::motorcontrol::can::TalonSRX intakeMotor{tigertronics::ports::intakeMotor};
   ctre::phoenix::motorcontrol::can::TalonSRX conveyorMotor{tigertronics::ports::conveyorMotor};
   ctre::phoenix::motorcontrol::can::TalonSRX feederMotor{tigertronics::ports::feederMotor};

@@ -7,5 +7,5 @@ SetIntakeSpeed::SetIntakeSpeed(IntakeSubsystem* intakeSub, double intakeSpeed) :
 }
 
 void SetIntakeSpeed::Initialize() {
-  m_intakeSubsystem->SetIntakeWheelsSpeed(speed);
+  m_intakeSubsystem->SetIntakeWheelsOverrideSpeed(speed);
 }

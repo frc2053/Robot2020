@@ -14,6 +14,9 @@
 #include "commands/intake/SetLoaderWheelSpeed.h"
 #include "commands/intake/SetFunnelWheelSpeed.h"
 #include "frc2/command/ParallelRaceGroup.h"
+#include "commands/intake/ConveyorOn.h"
+#include "commands/intake/ConveyorOff.h"
+#include "commands/intake/TeleopIntakeDown.h"
 #include "commands/intake/TeleopIntakeDown.h"
 #include "commands/intake/TeleopIntakeUp.h"
 #include "commands/climber/ClimbElevatorUp.h"
@@ -141,21 +144,31 @@ void RobotContainer::ConfigureButtonBindings() {
     )
   );
 
-  frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
+  // frc2::JoystickButton intakeButton(&operatorController, (int)frc::XboxController::Button::kA);
   // intakeButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, 1)});
   // intakeButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
-  intakeButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake)});
-  intakeButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake)});
 
-  frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kB);
+  // frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kB);
   // conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, .5), SetFunnelWheelSpeed(&m_intake, 1)});
   // conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, 0), SetFunnelWheelSpeed(&m_intake, 0)});
-  conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, .5), SetFunnelWheelSpeed(&m_intake, 1)});
-  conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, 0), SetFunnelWheelSpeed(&m_intake, 0)});
+  
+  // frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
+  // feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
+  // feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_intake, 0)});
+
+  frc2::JoystickButton intakeDownButton(&operatorController, (int)frc::XboxController::Button::kX);
+  intakeDownButton.WhenPressed(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake)});
+
+  frc2::JoystickButton intakeUpButton(&operatorController, (int)frc::XboxController::Button::kB);
+  intakeUpButton.WhenPressed(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake)});
+
+  frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kA);
+  conveyorButton.WhenPressed(frc2::SequentialCommandGroup{ConveyorOn(&m_intake)});
+  conveyorButton.WhenReleased(frc2::SequentialCommandGroup{ConveyorOff(&m_intake)});
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
-  feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_intake, 0)});
+  feederButton.WhenPressed(frc2::SequentialCommandGroup{FeedingOn(&m_intake)});
+  feederButton.WhenReleased(frc2::SequentialCommandGroup{FeedingOff(&m_intake)});
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
   climberButtonUp.WhenPressed(ClimbElevatorUp(&m_climber));
@@ -175,7 +188,6 @@ void RobotContainer::ConfigureButtonBindings() {
           m_shooter.moveRequested = true;
       }
     ),
-    SetFunnelWheelSpeed(&m_intake, 1),
     SetHoodToAngle(&m_shooter, [this](){return m_shooter.GetAngleToGoTo();}), 
     SetShooterToVelocity(&m_shooter, [this](){return m_shooter.GetRPMToGoTo();})
   });
@@ -185,7 +197,6 @@ void RobotContainer::ConfigureButtonBindings() {
           m_shooter.moveRequested = false;
       }
     ),
-    SetFunnelWheelSpeed(&m_intake, 0),
     SetHoodToAngle(&m_shooter, [](){return 0_deg;}), 
     SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})
   });

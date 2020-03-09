@@ -6,7 +6,6 @@
 
 TeleopIntakeUp::TeleopIntakeUp(IntakeSubsystem* intakeSub) : m_intakeSubsystem(intakeSub) {
   AddCommands(
-    IntakeUp(m_intakeSubsystem),
-    // SetIntakeSpeed(m_intakeSubsystem, 0)
+    IntakeUp(m_intakeSubsystem)
   );
 }

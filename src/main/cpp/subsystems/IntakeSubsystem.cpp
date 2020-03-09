@@ -63,37 +63,46 @@ void IntakeSubsystem::ConfigDashboard() {
 }
 
 
-void IntakeSubsystem::SetIndexerActive(bool active){
-    conveyorIndexActivated = active;
+void IntakeSubsystem::SetOverride(bool isOverride){
+    override = isOverride;
+}
+
+void IntakeSubsystem::SetIndexing(bool isIndexing){
+    indexing = isIndexing;
 }
   
 void IntakeSubsystem::SetFiring(bool isFiring){
     firing = isFiring;
 }
 
-void IntakeSubsystem::SetConveyorBeltSpeed(double speed){
+void IntakeSubsystem::SetConveyorBeltOverrideSpeed(double speed){
     // conveyorMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
-    conveyorSpeed = speed;
+    conveyorOverrideSpeed = speed;
 }
 
-void IntakeSubsystem::SetFeederWheelSpeed(double speed){
-    feederMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+void IntakeSubsystem::SetFeederWheelOverrideSpeed(double speed){
+    // feederMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+    feederOverrideSpeed = speed;
 }
 
-void IntakeSubsystem::SetFunnelWheelSpeed(double speed){
-    funnelMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+void IntakeSubsystem::SetFunnelWheelOverrideSpeed(double speed){
+    // funnelMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+    funnelOverrideSpeed = speed;
 }
 
-void IntakeSubsystem::SetIntakeWheelsSpeed(double speed){
-    intakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+void IntakeSubsystem::SetIntakeWheelsOverrideSpeed(double speed){
+    // intakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+    intakeOverrideSpeed = speed;
 }
 
 void IntakeSubsystem::SetIntakeFow() {
-    intakeFlopper.Set(frc::DoubleSolenoid::Value::kForward);
+    // intakeFlopper.Set(frc::DoubleSolenoid::Value::kForward);
+    intakeForward = true;
 }
 
 void IntakeSubsystem::SetIntakeRev() {
-    intakeFlopper.Set(frc::DoubleSolenoid::Value::kReverse);
+    // intakeFlopper.Set(frc::DoubleSolenoid::Value::kReverse);
+    intakeForward = false;
 }
 
 units::millimeter_t IntakeSubsystem::GetIntakeDistFiltered() {
@@ -129,6 +138,11 @@ void IntakeSubsystem::Periodic(){
     bool ballIn = DetectedBallIn();
     bool ballOut = DetectedBallOut();
 
+    float intakeSpeed = 0;
+    float funnelSpeed = 0;
+    float conveyorSpeed = 0;
+    float feederSpeed = 0;
+
     if(ballIn != detectedIntake) {
         if(ballIn) {
             numOfBalls = numOfBalls + 1;
@@ -142,17 +156,45 @@ void IntakeSubsystem::Periodic(){
         }
         detectedLoader = ballOut;
     }
-
-    if (firing) {
-
-    } else {
-        if (conveyorIndexActivated) {
-
-        } else {
-            
-        }
-    }
     
+    if (intakeDown) {
+        intakeFlopper.Set(frc::DoubleSolenoid::Value::kForward);
+    } else {
+        intakeFlopper.Set(frc::DoubleSolenoid::Value::kReverse);
+    }
+
+    if (override) {
+        intakeSpeed = intakeOverrideSpeed;
+        funnelSpeed = funelOverrideSpeed;
+        conveyorSpeed = conveyorOverrideSpeed;
+        feederSpeed = feederOverrideSpeed;
+    } else if (firing) {
+        intakeSpeed = intakeFiringSpeed;
+        funnelSpeed = funelFiringSpeed;
+        conveyorSpeed = conveyorFiringSpeed;
+        feederSpeed = feederFiringSpeed;
+    } else if (indexing) {
+        if (ballIn){
+            conveyorSpeed = conveyorIndexingSpeed;
+        } else {
+            conveyorSpeed = 0;
+        }
+        if (intakeDown){
+            intakeSpeed = intakeIndexingSpeed;
+        } else {
+            intakeSpeed = 0;
+        }
+        funnelSpeed = funelIndexingSpeed;
+        feederSpeed = feederIndexingSpeed;
+    } else {
+        // Just leave shit zero in any other case
+    }
+
+    intakeMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, intakeSpeed);
+    funnelMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, funnelSpeed);
+    conveyorMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, conveyorSpeed);
+    feederMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, feederSpeed);
+
     dashNumOfBalls.SetDouble(GetNumOfBalls());
     dashDetectedBallIn.SetBoolean(ballIn);
     dashDetectedBallOut.SetBoolean(ballOut);
