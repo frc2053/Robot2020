@@ -6,6 +6,7 @@
 #include "subsystems/ControlPanelSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 #include "subsystems/IntakeSubsystem.h"
+#include "subsystems/ConveyorSubsystem.h"
 #include "commands/drive/FollowPath.h"
 #include <frc/smartdashboard/SendableChooser.h>
 #include "subsystems/ClimberSubsystem.h"
@@ -24,7 +25,7 @@ class RobotContainer {
   ShooterSubsystem m_shooter;
   IntakeSubsystem m_intake;
   ClimberSubsystem m_climber;
-
+  ConveyorSubsystem m_conveyor;
 
  private:
 
