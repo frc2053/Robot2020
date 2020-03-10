@@ -52,11 +52,11 @@ units::millimeter_t ConveyorSubsystem::GetLoaderDistFiltered() {
 }
 
 bool ConveyorSubsystem::DetectedBallIn() {
-    return (GetIntakeDistFiltered() > tigertronics::constants::distThreshold);
+    return (units::millimeter_t(intakeDistSensor.GetRange()) > tigertronics::constants::distThreshold);
 }
 
 bool ConveyorSubsystem::DetectedBallOut() {
-    return (GetLoaderDistFiltered() > tigertronics::constants::distThreshold);
+    return (units::millimeter_t(loaderDistSensor.GetRange()) > tigertronics::constants::distThreshold);
 }
 
 void ConveyorSubsystem::SetNumOfBalls(int balls) {
