@@ -62,7 +62,6 @@ void ControlPanelSubsystem::Periodic() {
       colorString = "Unknown";
     }
 
-    frc::Shuffleboard::GetTab("ControlPanel").AddString("Color Detected", [this](){ return colorString;});
 }
 
 void ControlPanelSubsystem::SetControlPanelWheelSpeed(double speed) {
