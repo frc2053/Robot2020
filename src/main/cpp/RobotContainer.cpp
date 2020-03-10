@@ -141,10 +141,10 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton intakeDownButton(&operatorController, (int)frc::XboxController::Button::kA);
-  intakeDownButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, .5)});
+  intakeDownButton.WhenPressed(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, .5)});
 
   frc2::JoystickButton intakeUpButton(&operatorController, (int)frc::XboxController::Button::kY);
-  intakeUpButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
+  intakeUpButton.WhenPressed(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kB);
   conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, .5), SetFunnelWheelSpeed(&m_intake, .5)});
