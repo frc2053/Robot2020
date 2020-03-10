@@ -11,6 +11,9 @@ IntakeSubsystem::IntakeSubsystem() {
     ConfigFunnelMotor();
     ConfigIntakeMotor();
     ConfigDashboard();
+    SetFiring(false);
+    SetOverride(false);
+    SetIndexing(false);
 }
 
 void IntakeSubsystem::ConfigConveyorMotor(){
@@ -114,7 +117,8 @@ units::millimeter_t IntakeSubsystem::GetLoaderDistFiltered() {
 }
 
 bool IntakeSubsystem::DetectedBallIn() {
-    return (GetIntakeDistFiltered() > tigertronics::constants::distThreshold);
+    return (intakeDistSensor.GetRange() < 100);
+    //return (GetIntakeDistFiltered() > tigertronics::constants::distThreshold);
 }
 
 bool IntakeSubsystem::DetectedBallOut() {
@@ -134,6 +138,11 @@ void IntakeSubsystem::Periodic(){
     double rawLoaderDist = loaderDistSensor.GetRange();
     intakeDistFiltered = units::millimeter_t(intakeHighFilter.Calculate(intakeLowFilter.Calculate(rawIntakeDist)));
     loaderDistFiltered = units::millimeter_t(loaderHighFilter.Calculate(loaderLowFilter.Calculate(rawLoaderDist)));
+
+    frc::Shuffleboard::GetTab("Intake Subsystem").Add("intakeForward", intakeForward);
+    frc::Shuffleboard::GetTab("Intake Subsystem").Add("override", override);
+    frc::Shuffleboard::GetTab("Intake Subsystem").Add("firing", firing);
+    frc::Shuffleboard::GetTab("Intake Subsystem").Add("indexing", indexing);
     
     frc::Shuffleboard::GetTab("Intake Subsystem").AddNumber("Intake Distance Filtered", intakeDistFiltered);
     frc::Shuffleboard::GetTab("Intake Subsystem").AddNumber("Loader Distance Filtered", loaderDistFiltered);
