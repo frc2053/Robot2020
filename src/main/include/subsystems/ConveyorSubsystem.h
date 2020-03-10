@@ -13,6 +13,7 @@
 #include <TimeOfFlight.h>
 #include <frc/LinearFilter.h>
 #include "Constants.h"
+#include "tigertronics/MockToF.h"
 
 class ConveyorSubsystem : public frc2::SubsystemBase {
 public:

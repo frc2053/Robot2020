@@ -9,7 +9,7 @@
 #include "commands/intake/IntakeDown.h"
 #include "commands/intake/IntakeUp.h"
 #include "commands/intake/SetIntakeSpeed.h"
-#include "commands/intake/SetConveyorSpeed.h"
+#include "commands/conveyor/SetConveyorSpeed.h"
 #include "commands/drive/SetRobotPose.h"
 #include "commands/drive/FollowPath.h"
 #include <frc2/command/WaitUntilCommand.h>
@@ -18,13 +18,13 @@
 #include "commands/drive/TurnToGoal.h"
 #include "commands/shooter/SetShooterToGoal.h"
 #include "commands/intake/SetLoaderWheelSpeed.h"
-#include "commands/intake/SetNumOfBalls.h"
+#include "commands/conveyor/SetNumOfBalls.h"
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub) :
-  m_swerveSubsystem(swerveSub), m_intakeSubsystem(intakeSub), m_shooterSubsystem(shooterSub) {
+TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub, ConveyorSubsystem* conveyorSub) :
+  m_swerveSubsystem(swerveSub), m_intakeSubsystem(intakeSub), m_shooterSubsystem(shooterSub), m_conveyorSubsystem(conveyorSub) {
 
   frc::Pose2d startPose;
   frc::Rotation2d startAngle;
@@ -80,11 +80,11 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     //sets where we are on the field
     SetRobotPose(m_swerveSubsystem, startPose, m_swerveSubsystem->m_swerve.GetAngle()),
     //sets initial number of balls
-    SetNumOfBalls(m_intakeSubsystem, 3),
+    SetNumOfBalls(m_conveyorSubsystem, 3),
     //gets intake ready to succ balls
     IntakeDown(m_intakeSubsystem),
     SetIntakeSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_intakeSubsystem, 1),
+    SetConveyorSpeed(m_conveyorSubsystem, 1),
     //path to balls near control panel
     std::move(toControlPanel),
     //Might have to add a drive backwards command here?
@@ -93,7 +93,7 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     //Close up intake
     IntakeUp(m_intakeSubsystem),
     SetIntakeSpeed(m_intakeSubsystem, 0),
-    SetConveyorSpeed(m_intakeSubsystem, 0),
+    SetConveyorSpeed(m_conveyorSubsystem, 0),
     //Premptive spin up of shooter
     SetShooterToVelocity(m_shooterSubsystem, [](){return 3000_rpm;}),
     SetHoodToAngle(m_shooterSubsystem, [](){return 45_deg;}),
@@ -105,13 +105,13 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     SetShooterToGoal(m_shooterSubsystem),
     //start spraying
     SetLoaderWheelSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_intakeSubsystem, 1),
+    SetConveyorSpeed(m_conveyorSubsystem, 1),
     //stop when we dont have any more balls
     //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 0;}),
     //put intake down for next 5 balls
     IntakeDown(m_intakeSubsystem),
     SetIntakeSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_intakeSubsystem, 1),
+    SetConveyorSpeed(m_conveyorSubsystem, 1),
     //Spins down shooter to save a bit of power
     SetShooterToVelocity(m_shooterSubsystem, [](){return 3000_rpm;}),
     SetHoodToAngle(m_shooterSubsystem, [](){return 45_deg;}),
@@ -126,7 +126,7 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     //Close up intake
     IntakeUp(m_intakeSubsystem),
     SetIntakeSpeed(m_intakeSubsystem, 0),
-    SetConveyorSpeed(m_intakeSubsystem, 0),
+    SetConveyorSpeed(m_conveyorSubsystem, 0),
     //move to front of goal for more accurate shot
     std::move(toFinalShot),
     //turn to align with goal
@@ -135,7 +135,7 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     SetShooterToGoal(m_shooterSubsystem),
     //start spraying
     SetLoaderWheelSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_intakeSubsystem, 1)
+    SetConveyorSpeed(m_conveyorSubsystem, 1)
     //Done
     //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;})
   );

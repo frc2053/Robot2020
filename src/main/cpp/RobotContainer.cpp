@@ -22,7 +22,7 @@
 #include "commands/shooter/SetHoodToAngle.h"
 #include "commands/shooter/SetShooterToVelocity.h"
 #include "commands/drive/TurnToGoal.h"
-#include "commands/intake/SetConveyorSpeed.h"
+#include "commands/conveyor/SetConveyorSpeed.h"
 #include "commands/shooter/SetShooterToGoal.h"
 #include <frc/shuffleboard/Shuffleboard.h>
 
@@ -141,12 +141,12 @@ void RobotContainer::ConfigureButtonBindings() {
   intakeButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kB);
-  conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, .5), SetFunnelWheelSpeed(&m_intake, 1)});
-  conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_intake, 0), SetFunnelWheelSpeed(&m_intake, 0)});
+  conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, .5), SetFunnelWheelSpeed(&m_intake, 1)});
+  conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, 0), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_intake, 1)});
-  feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_intake, 0)});
+  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_conveyor, 1)});
+  feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_conveyor, 0)});
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
   climberButtonUp.WhenPressed(ClimbElevatorUp(&m_climber));

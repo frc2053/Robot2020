@@ -12,17 +12,19 @@
 #include "subsystems/IntakeSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 #include "subsystems/SwerveSubsystem.h"
+#include "subsystems/ConveyorSubsystem.h"
 #include "commands/drive/FollowPath.h"
 
 class ShootBallsAuto
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  ShootBallsAuto> {
  public:
-  ShootBallsAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub);
+  ShootBallsAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub, ConveyorSubsystem* conveyorSub);
  private:
   SwerveSubsystem* m_swerveSubsystem;
   IntakeSubsystem* m_intakeSubsystem;
   ShooterSubsystem* m_shooterSubsystem;
+  ConveyorSubsystem* m_conveyorSubsystem;
 
   frc::Pose2d startPose{0_ft, 0_ft, frc::Rotation2d(0_deg)};
   frc::Rotation2d startAngle;

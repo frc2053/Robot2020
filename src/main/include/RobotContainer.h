@@ -42,8 +42,8 @@ class RobotContainer {
     &m_drivetrain //subsystem
   };
 
-  TenPowerCellAuto m_tenCellAuto{&m_drivetrain, &m_intake, &m_shooter};
-  ShootBallsAuto m_shootBallsAuto{&m_drivetrain, &m_intake, &m_shooter};
+  TenPowerCellAuto m_tenCellAuto{&m_drivetrain, &m_intake, &m_shooter, &m_conveyor};
+  ShootBallsAuto m_shootBallsAuto{&m_drivetrain, &m_intake, &m_shooter, &m_conveyor};
 
   PositionControl m_posControl{&m_controlpanel};
   RotationControl m_rotControl{&m_controlpanel};

@@ -9,7 +9,7 @@
 #include "commands/intake/IntakeDown.h"
 #include "commands/intake/IntakeUp.h"
 #include "commands/intake/SetIntakeSpeed.h"
-#include "commands/intake/SetConveyorSpeed.h"
+#include "commands/conveyor/SetConveyorSpeed.h"
 #include "commands/drive/SetRobotPose.h"
 #include <frc2/command/WaitUntilCommand.h>
 #include "commands/shooter/SetShooterToVelocity.h"
@@ -17,7 +17,7 @@
 #include "commands/drive/TurnToGoal.h"
 #include "commands/shooter/SetShooterToGoal.h"
 #include "commands/intake/SetLoaderWheelSpeed.h"
-#include "commands/intake/SetNumOfBalls.h"
+#include "commands/conveyor/SetNumOfBalls.h"
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc2/command/WaitCommand.h>
 #include "commands/intake/SetFunnelWheelSpeed.h"
@@ -25,8 +25,8 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-ShootBallsAuto::ShootBallsAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub) :
-  m_swerveSubsystem(swerveSub), m_intakeSubsystem(intakeSub), m_shooterSubsystem(shooterSub) {
+ShootBallsAuto::ShootBallsAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* intakeSub, ShooterSubsystem* shooterSub, ConveyorSubsystem* conveyorSub) :
+  m_swerveSubsystem(swerveSub), m_intakeSubsystem(intakeSub), m_shooterSubsystem(shooterSub), m_conveyorSubsystem(conveyorSub) {
   AddCommands(
     SetRobotPose(m_swerveSubsystem, startPose, m_swerveSubsystem->m_swerve.GetAngle()),
     frc2::InstantCommand(
@@ -42,10 +42,10 @@ ShootBallsAuto::ShootBallsAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* inta
     frc2::WaitUntilCommand([this](){return m_shooterSubsystem->GetShooterAvgRPM() >= m_shooterSubsystem->GetRPMToGoTo();}).WithTimeout(2_s),
     SetFunnelWheelSpeed(m_intakeSubsystem, 1),
     SetLoaderWheelSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_intakeSubsystem, 1),
+    SetConveyorSpeed(m_conveyorSubsystem, 1),
     frc2::WaitCommand(5_s),
     SetLoaderWheelSpeed(m_intakeSubsystem, 0),
-    SetConveyorSpeed(m_intakeSubsystem, 0),
+    SetConveyorSpeed(m_conveyorSubsystem, 0),
     SetFunnelWheelSpeed(m_intakeSubsystem, 0),
     SetHoodToAngle(m_shooterSubsystem, [this](){return 0_deg;}),
     SetShooterToVelocity(m_shooterSubsystem, [this](){return 0_rpm;}),
