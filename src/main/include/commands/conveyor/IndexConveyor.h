@@ -7,29 +7,17 @@
 
 #pragma once
 
-#include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include <frc2/command/SequentialCommandGroup.h>
 #include "subsystems/ConveyorSubsystem.h"
 
-/**
- * An example command.
- *
- * <p>Note that this extends CommandHelper, rather extending CommandBase
- * directly; this is crucially important, or else the decorator functions in
- * Command will *not* work!
- */
 class IndexConveyor
-    : public frc2::CommandHelper<frc2::CommandBase, IndexConveyor> {
+    : public frc2::CommandHelper<frc2::SequentialCommandGroup,
+                                 IndexConveyor> {
  public:
   IndexConveyor(ConveyorSubsystem* conveyorSub);
-
-  void Initialize() override;
-
-  void Execute() override;
-
-  void End(bool interrupted) override;
-
-  bool IsFinished() override;
-private:
+ private:
   ConveyorSubsystem* m_conveyorSubsystem;
+  double indexingSpeed = .5;
+  units::second_t ballUnjamTime = .25_s;
 };

@@ -25,6 +25,7 @@
 #include "commands/conveyor/SetConveyorSpeed.h"
 #include "commands/shooter/SetShooterToGoal.h"
 #include <frc/shuffleboard/Shuffleboard.h>
+#include "commands/conveyor/IndexConveyor.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -35,10 +36,14 @@ RobotContainer::RobotContainer() : m_drivetrain(){
     &m_drivetrain
   ));
 
-  m_controlpanel.SetDefaultCommand(ManualWheelRotation(
+  m_conveyor.SetDefaultCommand(std::move(IndexConveyor(
+    &m_conveyor
+  )));
+
+  m_controlpanel.SetDefaultCommand(std::move(ManualWheelRotation(
     &m_controlpanel,
     [this] { return operatorController.GetX(frc::GenericHID::JoystickHand::kLeftHand); }
-  ));
+  )));
 
   m_chooser.SetDefaultOption("Follow Path Auto", &m_followPathAuto);
   m_chooser.AddOption("Ten Cell Auto", &m_tenCellAuto);

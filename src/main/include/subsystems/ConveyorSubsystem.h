@@ -24,11 +24,11 @@ public:
   int GetNumOfBalls();
   units::millimeter_t GetIntakeDistFiltered();
   units::millimeter_t GetLoaderDistFiltered();
+  bool DetectedBallIn();
+  bool DetectedBallOut();
 private:
   void ConfigConveyorMotor();
   void ConfigDashboard();
-  bool DetectedBallIn();
-  bool DetectedBallOut();
   int numOfBalls = 0;
   ctre::phoenix::motorcontrol::can::TalonSRX conveyorMotor{tigertronics::ports::conveyorMotor};
 

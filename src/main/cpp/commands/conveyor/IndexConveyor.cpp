@@ -6,16 +6,23 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/conveyor/IndexConveyor.h"
+#include <frc2/command/WaitUntilCommand.h>
+#include <frc2/command/WaitCommand.h>
+#include "commands/conveyor/SetConveyorSpeed.h"
 
+// NOTE:  Consider using this command inline, rather than writing a subclass.
+// For more information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 IndexConveyor::IndexConveyor(ConveyorSubsystem* conveyorSub) :
   m_conveyorSubsystem(conveyorSub) {
   AddRequirements(m_conveyorSubsystem);
+  AddCommands (
+    SetConveyorSpeed(m_conveyorSubsystem, 0),
+    frc2::WaitUntilCommand([this](){ return m_conveyorSubsystem->DetectedBallIn(); }),
+    SetConveyorSpeed(m_conveyorSubsystem, indexingSpeed),
+    frc2::WaitUntilCommand([this](){ return !m_conveyorSubsystem->DetectedBallIn(); }),
+    //This is to make sure the balls dont get jammed together
+    frc2::WaitCommand(ballUnjamTime),
+    SetConveyorSpeed(m_conveyorSubsystem, 0)
+  );
 }
-
-void IndexConveyor::Initialize() {}
-
-void IndexConveyor::Execute() {}
-
-void IndexConveyor::End(bool interrupted) {}
-
-bool IndexConveyor::IsFinished() { return false; }
