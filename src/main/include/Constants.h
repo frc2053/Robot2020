@@ -75,7 +75,7 @@ namespace tigertronics {
 
         //INTAKE
         static constexpr double highPassConst = 0.05;
-        static constexpr units::millimeter_t distThreshold = 25.4_mm;
+        static constexpr units::millimeter_t distThreshold = 100_mm;
 
         static const frc::TrapezoidProfile<units::radians>::Constraints kThetaControllerConstraints;
     }
