@@ -15,16 +15,10 @@ ControlPanelSubsystem::ControlPanelSubsystem()
 
     gameData = frc::Color::kCrimson;
     gameDataInput = "";
-
-    frc::Shuffleboard::GetTab("ControlPanel").AddString("Color Detected", [this](){ return GetColorString();});
 }
 
 frc::Color ControlPanelSubsystem::GetColor() {
     return gameData;
-}
-
-std::string ControlPanelSubsystem::GetColorString() {
-    return colorString;
 }
 
 void ControlPanelSubsystem::Periodic() {
@@ -67,6 +61,8 @@ void ControlPanelSubsystem::Periodic() {
     } else {
       colorString = "Unknown";
     }
+
+    frc::Shuffleboard::GetTab("ControlPanel").AddString("Color Detected", [this](){ return colorString;});
 }
 
 void ControlPanelSubsystem::SetControlPanelWheelSpeed(double speed) {
