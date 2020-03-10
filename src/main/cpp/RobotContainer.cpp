@@ -159,8 +159,8 @@ void RobotContainer::ConfigureButtonBindings() {
   conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, 0), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_conveyor, 1)});
-  feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_conveyor, 0)});
+  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_conveyor, 1), SetFunnelWheelSpeed(&m_intake, 1)});
+  feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_conveyor, 0), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
   climberButtonUp.WhenPressed(ClimbElevatorUp(&m_climber));
@@ -178,7 +178,6 @@ void RobotContainer::ConfigureButtonBindings() {
           m_shooter.moveRequested = true;
       }
     ),
-    SetFunnelWheelSpeed(&m_intake, 1),
     SetHoodToAngle(&m_shooter, [this](){return m_shooter.GetAngleToGoTo();}), 
     SetShooterToVelocity(&m_shooter, [this](){return m_shooter.GetRPMToGoTo();})
   });
@@ -188,7 +187,6 @@ void RobotContainer::ConfigureButtonBindings() {
           m_shooter.moveRequested = false;
       }
     ),
-    SetFunnelWheelSpeed(&m_intake, 0),
     SetHoodToAngle(&m_shooter, [](){return 0_deg;}), 
     SetShooterToVelocity(&m_shooter, [](){return 0_rpm;})
   });
