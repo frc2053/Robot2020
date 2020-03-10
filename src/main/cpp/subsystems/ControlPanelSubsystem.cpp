@@ -2,7 +2,6 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <Constants.h>
 #include <frc/DriverStation.h>
-#include <frc/shuffleboard/Shuffleboard.h>
 
 ControlPanelSubsystem::ControlPanelSubsystem()
  : controlPanelTalon(tigertronics::ports::controlPanel),
@@ -62,7 +61,7 @@ void ControlPanelSubsystem::Periodic() {
       colorString = "Unknown";
     }
 
-    frc::Shuffleboard::GetTab("ControlPanel").AddString("Color Detected", [this](){ return colorString;});
+    frc::SmartDashboard::PutString("Color Detected", colorString);
 }
 
 void ControlPanelSubsystem::SetControlPanelWheelSpeed(double speed) {

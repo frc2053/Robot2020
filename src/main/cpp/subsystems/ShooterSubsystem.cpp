@@ -83,8 +83,6 @@ void ShooterSubsystem::ConfigureShooterMotors() {
 void ShooterSubsystem::ConfigureLoaderMotor() {
     loaderWheel.ConfigFactoryDefault();
 
-    loaderWheel.ConfigClosedloopRamp(0.5);
-
     //incase we plug in a bad talon
     loaderWheel.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
     loaderWheel.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);

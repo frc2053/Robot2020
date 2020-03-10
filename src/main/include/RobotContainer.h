@@ -11,20 +11,16 @@
 #include "subsystems/ClimberSubsystem.h"
 #include "commands/auto/TenPowerCellAuto.h"
 #include "commands/auto/ShootBallsAuto.h"
-#include "commands/controlpanel/ManualWheelRotation.h"
-#include "commands/controlpanel/PositionControl.h"
-#include "commands/controlpanel/RotationControl.h"
 
 class RobotContainer {
  public:
   RobotContainer();
   frc2::Command* GetAutonomousCommand();
   SwerveSubsystem m_drivetrain;
-  ControlPanelSubsystem m_controlpanel;
+  //ControlPanelSubsystem m_controlpanel;
   ShooterSubsystem m_shooter;
   IntakeSubsystem m_intake;
   ClimberSubsystem m_climber;
-
 
  private:
 
@@ -44,12 +40,7 @@ class RobotContainer {
   TenPowerCellAuto m_tenCellAuto{&m_drivetrain, &m_intake, &m_shooter};
   ShootBallsAuto m_shootBallsAuto{&m_drivetrain, &m_intake, &m_shooter};
 
-  PositionControl m_posControl{&m_controlpanel};
-  RotationControl m_rotControl{&m_controlpanel};
-  ManualWheelRotation m_wheelControl{&m_controlpanel, [this] { return operatorController.GetX(frc::GenericHID::JoystickHand::kLeftHand); } };
-
   frc::SendableChooser<frc2::Command*> m_chooser;
-  frc::SendableChooser<frc2::Command*> m_controlChooser;
 
   void ConfigureButtonBindings();
 };
