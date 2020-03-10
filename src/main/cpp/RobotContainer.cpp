@@ -141,17 +141,17 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton intakeDownButton(&operatorController, (int)frc::XboxController::Button::kA);
-  intakeDownButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, 1)});
+  intakeDownButton.WhileHeld(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, .5)});
 
   frc2::JoystickButton intakeUpButton(&operatorController, (int)frc::XboxController::Button::kY);
   intakeUpButton.WhenReleased(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kB);
-  conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, .5), SetFunnelWheelSpeed(&m_intake, 1)});
+  conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, .5), SetFunnelWheelSpeed(&m_intake, .5)});
   conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, 0), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_conveyor, 1), SetFunnelWheelSpeed(&m_intake, 1)});
+  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_conveyor, 1), SetFunnelWheelSpeed(&m_intake, .5)});
   feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_conveyor, 0), SetFunnelWheelSpeed(&m_intake, 0)});
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
