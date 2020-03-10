@@ -26,6 +26,7 @@
 #include "commands/shooter/SetShooterToGoal.h"
 #include <frc/shuffleboard/Shuffleboard.h>
 #include "commands/conveyor/IndexConveyor.h"
+#include <frc2/command/ConditionalCommand.h>
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -36,9 +37,17 @@ RobotContainer::RobotContainer() : m_drivetrain(){
     &m_drivetrain
   ));
 
-  m_conveyor.SetDefaultCommand(std::move(IndexConveyor(
-    &m_conveyor
-  )));
+  m_conveyor.SetDefaultCommand(
+    std::move(
+      frc2::ConditionalCommand(
+        //command if condition is true
+        SetConveyorSpeed(&m_conveyor, 0),
+        //command if conidition is false
+        std::move(IndexConveyor(&m_conveyor)),
+        [this](){return m_conveyor.DetectedBallOut();}
+      )
+    )    
+  );
 
   m_controlpanel.SetDefaultCommand(std::move(ManualWheelRotation(
     &m_controlpanel,
