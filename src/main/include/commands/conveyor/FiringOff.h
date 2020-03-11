@@ -4,14 +4,13 @@
 #include <frc2/command/InstantCommand.h>
 #include "subsystems/ConveyorSubsystem.h"
 
-class SetConveyorSpeed
+class FiringOff
     : public frc2::CommandHelper<frc2::InstantCommand,
-                                 SetConveyorSpeed> {
+                                 FiringOff> {
  public:
-  SetConveyorSpeed(ConveyorSubsystem* intakeSub, double intakeSpeed);
+  FiringOff(ConveyorSubsystem* conveyor);
 
   void Initialize() override;
  private:
-  ConveyorSubsystem* m_conveyorSubsystem; 
-  double speed = 0;
+  ConveyorSubsystem* m_conveyorSubsystem;
 };

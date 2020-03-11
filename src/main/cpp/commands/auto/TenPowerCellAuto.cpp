@@ -8,8 +8,12 @@
 #include "commands/auto/TenPowerCellAuto.h"
 #include "commands/intake/IntakeDown.h"
 #include "commands/intake/IntakeUp.h"
-#include "commands/intake/SetIntakeSpeed.h"
-#include "commands/conveyor/SetConveyorSpeed.h"
+#include "commands/intake/IntakeOn.h"
+#include "commands/intake/IntakeOff.h"
+#include "commands/conveyor/IndexingOn.h"
+#include "commands/conveyor/IndexingOff.h"
+#include "commands/conveyor/FiringOn.h"
+#include "commands/conveyor/FiringOff.h"
 #include "commands/drive/SetRobotPose.h"
 #include "commands/drive/FollowPath.h"
 #include <frc2/command/WaitUntilCommand.h>
@@ -17,8 +21,6 @@
 #include "commands/shooter/SetHoodToAngle.h"
 #include "commands/drive/TurnToGoal.h"
 #include "commands/shooter/SetShooterToGoal.h"
-#include "commands/intake/SetLoaderWheelSpeed.h"
-#include "commands/conveyor/SetNumOfBalls.h"
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
@@ -79,21 +81,15 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
   AddCommands(
     //sets where we are on the field
     SetRobotPose(m_swerveSubsystem, startPose, m_swerveSubsystem->m_swerve.GetAngle()),
-    //sets initial number of balls
-    SetNumOfBalls(m_conveyorSubsystem, 3),
     //gets intake ready to succ balls
+    IntakeOn(m_intakeSubsystem),
     IntakeDown(m_intakeSubsystem),
-    SetIntakeSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_conveyorSubsystem, 1),
+    IndexingOn(m_conveyorSubsystem),
     //path to balls near control panel
     std::move(toControlPanel),
     //Might have to add a drive backwards command here?
-    //Wait until we have 5 balls
-    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;}),
     //Close up intake
     IntakeUp(m_intakeSubsystem),
-    SetIntakeSpeed(m_intakeSubsystem, 0),
-    SetConveyorSpeed(m_conveyorSubsystem, 0),
     //Premptive spin up of shooter
     SetShooterToVelocity(m_shooterSubsystem, [](){return 3000_rpm;}),
     SetHoodToAngle(m_shooterSubsystem, [](){return 45_deg;}),
@@ -104,29 +100,23 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     //spins up shooter to appropriate rpm and hood angle
     SetShooterToGoal(m_shooterSubsystem),
     //start spraying
-    SetLoaderWheelSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_conveyorSubsystem, 1),
+    FiringOn(m_conveyorSubsystem),
     //stop when we dont have any more balls
-    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 0;}),
+    frc2::WaitCommand(5_s),
     //put intake down for next 5 balls
+    FiringOn(m_conveyorSubsystem),
     IntakeDown(m_intakeSubsystem),
-    SetIntakeSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_conveyorSubsystem, 1),
     //Spins down shooter to save a bit of power
     SetShooterToVelocity(m_shooterSubsystem, [](){return 3000_rpm;}),
     SetHoodToAngle(m_shooterSubsystem, [](){return 45_deg;}),
     //go to side of generator
     std::move(toGeneratorBall),
     //grab two ball
-    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 2;}),
     //go to our trench
     std::move(toTrench),
     //grab 3 more balls
-    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;}),
     //Close up intake
     IntakeUp(m_intakeSubsystem),
-    SetIntakeSpeed(m_intakeSubsystem, 0),
-    SetConveyorSpeed(m_conveyorSubsystem, 0),
     //move to front of goal for more accurate shot
     std::move(toFinalShot),
     //turn to align with goal
@@ -134,9 +124,10 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
     //spins up shooter to appropriate rpm and hood angle
     SetShooterToGoal(m_shooterSubsystem),
     //start spraying
-    SetLoaderWheelSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_conveyorSubsystem, 1)
+    FiringOn(m_conveyorSubsystem),
+    frc2::WaitCommand(5_s),
     //Done
+    IndexingOff(m_conveyorSubsystem)
     //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;})
   );
 }

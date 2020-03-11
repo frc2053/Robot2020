@@ -2,15 +2,15 @@
 
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/InstantCommand.h>
-#include "subsystems/IntakeSubsystem.h"
+#include "subsystems/ConveyorSubsystem.h"
 
-class IntakeDown
+class IndexingOn
     : public frc2::CommandHelper<frc2::InstantCommand,
-                                 IntakeDown> {
+                                 IndexingOn> {
  public:
-  IntakeDown(IntakeSubsystem* intake);
+  IndexingOn(ConveyorSubsystem* conveyor);
 
   void Initialize() override;
  private:
-  IntakeSubsystem* m_intakeSubsystem;
+  ConveyorSubsystem* m_conveyorSubsystem;
 };

@@ -8,15 +8,14 @@
 #include "commands/auto/ShootBallsAuto.h"
 #include "commands/intake/IntakeDown.h"
 #include "commands/intake/IntakeUp.h"
-#include "commands/intake/SetIntakeSpeed.h"
-#include "commands/conveyor/SetConveyorSpeed.h"
+#include "commands/conveyor/FiringOff.h"
+#include "commands/conveyor/FiringOn.h"
 #include "commands/drive/SetRobotPose.h"
 #include <frc2/command/WaitUntilCommand.h>
 #include "commands/shooter/SetShooterToVelocity.h"
 #include "commands/shooter/SetHoodToAngle.h"
 #include "commands/drive/TurnToGoal.h"
 #include "commands/shooter/SetShooterToGoal.h"
-#include "commands/intake/SetLoaderWheelSpeed.h"
 #include "commands/conveyor/SetNumOfBalls.h"
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc2/command/WaitCommand.h>
@@ -40,13 +39,9 @@ ShootBallsAuto::ShootBallsAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* inta
     SetHoodToAngle(m_shooterSubsystem, [this](){return m_shooterSubsystem->GetAngleToGoTo();}),
     SetShooterToVelocity(m_shooterSubsystem, [this](){return m_shooterSubsystem->GetRPMToGoTo();}),
     frc2::WaitUntilCommand([this](){return m_shooterSubsystem->GetShooterAvgRPM() >= m_shooterSubsystem->GetRPMToGoTo();}).WithTimeout(2_s),
-    SetFunnelWheelSpeed(m_intakeSubsystem, 1),
-    SetLoaderWheelSpeed(m_intakeSubsystem, 1),
-    SetConveyorSpeed(m_conveyorSubsystem, 1),
+    FiringOn(m_conveyorSubsystem),
     frc2::WaitCommand(5_s),
-    SetLoaderWheelSpeed(m_intakeSubsystem, 0),
-    SetConveyorSpeed(m_conveyorSubsystem, 0),
-    SetFunnelWheelSpeed(m_intakeSubsystem, 0),
+    FiringOff(m_conveyorSubsystem),
     SetHoodToAngle(m_shooterSubsystem, [this](){return 0_deg;}),
     SetShooterToVelocity(m_shooterSubsystem, [this](){return 0_rpm;}),
     frc2::InstantCommand(

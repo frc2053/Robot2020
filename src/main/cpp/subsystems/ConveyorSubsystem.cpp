@@ -10,8 +10,37 @@
 
 ConveyorSubsystem::ConveyorSubsystem() {
     SetName("ConveyorSubsystem");
-    ConfigConveyorMotor();
     ConfigDashboard();
+    ConfigFunnelMotor();
+    ConfigConveyorMotor();
+    ConfigFeederMotor();
+
+    indexing = false;
+    firing = false;
+}
+
+void ConveyorSubsystem::ConfigDashboard() {
+    frc::ShuffleboardTab& tab = frc::Shuffleboard::GetTab("Intake Subsystem");
+    
+    dashDetectedBallIntake = tab.Add("Detected Ball Intake", false).WithWidget(frc::BuiltInWidgets::kBooleanBox).WithSize(1,1).GetEntry();
+    dashDetectedBallFeeder = tab.Add("Detected Ball Feeder", false).WithWidget(frc::BuiltInWidgets::kBooleanBox).WithSize(1,1).GetEntry();
+}
+
+
+void ConveyorSubsystem::ConfigFunnelMotor(){
+    funnelMotor.ConfigFactoryDefault();
+
+    //incase we plug in a bad talon
+    funnelMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+    funnelMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+}
+
+void ConveyorSubsystem::ConfigFeederMotor(){
+    feederMotor.ConfigFactoryDefault();
+
+    //incase we plug in a bad talon
+    feederMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+    feederMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
 }
 
 void ConveyorSubsystem::ConfigConveyorMotor(){
@@ -24,78 +53,77 @@ void ConveyorSubsystem::ConfigConveyorMotor(){
     conveyorMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
 }
 
-void ConveyorSubsystem::ConfigDashboard() {
-    frc::ShuffleboardTab& tab = frc::Shuffleboard::GetTab("Intake Subsystem");
-    wpi::StringMap<std::shared_ptr<nt::Value>> properties{
-        std::make_pair("min", nt::Value::MakeDouble(0)),
-        std::make_pair("max", nt::Value::MakeDouble(5))
-    };
-    dashNumOfBalls = tab.Add("Number of Balls", 0).WithWidget(frc::BuiltInWidgets::kDial).WithSize(2,2).WithProperties(properties).GetEntry();
-    dashDetectedBallIn = tab.Add("Detected Ball In", false).WithWidget(frc::BuiltInWidgets::kBooleanBox).WithSize(1,1).GetEntry();
-    dashDetectedBallOut = tab.Add("Detected Ball Out", false).WithWidget(frc::BuiltInWidgets::kBooleanBox).WithSize(1,1).GetEntry();
-    dashRawIntakeDist = tab.Add("Raw Intake Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
-    dashRawLoaderDist = tab.Add("Raw Loader Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
-    dashFilteredIntakeDist = tab.Add("Filtered Intake Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
-    dashFilteredLoaderDist = tab.Add("Filtered Loader Distance", 0).WithWidget(frc::BuiltInWidgets::kGraph).WithSize(2,2).GetEntry();
+void ConveyorSubsystem::SetFiringOn(){
+    firing = true;
 }
 
-void ConveyorSubsystem::SetConveyorBeltSpeed(double speed) {
+void ConveyorSubsystem::SetFiringOff(){
+    firing = false;
+}
+
+void ConveyorSubsystem::SetIndexingOn(){
+    indexing = true;
+}
+
+void ConveyorSubsystem::SetIndexingOff(){
+    indexing = false;
+}
+
+void ConveyorSubsystem::SetFunnelSpeed(double speed){
+    funnelMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+}
+
+void ConveyorSubsystem::SetConveyorSpeed(double speed) {
     conveyorMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
 }
 
-units::millimeter_t ConveyorSubsystem::GetIntakeDistFiltered() {
-    return intakeDistFiltered;
+void ConveyorSubsystem::SetFeederSpeed(double speed){
+    feederMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
 }
 
-units::millimeter_t ConveyorSubsystem::GetLoaderDistFiltered() {
-    return loaderDistFiltered;
-}
-
-bool ConveyorSubsystem::DetectedBallIn() {
+bool ConveyorSubsystem::DetectedBallIntake() {
     return (units::millimeter_t(intakeDistSensor.GetRange()) < tigertronics::constants::distThreshold);
 }
 
-bool ConveyorSubsystem::DetectedBallOut() {
-    return (units::millimeter_t(loaderDistSensor.GetRange()) < tigertronics::constants::distThreshold);
-}
-
-void ConveyorSubsystem::SetNumOfBalls(int balls) {
-    numOfBalls = balls;
-}
-
-int ConveyorSubsystem::GetNumOfBalls() {
-    return numOfBalls;
+bool ConveyorSubsystem::DetectedBallFeeder() {
+    return (units::millimeter_t(feederDistSensor.GetRange()) < tigertronics::constants::distThreshold);
 }
 
 // This method will be called once per scheduler run
 void ConveyorSubsystem::Periodic() {
-    double rawIntakeDist = intakeDistSensor.GetRange();
-    double rawLoaderDist = loaderDistSensor.GetRange();
-    intakeDistFiltered = units::millimeter_t(intakeHighFilter.Calculate(intakeLowFilter.Calculate(rawIntakeDist)));
-    loaderDistFiltered = units::millimeter_t(loaderHighFilter.Calculate(loaderLowFilter.Calculate(rawLoaderDist)));
     
-    bool ballIn = DetectedBallIn();
-    bool ballOut = DetectedBallOut();
+    bool ballIntake = DetectedBallIntake();
+    bool ballFeeder = DetectedBallFeeder();
+    double funnelSpeed = 0.0;
+    double conveyorSpeed = 0.0;
+    double feederSpeed = 0.0;
 
-    if(ballIn != detectedIntake) {
-        if(ballIn) {
-            numOfBalls = numOfBalls + 1;
+    // If we're firing, put everythig on full blast.
+    // If we're indexing, stop the feeder, run the funnel, and use the sensor for the conveyor.
+    // Otherwise, leave the motors off.
+    if (firing) {
+        funnelSpeed = 1.0;
+        conveyorSpeed = 1.0;
+        feederSpeed = 1.0;
+    } else if (indexing) {
+        if (ballIntake) {
+            conveyorSpeed = 0.5;
+        } else {
+            conveyorSpeed = 0.0;
         }
-        detectedIntake = ballIn;
+        funnelSpeed = 0.3;
+        feederSpeed = 0.3;
+    } else {
+        funnelSpeed = 0.0;
+        conveyorSpeed = 0.0;
+        feederSpeed = 0.0;
     }
 
-    if(ballOut != detectedLoader) {
-        if(ballOut) {
-            numOfBalls = numOfBalls - 1;
-        }
-        detectedLoader = ballOut;
+    // Every 10th cycle, update the dashboard.
+    count++;
+    if (count > 10){
+        dashDetectedBallIntake.SetBoolean(ballIntake);
+        dashDetectedBallFeeder.SetBoolean(ballFeeder);
+        count = 0;
     }
-
-    dashNumOfBalls.SetDouble(GetNumOfBalls());
-    dashDetectedBallIn.SetBoolean(ballIn);
-    dashDetectedBallOut.SetBoolean(ballOut);
-    dashRawIntakeDist.SetDouble(rawIntakeDist);
-    dashRawLoaderDist.SetDouble(rawLoaderDist);
-    dashFilteredIntakeDist.SetDouble(intakeDistFiltered.to<double>());
-    dashFilteredLoaderDist.SetDouble(loaderDistFiltered.to<double>());
 }

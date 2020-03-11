@@ -4,14 +4,13 @@
 #include <frc2/command/InstantCommand.h>
 #include "subsystems/ConveyorSubsystem.h"
 
-class SetNumOfBalls
+class ConveyorDefault
     : public frc2::CommandHelper<frc2::InstantCommand,
-                                 SetNumOfBalls> {
+                                 ConveyorDefault> {
  public:
-  SetNumOfBalls(ConveyorSubsystem* intakeSub, int balls);
+  IndexingOn(ConveyorSubsystem* conveyor);
 
   void Initialize() override;
  private:
   ConveyorSubsystem* m_conveyorSubsystem;
-  int numOfBalls;
 };

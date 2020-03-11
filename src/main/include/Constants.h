@@ -109,7 +109,7 @@ namespace tigertronics {
         static constexpr int feederMotor = 15;
         static constexpr int funnelMotor = 16;
         static constexpr int tofSensorIntake = 0;
-        static constexpr int tofSensorConveyor = 1;
+        static constexpr int tofSensorFeeder = 1;
         static constexpr int intakeSolenoidPortFow = 2;
         static constexpr int intakeSolenoidPortRev = 5;
 

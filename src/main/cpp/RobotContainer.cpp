@@ -1,30 +1,44 @@
 #include "RobotContainer.h"
+
 #include "frc2/command/button/JoystickButton.h"
 #include <frc/Joystick.h>
 #include <frc/XboxController.h>
+
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/shuffleboard/Shuffleboard.h>
+
+#include "frc2/command/ParallelRaceGroup.h"
+#include <frc2/command/ConditionalCommand.h>
+
 #include "commands/drive/WheelTest.h"
 #include "commands/drive/TurnToAngle.h"
-#include <commands/shooter/SetHoodToAngle.h>
 #include "commands/drive/TeleopDrive.h"
+#include "commands/drive/TurnToGoal.h"
+#include "commands/drive/ZeroYaw.h"
+
+#include <commands/shooter/SetHoodToAngle.h>
 #include "commands/controlpanel/ManualWheelRotation.h"
 #include "commands/controlpanel/RotationControl.h"
 #include "commands/controlpanel/PositionControl.h"
-#include "commands/shooter/SetShooterToVelocity.h"
-#include "commands/intake/SetLoaderWheelSpeed.h"
-#include "commands/intake/SetFunnelWheelSpeed.h"
-#include "frc2/command/ParallelRaceGroup.h"
-#include "commands/intake/TeleopIntakeDown.h"
-#include "commands/intake/TeleopIntakeUp.h"
+
+#include "commands/intake/IntakeDown.h"
+#include "commands/intake/IntakeUp.h"
+#include "commands/intake/IntakeOff.h"
+#include "commands/intake/IntakeOn.h"
+
+#include "commands/conveyor/FiringOff.h"
+#include "commands/conveyor/FiringOn.h"
+#include "commands/conveyor/IndexingOff.h"
+#include "commands/conveyor/IndexingOn.h"
+
 #include "commands/climber/ClimbElevatorUp.h"
 #include "commands/climber/ClimbElevatorDown.h"
-#include "commands/drive/ZeroYaw.h"
+
 #include "commands/shooter/SetHoodToAngle.h"
 #include "commands/shooter/SetShooterToVelocity.h"
-#include "commands/drive/TurnToGoal.h"
 #include "commands/shooter/SetShooterToGoal.h"
-#include <frc/shuffleboard/Shuffleboard.h>
-#include <frc2/command/ConditionalCommand.h>
+#include "commands/shooter/SetShooterToVelocity.h"
+
 
 RobotContainer::RobotContainer() : m_drivetrain(){
 
@@ -36,7 +50,11 @@ RobotContainer::RobotContainer() : m_drivetrain(){
   ));
 
   m_conveyor.SetDefaultCommand(
-      std::move(conveyorIdx)
+    std::move(conveyorDefault)
+  );
+
+  m_intake.SetDefaultCommand(
+    std::move(intakeDefault)
   );
 
   m_controlpanel.SetDefaultCommand(std::move(ManualWheelRotation(
@@ -141,18 +159,18 @@ void RobotContainer::ConfigureButtonBindings() {
   );
 
   frc2::JoystickButton intakeDownButton(&operatorController, (int)frc::XboxController::Button::kA);
-  intakeDownButton.WhenPressed(frc2::SequentialCommandGroup{TeleopIntakeDown(&m_intake), SetFunnelWheelSpeed(&m_intake, .5)});
+  intakeDownButton.WhenPressed(frc2::SequentialCommandGroup{IntakeDown(&m_intake)});
 
   frc2::JoystickButton intakeUpButton(&operatorController, (int)frc::XboxController::Button::kY);
-  intakeUpButton.WhenPressed(frc2::SequentialCommandGroup{TeleopIntakeUp(&m_intake), SetFunnelWheelSpeed(&m_intake, 0)});
+  intakeUpButton.WhenPressed(frc2::SequentialCommandGroup{IntakeUp(&m_intake)});
 
   frc2::JoystickButton conveyorButton(&operatorController, (int)frc::XboxController::Button::kB);
-  conveyorButton.WhileHeld(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, .5), SetFunnelWheelSpeed(&m_intake, .5)});
-  conveyorButton.WhenReleased(frc2::SequentialCommandGroup{SetConveyorSpeed(&m_conveyor, 0)});
+  conveyorButton.WhileHeld(frc2::SequentialCommandGroup{IndexingOn(&m_conveyor), IntakeOn(&m_intake)});
+  conveyorButton.WhenReleased(frc2::SequentialCommandGroup{IndexingOff(&m_conveyor), IntakeOff(&m_intake)});
 
   frc2::JoystickButton feederButton(&operatorController, (int)frc::XboxController::Button::kBumperLeft);
-  feederButton.WhileHeld(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 1), SetConveyorSpeed(&m_conveyor, 1), SetFunnelWheelSpeed(&m_intake, .5)});
-  feederButton.WhenReleased(frc2::SequentialCommandGroup{SetLoaderWheelSpeed(&m_intake, 0), SetConveyorSpeed(&m_conveyor, 0), SetFunnelWheelSpeed(&m_intake, 0)});
+  feederButton.WhileHeld(frc2::SequentialCommandGroup{FiringOn(&m_conveyor)});
+  feederButton.WhenReleased(frc2::SequentialCommandGroup{FiringOff(&m_conveyor)});
 
   frc2::JoystickButton climberButtonUp(&operatorController, (int)frc::XboxController::Button::kStart);
   climberButtonUp.WhenPressed(ClimbElevatorUp(&m_climber));

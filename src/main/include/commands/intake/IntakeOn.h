@@ -4,14 +4,13 @@
 #include <frc2/command/InstantCommand.h>
 #include "subsystems/IntakeSubsystem.h"
 
-class SetIntakeSpeed
+class IntakeOn
     : public frc2::CommandHelper<frc2::InstantCommand,
-                                 SetIntakeSpeed> {
+                                 IntakeOn> {
  public:
-  SetIntakeSpeed(IntakeSubsystem* intakeSub, double intakeSpeed);
+  IntakeOn(IntakeSubsystem* intake);
 
   void Initialize() override;
  private:
-  IntakeSubsystem* m_intakeSubsystem; 
-  double speed = 0;
+  IntakeSubsystem* m_intakeSubsystem;
 };

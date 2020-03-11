@@ -12,20 +12,24 @@ class IntakeSubsystem : public frc2::SubsystemBase {
  public: 
   IntakeSubsystem();
   void Periodic();
-  void SetIntakeWheelsSpeed(double speed);
-  void SetFeederWheelSpeed(double speed);
-  void SetFunnelWheelSpeed(double speed);
-  void SetIntakeFow();
-  void SetIntakeRev();
+  
+  void SetIntakeOn();
+  void SetIntakeOff();
+  void SetIntakeDown();
+  void SetIntakeUp();
 
  private:
   void ConfigIntakeMotor();
-  void ConfigFeederMotor();
-  void ConfigFunnelMotor();
+
+  void SetIntakeWheelsSpeed(double speed);
+
+  void SetIntakeFow();
+  void SetIntakeRev();
+
+  bool intakeDown = false;
+  bool intakeOn = false;
 
   ctre::phoenix::motorcontrol::can::TalonSRX intakeMotor{tigertronics::ports::intakeMotor};
-  ctre::phoenix::motorcontrol::can::TalonSRX feederMotor{tigertronics::ports::feederMotor};
-  ctre::phoenix::motorcontrol::can::TalonSRX funnelMotor{tigertronics::ports::funnelMotor};
 
   frc::DoubleSolenoid intakeFlopper{tigertronics::ports::TwelveVoltPCM, tigertronics::ports::intakeSolenoidPortFow, tigertronics::ports::intakeSolenoidPortRev};
 };

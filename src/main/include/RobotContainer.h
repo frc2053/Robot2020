@@ -15,8 +15,8 @@
 #include "commands/controlpanel/ManualWheelRotation.h"
 #include "commands/controlpanel/PositionControl.h"
 #include "commands/controlpanel/RotationControl.h"
-#include "commands/conveyor/SetConveyorSpeed.h"
-#include "commands/conveyor/IndexConveyor.h"
+#include "commands/conveyor/ConveyorDefault.h"
+#include "commands/intake/IntakeDefault.h"
 
 class RobotContainer {
  public:
@@ -54,8 +54,9 @@ class RobotContainer {
   frc::SendableChooser<frc2::Command*> m_chooser;
   frc::SendableChooser<frc2::Command*> m_controlChooser;
 
-  SetConveyorSpeed conveyorFullCmd{&m_conveyor, 0};
-  IndexConveyor conveyorIdx{&m_conveyor};
+  //SetConveyorSpeed conveyorFullCmd{&m_conveyor, 0};
+  ConveyorDefault conveyorDefualt{&m_conveyor};
+  IntakeDefault intakeDefualt{&m_intake};
 
   void ConfigureButtonBindings();
 };

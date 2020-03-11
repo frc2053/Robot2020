@@ -6,26 +6,10 @@
 
 IntakeSubsystem::IntakeSubsystem() {
     SetName("IntakeSubsystem");
-    ConfigFeederMotor();
-    ConfigFunnelMotor();
     ConfigIntakeMotor();
-}
-
-
-void IntakeSubsystem::ConfigFunnelMotor(){
-    funnelMotor.ConfigFactoryDefault();
-
-    //incase we plug in a bad talon
-    funnelMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
-    funnelMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
-}
-
-void IntakeSubsystem::ConfigFeederMotor(){
-    feederMotor.ConfigFactoryDefault();
-
-    //incase we plug in a bad talon
-    feederMotor.ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
-    feederMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
+    ResetIntake();
+    intakeDown = false;
+    intakeOn = false;
 }
 
 void IntakeSubsystem::ConfigIntakeMotor(){
@@ -36,12 +20,20 @@ void IntakeSubsystem::ConfigIntakeMotor(){
     intakeMotor.ConfigReverseLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource_Deactivated, ctre::phoenix::motorcontrol::LimitSwitchNormal_Disabled, 10);
 }
 
-void IntakeSubsystem::SetFeederWheelSpeed(double speed){
-    feederMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+void IntakeSubsystem::SetIntakeOn() {
+    intakeOn = true;
 }
 
-void IntakeSubsystem::SetFunnelWheelSpeed(double speed){
-    funnelMotor.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, speed);
+void IntakeSubsystem::SetIntakeOff(){
+    intakeOn = false;
+}
+
+void IntakeSubsystem::SetIntakeDown() {
+    intakeDown = true;
+}
+
+void IntakeSubsystem::SetIntakeUp(){
+    intakeDown = false;
 }
 
 void IntakeSubsystem::SetIntakeWheelsSpeed(double speed){
@@ -58,5 +50,20 @@ void IntakeSubsystem::SetIntakeRev() {
 
 
 void IntakeSubsystem::Periodic(){
+    double intakeSpeed = 0.0;
 
+    if (intakeDown){
+        SetIntakeFow();
+    } else {
+        SetIntakeRev();
+    }
+
+    // Intake must be activated and down to allow the motor to run.
+    if (intakeOn && intakeDown){
+        intakeSpeed = 0.5
+    } else {
+        intakeSpeed = 0.0;
+    }
+    
+    SetIntakeWheelsSpeed(intakeSpeed);
 }

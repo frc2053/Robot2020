@@ -12,5 +12,5 @@ class IntakeUp
 
   void Initialize() override;
  private:
-  IntakeSubsystem* intakeSub;
+  IntakeSubsystem* m_intakeSubsystem;
 };

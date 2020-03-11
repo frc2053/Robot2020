@@ -19,42 +19,43 @@ class ConveyorSubsystem : public frc2::SubsystemBase {
 public:
   ConveyorSubsystem();
   void Periodic();
-  void SetConveyorBeltSpeed(double speed);
-  void SetNumOfBalls(int balls);
-  int GetNumOfBalls();
-  units::millimeter_t GetIntakeDistFiltered();
-  units::millimeter_t GetLoaderDistFiltered();
-  bool DetectedBallIn();
-  bool DetectedBallOut();
+
+  void SetShootingOn();
+  void SetShootingOff();
+  void SetIndexingOn();
+  void SetIndexingOff();
+  
+  bool DetectedBallIntake();
+  bool DetectedBallFeeder();
+
 private:
-  void ConfigConveyorMotor();
   void ConfigDashboard();
-  int numOfBalls = 0;
+
+  void ConfigFunnelMotor();
+  void ConfigConveyorMotor();
+  void ConfigFeederMotor();
+
+  void SetFunnelSpeed(double speed);
+  void SetConveyorSpeed(double speed);
+  void SetFeederSpeed(double speed);
+  
+  ctre::phoenix::motorcontrol::can::TalonSRX funnelMotor{tigertronics::ports::funnelMotor};
   ctre::phoenix::motorcontrol::can::TalonSRX conveyorMotor{tigertronics::ports::conveyorMotor};
+  ctre::phoenix::motorcontrol::can::TalonSRX feederMotor{tigertronics::ports::feederMotor};
 
   #if defined(__FRC_ROBORIO__)
   frc::TimeOfFlight intakeDistSensor{tigertronics::ports::tofSensorIntake};
-  frc::TimeOfFlight loaderDistSensor{tigertronics::ports::tofSensorConveyor};
+  frc::TimeOfFlight feederDistSensor{tigertronics::ports::tofSensorFeeder};
   #else
   MockToF intakeDistSensor{0};
-  MockToF loaderDistSensor{1};
+  MockToF feederDistSensor{1};
   #endif
 
-  frc::LinearFilter<double> intakeHighFilter = frc::LinearFilter<double>::HighPass(tigertronics::constants::highPassConst, 0.02_s);
-  frc::LinearFilter<double> loaderHighFilter = frc::LinearFilter<double>::HighPass(tigertronics::constants::highPassConst, 0.02_s);
-  frc::LinearFilter<double> intakeLowFilter = frc::LinearFilter<double>::SinglePoleIIR(tigertronics::constants::highPassConst, 0.02_s);
-  frc::LinearFilter<double> loaderLowFilter = frc::LinearFilter<double>::SinglePoleIIR(tigertronics::constants::highPassConst, 0.02_s);
+  bool firing = false;
+  bool indexing = false;
 
-  bool detectedIntake = false;
-  bool detectedLoader = false;
-  units::millimeter_t intakeDistFiltered = 0_mm;
-  units::millimeter_t loaderDistFiltered = 0_mm;
+  nt::NetworkTableEntry dashDetectedBallIntake;
+  nt::NetworkTableEntry dashDetectedBallFeeder;
 
-  nt::NetworkTableEntry dashNumOfBalls;
-  nt::NetworkTableEntry dashDetectedBallIn;
-  nt::NetworkTableEntry dashDetectedBallOut;
-  nt::NetworkTableEntry dashRawLoaderDist;
-  nt::NetworkTableEntry dashRawIntakeDist;
-  nt::NetworkTableEntry dashFilteredLoaderDist;
-  nt::NetworkTableEntry dashFilteredIntakeDist;
+  int count = 0;
 };
