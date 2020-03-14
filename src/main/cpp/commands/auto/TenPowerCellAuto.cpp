@@ -79,55 +79,71 @@ TenPowerCellAuto::TenPowerCellAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* 
   };
 
   AddCommands(
-    //sets where we are on the field
+    // Sets where we are on the field
     SetRobotPose(m_swerveSubsystem, startPose, m_swerveSubsystem->m_swerve.GetAngle()),
-    //gets intake ready to succ balls
+
+    // Step 1: Get intake ready to succ balls.
     IntakeOn(m_intakeSubsystem),
     IntakeDown(m_intakeSubsystem),
     IndexingOn(m_conveyorSubsystem),
-    //path to balls near control panel
+
+    // Step 2: Move near control panel and pick up balls.
+    // Might have to add a drive backwards command here?
     std::move(toControlPanel),
-    //Might have to add a drive backwards command here?
-    //Close up intake
+
+    // Step 3: Close up intake and prepare shooter.
     IntakeUp(m_intakeSubsystem),
-    //Premptive spin up of shooter
     SetShooterToVelocity(m_shooterSubsystem, [](){return 3000_rpm;}),
     SetHoodToAngle(m_shooterSubsystem, [](){return 45_deg;}),
-    //path to in front of generator
+
+    // Step 4: Move to first shooting location in front of generator.
     std::move(toGeneratorShoot),
-    //turn to align with goal
+
+    // Step 5: Turn to align with goal
     TurnToGoal([](){return 0;}, [](){return 0;}, m_shooterSubsystem, m_swerveSubsystem, [](){return false; }),
-    //spins up shooter to appropriate rpm and hood angle
+
+    // Step 6: Spin up shooter to appropriate rpm and hood angle
     SetShooterToGoal(m_shooterSubsystem),
-    //start spraying
+
+    // Step 7: Start spraying (Skeet Skeet Skeet!!!)...
     FiringOn(m_conveyorSubsystem),
-    //stop when we dont have any more balls
+
+    // Step 8: Give time to shoot all balls.
     frc2::WaitCommand(5_s),
-    //put intake down for next 5 balls
-    FiringOn(m_conveyorSubsystem),
+
+    // Step 9: Stop shooting. Put intake down for next 5 balls.
+    // Spin down shooter to save a bit of power
+    FiringOff(m_conveyorSubsystem),
     IntakeDown(m_intakeSubsystem),
-    //Spins down shooter to save a bit of power
     SetShooterToVelocity(m_shooterSubsystem, [](){return 3000_rpm;}),
     SetHoodToAngle(m_shooterSubsystem, [](){return 45_deg;}),
-    //go to side of generator
+
+    // Step 10: Go to side of generator, grab two balls.
     std::move(toGeneratorBall),
-    //grab two ball
-    //go to our trench
+
+    // Step 11: Go to our trench, grab 3 more balls.
     std::move(toTrench),
-    //grab 3 more balls
-    //Close up intake
+
+    //Step 12: Close up intake.
     IntakeUp(m_intakeSubsystem),
-    //move to front of goal for more accurate shot
+
+    // Step 13: Move to front of goal for more accurate shot.
     std::move(toFinalShot),
-    //turn to align with goal
+
+    // Step 14: Turn to align with goal.
     TurnToGoal([](){return 0;}, [](){return 0;}, m_shooterSubsystem, m_swerveSubsystem, [](){return false; }),
-    //spins up shooter to appropriate rpm and hood angle
+
+    // Step 15: Spin up shooter to appropriate rpm and hood angle.
     SetShooterToGoal(m_shooterSubsystem),
-    //start spraying
+    
+    // Step 16: Skeet Skeet Skeet!!!
     FiringOn(m_conveyorSubsystem),
+
+    // Step 17: Give shooter time to fire all balls.
     frc2::WaitCommand(5_s),
-    //Done
+
+    // Step 18: Done.
+    FiringOff(m_conveyorSubsystem),
     IndexingOff(m_conveyorSubsystem)
-    //frc2::WaitUntilCommand([this](){return m_intakeSubsystem->GetNumOfBalls() == 5;})
   );
 }

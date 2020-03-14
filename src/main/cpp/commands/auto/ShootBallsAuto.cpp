@@ -33,17 +33,28 @@ ShootBallsAuto::ShootBallsAuto(SwerveSubsystem* swerveSub, IntakeSubsystem* inta
           m_shooterSubsystem->moveRequested = true;
       }
     ),
+    // Step 1: Prepare shooter and hood.
     SetShooterToVelocity(m_shooterSubsystem, [](){return 3000_rpm;}),
     SetHoodToAngle(m_shooterSubsystem, [](){return 45_deg;}),
+
+    // Step 2: Aim for target using auto-aim.
     TurnToGoal([](){return 0;}, [](){return 0;}, m_shooterSubsystem, m_swerveSubsystem, [](){ return false; }).WithTimeout(2_s),
     SetHoodToAngle(m_shooterSubsystem, [this](){return m_shooterSubsystem->GetAngleToGoTo();}),
     SetShooterToVelocity(m_shooterSubsystem, [this](){return m_shooterSubsystem->GetRPMToGoTo();}),
+
+    // Step 3: Wait for shooter to get to correct speed.
     frc2::WaitUntilCommand([this](){return m_shooterSubsystem->GetShooterAvgRPM() >= m_shooterSubsystem->GetRPMToGoTo();}).WithTimeout(2_s),
+
+    // Step 4: Start firing. Give some time to shoot all balls.
     FiringOn(m_conveyorSubsystem),
     frc2::WaitCommand(5_s),
+
+    // Step 5: Stop shooter.
     FiringOff(m_conveyorSubsystem),
     SetHoodToAngle(m_shooterSubsystem, [this](){return 0_deg;}),
     SetShooterToVelocity(m_shooterSubsystem, [this](){return 0_rpm;}),
+
+    // Step 6: Move past line.
     frc2::InstantCommand(
       [this]() {
           m_shooterSubsystem->moveRequested = false;
